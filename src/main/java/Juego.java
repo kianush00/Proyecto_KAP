@@ -26,4 +26,9 @@ public class Juego {
         System.err.println("Te moriste, fin del juego.");
         System.exit(1);
     }
+    void escapeFinal(){
+        System.out.println("Has llegado al final de la aventura, felicidades.");
+        System.out.println("Ya puedes escapar.");
+        System.exit(1);
+    }
 }
