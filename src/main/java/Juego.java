@@ -1,4 +1,8 @@
+import java.util.Scanner;
+
 public class Juego {
+
+    static Scanner input = new Scanner(System.in);    //se declara variable que guarda el valor introducido
 
     public static void lanzarJuego(){
         int[] estadisticasJugador = new int[4];   // 0-> vida  1-> ataque  2-> nivelActual  3-> fichas
@@ -13,6 +17,7 @@ public class Juego {
             //Se desarrolla el juego
 
         }
+
     }
 
     public static void intentarAbrirTienda(int[] estadisticasJugador, int[] inventarioJugador){
@@ -22,13 +27,18 @@ public class Juego {
     }
 
     public static void abrirTienda(int[] estadisticasJugador, int[] inventarioJugador){
-        String[] tipoTienda = {"Hospital","Cuartel"};    //La tienda puede ser un hospital o un cuartel
-        darBienvenidaTienda();
+        String[] tipoTienda = {"hospital","cuartel"};    //La tienda puede ser un hospital o un cuartel
+        String tiendaActual = generarTiendaActual(tipoTienda);   //Se genera la tienda de forma aleatoria
 
+        darBienvenidaTienda(tiendaActual);
     }
 
-    public static void darBienvenidaTienda(){
-        println("\nBienvenido a la tienda. ¿Qué desea?");
+    public static String generarTiendaActual(String[] tipoTienda){
+        return tipoTienda[(int) (Math.random()*2)];
+    }
+
+    public static void darBienvenidaTienda(String tiendaActual){
+        println("\nBienvenido al " + tiendaActual + ". ¿Qué desea?");
         println("1. Comprar");
         println("2. Vender");
         println("3. Salir");
