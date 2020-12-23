@@ -4,26 +4,38 @@ public class Juego {
 
     static Scanner input = new Scanner(System.in);    //se declara variable que guarda el valor introducido
 
+    public Juego() {
+    }
+
     public static void lanzarJuego(){
-        int[] estadisticasJugador = new int[4];   // 0-> vida  1-> ataque  2-> nivelActual  3-> fichas
-        int[] inventarioJugador = new int[6];    //
+        int[] estadisticasJugador = new int[5];   // 0-> vida  1-> ataque  2-> nivelActual  3-> fichas
+        int[] inventarioJugador = new int[6];
+        inventarioJugador[0]=100;//
         estadisticasJugador[0] = 100;   //Vida inicial del jugador
         estadisticasJugador[1] = 10;   //Vida inicial del jugador
         estadisticasJugador[3] = 0;     //Fichas iniciales del jugador
-
+        estadisticasJugador[4] = 5;
         for(int i=1; i <= 30; i++){
             estadisticasJugador[2] = i;     //Nivel actual del jugador
             //Se desarrolla el juego
             //...
+            intentarPelear(estadisticasJugador,inventarioJugador);
             intentarAbrirTienda(estadisticasJugador,inventarioJugador);
         }
     }
 
-    public static void intentarAbrirTienda(int[] estadisticasJugador, int[] inventarioJugador){
+    public  static void intentarAbrirTienda(int[] estadisticasJugador, int[] inventarioJugador){
         if(estadisticasJugador[2] % 3 == 0){     //Si el nivel actual es múltiplo de tres se abre la tienda
             abrirTienda(estadisticasJugador,inventarioJugador);
         }
     }
+
+    public  static void intentarPelear(int[] estadisticasJugador, int[] inventarioJugador){
+        if(estadisticasJugador[2] % 3 != 0){     //Si el nivel actual es múltiplo de tres se abre la tienda
+            pelear(estadisticasJugador,inventarioJugador);
+        }
+    }
+
 
 
     public static void abrirTienda(int[] estadisticasJugador, int[] inventarioJugador){
@@ -138,33 +150,30 @@ public class Juego {
         System.out.print(mensaje);
     }
 
-    void pelear(int[] estadisticasJugador , int[] inventarioJugador){
+    public  static void pelear(int[] estadisticasJugador, int[] inventarioJugador){
         int[] enemigo= new int[2];
         Scanner entrada = new Scanner(System.in);
         enemigo[0]= (int) Math.floor(Math.random()*70+30);
+        System.out.println(enemigo[0]);
         enemigo[1]= (int) Math.floor(Math.random()*7+3);
+        System.out.println(enemigo[1]);
         boolean turno=true;
 
         System.out.println("Inicia la batalla del nivel " + estadisticasJugador [2]);
+        boolean huir=false;
+        while(estadisticasJugador [0]>0 && enemigo[0]>0 && huir==false) {
 
-        while(estadisticasJugador [0]>0 && enemigo[0]>0){
-
-            if(turno){
+            if (turno) {
                 System.out.print("Opcion 1 para atacar, 2 para pasar, 3 para huir, finalmente 4 para curarte: ");
-                while (!entrada.hasNextInt()) {
-                    System.err.println("Debe ser un numero");
-                    System.out.print("Intentalo de nuevo: ");
-                    entrada.next();
-                }
-                int opcion = entrada.nextInt();
-                switch(opcion) {
+
+                int opcion = elegirOpcionYValidar(1, 4);
+                switch (opcion) {
                     case 1:
-                        if(inventarioJugador[0]>0) {
+                        if (inventarioJugador[0] > 0) {
                             enemigo[0] = enemigo[0] - estadisticasJugador[1];
                             inventarioJugador[0] = inventarioJugador[0] - estadisticasJugador[4];
-                            System.out.println("Has atacado al enemigo con " + estadisticasJugador[1] + "Puntos de daño, su vida actual es" + enemigo[0]);
-                        }
-                        else {
+                            System.out.println("Has atacado al enemigo con " + estadisticasJugador[1] + " Puntos de daño, su vida actual es " + enemigo[0]);
+                        } else {
                             System.err.println("no te quedan balas, no puedes atacar");
                         }
                         break;
@@ -172,47 +181,56 @@ public class Juego {
                         System.out.println("Has pasado");
                         break;
                     case 3:
-                        int escapar=(int) Math.floor(Math.random()*2+1);
-                        if(escapar==1){
-                            break;
+                        int escapar = (int) (Math.random() * 2);
+                        if (escapar == 1) {
+                            huir=true;
                         }
                         break;
                     case 4:
-                        curar(estadisticasJugador [0]);
+                        curar(estadisticasJugador, inventarioJugador);
                         break;
                 }
-            }
-
-            else{
-                int opcion=(int) Math.floor(Math.random()*1);
-                if(opcion==0){
+            } else {
+                int opcion = (int) (Math.random() * 2);
+                System.out.println(opcion);
+                if (opcion == 0) {
                     System.out.println("El enemigo ha fallado.");
+                    } else {
+                    estadisticasJugador[0] = estadisticasJugador[0] - enemigo[1];
+                    System.out.println(estadisticasJugador[0]);
+                    System.out.println("Te han atacado con " + enemigo[1] + " Puntos de daño, tu vida actual es " + estadisticasJugador[0]);
                 }
-                else
-                    estadisticasJugador [0]=estadisticasJugador [0]-enemigo[1];
-                System.out.println("Te han atacado con "+enemigo[1] + "Puntos de daño, tu vida actual es"+ estadisticasJugador [0]);
+
+
             }
             turno = !turno;
-
         }
         if(estadisticasJugador [0]<0){
             morir();
         }
         else{
+            if(huir==true){
+                System.out.println("Huiste de la batalla");
+            }
+            else{
             System.out.println("Ganaste la batalla");
         }
+        }
     }
-    void morir(){
+    public static void morir(){
         System.err.println("Te moriste, fin de la aventura.");
         System.exit(1);
     }
-    void escapeFinal(){
+    public static void escapeFinal(){
         System.out.println("Has llegado al final de la aventura, felicidades.");
         System.out.println("Ya puedes escapar.");
         System.exit(1);
     }
-    void curar(int vida){
-        vida=vida+50;
-        System.out.println("Ahora tu vida actual es " + vida);
+    public static void curar(int[] estadisticasJugador, int[] inventarioJugador){
+        if(inventarioJugador[0]>0) {
+            estadisticasJugador[0] = estadisticasJugador[0] + 50;
+            inventarioJugador[0]=inventarioJugador[0]-1;
+        }
+        System.out.println("Ahora tu vida actual es " + estadisticasJugador[0]);
     }
 }
