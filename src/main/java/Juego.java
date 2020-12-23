@@ -5,57 +5,89 @@ public class Juego {
     static Scanner input = new Scanner(System.in);    //se declara variable que guarda el valor introducido
 
     public static void lanzarJuego(){
-        int[] estadisticasJugador = new int[4];   // 0-> vida  1-> ataque  2-> nivelActual  3-> fichas
-        int[] inventarioJugador = new int[6];    //
+        int[] estadisticasJugador = new int[5];   // 0-> vida  1-> ataque  2-> nivelActual  3-> fichas
+        int[] inventarioJugador = new int[6];
+        inventarioJugador[0]=100;   //
         estadisticasJugador[0] = 100;   //Vida inicial del jugador
         estadisticasJugador[1] = 10;   //Vida inicial del jugador
         estadisticasJugador[3] = 0;     //Fichas iniciales del jugador
-
+        estadisticasJugador[4] = 5;
         for(int i=1; i <= 30; i++){
             estadisticasJugador[2] = i;     //Nivel actual del jugador
             //Se desarrolla el juego
             //...
-            intentarAbrirTienda(estadisticasJugador,inventarioJugador);
+            intentarGenerarYAbrirTienda(estadisticasJugador,inventarioJugador);
         }
     }
 
-    public static void intentarAbrirTienda(int[] estadisticasJugador, int[] inventarioJugador){
+    public static void intentarGenerarYAbrirTienda(int[] estadisticasJugador, int[] inventarioJugador){
         if(estadisticasJugador[2] % 3 == 0){     //Si el nivel actual es múltiplo de tres se abre la tienda
-            abrirTienda(estadisticasJugador,inventarioJugador);
+            generarYAbrirTienda(estadisticasJugador,inventarioJugador);
         }
     }
 
-    public static void abrirTienda(int[] estadisticasJugador, int[] inventarioJugador){
+    public static void generarYAbrirTienda(int[] estadisticasJugador, int[] inventarioJugador){
         String[] tipoTienda = {"hospital","cuartel"};       //La tienda puede ser un hospital o un cuartel
-        boolean salirTienda = false;        //bandera que indica si el jugador desea salir de la tienda
         String tiendaActual = generarTiendaActual(tipoTienda);   //Se genera la tienda de forma aleatoria
 
         darBienvenidaTienda(tiendaActual);
+        if(tiendaActual.equals(tipoTienda[0])){     //se abre el hospital
+            abrirHospital(estadisticasJugador,inventarioJugador);
+        }
+        if(tiendaActual.equals(tipoTienda[1])){     //se abre el cuartel
+            abrirCuartel(estadisticasJugador,inventarioJugador);
+        }
+    }
+
+    public static void abrirHospital(int[] estadisticasJugador, int[] inventarioJugador){
+        boolean salirTienda = false;        //bandera que indica si el jugador desea salir de la tienda
+
         while(!salirTienda){    //se ejecuta bucle mientras el jugador no desee salir de la tienda
-            mostrarOpcionesTienda(tiendaActual,tipoTienda);    //1.-Comprar  2.-Vender  3.-Salir
+            mostrarOpcionesHospital();    //1.-Comprar  2.-Vender  3.-Curarse 4.-Salir
             switch (elegirOpcionYValidar(1,4)){
                 case 1:
-                    comprar(estadisticasJugador,inventarioJugador);
-                break;
+                    comprarEnHospital(estadisticasJugador,inventarioJugador);
+                    break;
                 case 2:
                     vender(estadisticasJugador,inventarioJugador);
-                break;
+                    break;
                 case 3:
-                    if(tiendaActual.equals(tipoTienda[0])){   //si la tienda es un hospital
-                        curarase(estadisticasJugador);
-                    }
-                    if(tiendaActual.equals(tipoTienda[1])){     //si la tienda es un cuartel
-                        cargarMunicion(estadisticasJugador);
-                    }
-                break;
+                    curarse(estadisticasJugador);
+                    break;
                 case 4:
                     salirTienda = true;
-                break;
+                    break;
             }
         }
     }
 
-    public static void comprar(int[] estadisticasJugador, int[] inventarioJugador){
+    public static void abrirCuartel(int[] estadisticasJugador, int[] inventarioJugador){
+        boolean salirTienda = false;        //bandera que indica si el jugador desea salir de la tienda
+
+        while(!salirTienda){    //se ejecuta bucle mientras el jugador no desee salir de la tienda
+            mostrarOpcionesCuartel();    //1.-Comprar  2.-Vender  3.-Cargar municion 4.-Salir
+            switch (elegirOpcionYValidar(1,4)){
+                case 1:
+                    comprarEnCuartel(estadisticasJugador,inventarioJugador);
+                    break;
+                case 2:
+                    vender(estadisticasJugador,inventarioJugador);
+                    break;
+                case 3:
+                    cargarMunicion(estadisticasJugador);
+                    break;
+                case 4:
+                    salirTienda = true;
+                    break;
+            }
+        }
+    }
+
+    public static void comprarEnHospital(int[] estadisticasJugador, int[] inventarioJugador){
+
+    }
+
+    public static void comprarEnCuartel(int[] estadisticasJugador, int[] inventarioJugador){
 
     }
 
@@ -63,7 +95,7 @@ public class Juego {
 
     }
 
-    public static void curarase(int[] estadisticasJugador){
+    public static void curarse(int[] estadisticasJugador){
 
     }
 
@@ -79,16 +111,19 @@ public class Juego {
         println("\nBienvenido al " + tiendaActual + ". ¿Qué desea?");
     }
 
-    public static void mostrarOpcionesTienda(String tiendaActual, String[] tipoTienda){
+    public static void mostrarOpcionesHospital(){
         println("Elige una opción: ");
         println("1. Comprar");
         println("2. Vender");
-        if(tiendaActual.equals(tipoTienda[0])){   //si la tienda es un hospital
-            println("3. Curarse");
-        }
-        if(tiendaActual.equals(tipoTienda[1])){     //si la tienda es un cuartel
-            println("3. Cargar munición");
-        }
+        println("3. Curarse");
+        println("4. Salir");
+    }
+
+    public static void mostrarOpcionesCuartel(){
+        println("Elige una opción: ");
+        println("1. Comprar");
+        println("2. Vender");
+        println("3. Cargar munición");
         println("4. Salir");
     }
 
