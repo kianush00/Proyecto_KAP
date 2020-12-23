@@ -11,8 +11,13 @@ public class Juego {
         enemigo[0]= (int) Math.floor(Math.random()*70+30);
         enemigo[1]= (int) Math.floor(Math.random()*7+3);
         boolean turno=true;
+
+        System.out.println("Inicia la batalla del nivel " + estadisticasJugador [3]);
+
         while(estadisticasJugador [0]>0 && enemigo[0]>0){
-            System.out.println("Inicia la batalla del nivel " + estadisticasJugador [3]);
+            if(estadisticasJugador [0]<0){
+                morir();
+            }
             if(turno){
                 System.out.print("Opcion 1 para atacar, 2 para pasar, 3 para huir, finalmente 4 para curarte: ");
                 while (!entrada.hasNextInt()) {
@@ -45,7 +50,6 @@ public class Juego {
                         curar(estadisticasJugador [0]);
                         break;
                 }
-                turno = !turno;
             }
 
             else{
@@ -56,12 +60,10 @@ public class Juego {
                 else
                 estadisticasJugador [0]=estadisticasJugador [0]-enemigo[1];
                 System.out.println("Te han atacado con "+enemigo[1] + "Puntos de daño, tu vida actual es"+ estadisticasJugador [0]);
-                turno=!turno;
             }
+            turno = !turno;
         }
-        if(estadisticasJugador [0]<0){
-            morir();
-        }
+
     }
     void morir(){
         System.err.println("Te moriste, fin de la aventura.");
