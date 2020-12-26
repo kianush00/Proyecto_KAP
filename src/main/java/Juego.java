@@ -5,21 +5,30 @@ public class Juego {
     static Scanner input = new Scanner(System.in);    //se declara variable que guarda el valor introducido
 
     public static void lanzarJuego(){
-        int[] estadisticasJugador = new int[6];   // 0-> vida  1-> daño ataque principal  2->ronda municion
-                                                // 3-> daño ataque secundario  4-> nivelActual
-        int[] inventarioJugador = new int[6];   //0-> munición  1-> jeringas  2-> fichas
+        int[] estadisticasJugador = new int[7];   // 0-> vida actual  1-> daño ataque principal  2->ronda municion
+                              // 3-> daño ataque secundario  4-> nivelActual  5-> vida máxima  6-> munición máxima
+        int[] inventarioJugador = new int[3];   //0-> munición actual  1-> jeringas  2-> fichas
 
-        inventarioJugador[0]=100;
-        estadisticasJugador[0] = 100;
-        estadisticasJugador[1] = 10;
-        estadisticasJugador[3] = 0;
-        estadisticasJugador[4] = 5;
+        inicializarJugador(estadisticasJugador,inventarioJugador);
         for(int i=1; i <= 30; i++){
-            estadisticasJugador[2] = i;     //Nivel actual del jugador
+            estadisticasJugador[4] = i;     //Nivel actual del jugador
             //Se desarrolla el juego
             //...
             intentarGenerarYAbrirTienda(estadisticasJugador,inventarioJugador);
         }
+    }
+
+    public static void inicializarJugador(int[] estadisticasJugador, int[] inventarioJugador){
+        //El jugador empezará con las siguientes estadísticas e inventario iniciales:
+        estadisticasJugador[0] = 100;   //vida
+        estadisticasJugador[1] = 15;    //daño ataque principal
+        estadisticasJugador[2] = 1;     //ronda municion
+        estadisticasJugador[3] = 7;    //daño ataque secundario
+        estadisticasJugador[5] = 100;    //vida máxima
+        estadisticasJugador[6] = 50;    //munición máxima
+        inventarioJugador[0]=30;    //munición
+        inventarioJugador[1]=0;     //jeringas
+        inventarioJugador[2]=0;     //fichas
     }
 
     public static void intentarGenerarYAbrirTienda(int[] estadisticasJugador, int[] inventarioJugador){
@@ -35,16 +44,15 @@ public class Juego {
         darBienvenidaTienda(tiendaActual);
         if(tiendaActual.equals(tipoTienda[0])){     //se abre el hospital
             abrirHospital(estadisticasJugador,inventarioJugador);
-        }
-        if(tiendaActual.equals(tipoTienda[1])){     //se abre el cuartel
+        }else{     //se abre el cuartel
             abrirCuartel(estadisticasJugador,inventarioJugador);
         }
     }
 
     public static void abrirHospital(int[] estadisticasJugador, int[] inventarioJugador){
-        boolean salirTienda = false;        //bandera que indica si el jugador desea salir de la tienda
+        boolean salirHospital = false;        //bandera que indica si el jugador desea salir de la tienda
 
-        while(!salirTienda){    //se ejecuta bucle mientras el jugador no desee salir de la tienda
+        while(!salirHospital){    //se ejecuta bucle mientras el jugador no desee salir de la tienda
             mostrarOpcionesHospital();    //1.-Comprar  2.-Vender  3.-Curarse 4.-Salir
             switch (elegirOpcionYValidar(1,4)){
                 case 1:
@@ -54,19 +62,19 @@ public class Juego {
                     vender(estadisticasJugador,inventarioJugador);
                     break;
                 case 3:
-                    curarse(estadisticasJugador);
+                    curarse(estadisticasJugador,inventarioJugador);
                     break;
                 case 4:
-                    salirTienda = true;
+                    salirHospital = true;
                     break;
             }
         }
     }
 
     public static void abrirCuartel(int[] estadisticasJugador, int[] inventarioJugador){
-        boolean salirTienda = false;        //bandera que indica si el jugador desea salir de la tienda
+        boolean salirCuartel = false;        //bandera que indica si el jugador desea salir de la tienda
 
-        while(!salirTienda){    //se ejecuta bucle mientras el jugador no desee salir de la tienda
+        while(!salirCuartel){    //se ejecuta bucle mientras el jugador no desee salir de la tienda
             mostrarOpcionesCuartel();    //1.-Comprar  2.-Vender  3.-Cargar municion 4.-Salir
             switch (elegirOpcionYValidar(1,4)){
                 case 1:
@@ -76,77 +84,129 @@ public class Juego {
                     vender(estadisticasJugador,inventarioJugador);
                     break;
                 case 3:
-                    cargarMunicion(estadisticasJugador);
+                    cargarMunicion(estadisticasJugador,inventarioJugador);
                     break;
                 case 4:
-                    salirTienda = true;
+                    salirCuartel = true;
                     break;
             }
         }
     }
 
+    //En el hospital las armas son más caras y escasas, pero las jeringas son más baratas
     public static void comprarEnHospital(int[] estadisticasJugador, int[] inventarioJugador){
-        String[][] armas = { {"pistola","metralleta","rifle","francotirador"}, {"cuchillo","bate de beisbol","hacha"} };
-        //armas filas: 0-> armas primarias  1-> armas secundarias
-        String[] armasEnVenta = new String[2];
+                                    /*    Armas primarias           Armas secundarias      */
+        String[][] armasPosibles = { {"revolver","subfusil"}, {"cuchillo","bate de beisbol"} };
+        String[] armasEnVenta = new String[2];   //una sola arma en venta de cada tipo
         int[][] armasEnVentaEstadisticas = new int[2][2];   //filas   0-> arma principal  1-> arma secundaria
-                              //columnas  0-> daño  1-> ronda municion  2-> precio
-        generarArmasAleatoriasHospital(armas,armasEnVenta,armasEnVentaEstadisticas);
-
-
+                              //columnas  0-> daño   1-> precio   2-> ronda municion (solo para armas principales)
+        generarArmasAleatoriasHospital(armasPosibles,armasEnVenta,armasEnVentaEstadisticas);
+        ofrecerArmasEnVentaEstadisticas(armasEnVenta,armasEnVentaEstadisticas);
     }
 
-    public static void generarArmasAleatoriasHospital(String[][] armas, String[] armasEnVenta, int[][] armasEnVentaEstadisticas){
+    //En el cuartel las armas son más baratas y tienen más opciones, pero las jeringas son más caras
+    public static void comprarEnCuartel(int[] estadisticasJugador, int[] inventarioJugador){
+                                     /*    Armas primarias           Armas secundarias      */
+        String[][] armasPosibles = { {"revolver","subfusil","rifle","francotirador"}, {"cuchillo","bate de beisbol","hacha"} };
+        String[] armasEnVenta = new String[2];   //una sola arma en venta de cada tipo
+        int[][] armasEnVentaEstadisticas = new int[2][2];   //filas   0-> arma principal  1-> arma secundaria
+                            //columnas  0-> daño   1-> precio   2-> ronda municion (solo para armas principales)
+        generarArmasAleatoriasCuartel(armasPosibles,armasEnVenta,armasEnVentaEstadisticas);
+        ofrecerArmasEnVentaEstadisticas(armasEnVenta,armasEnVentaEstadisticas);
+    }
+
+    public static void generarArmasAleatoriasHospital(String[][] armasPosibles, String[] armasEnVenta, int[][] armasEnVentaEstadisticas){
+        generarArmaPrincipalHospital(armasPosibles,armasEnVenta,armasEnVentaEstadisticas);
+        generarArmaSecundariaHospital(armasPosibles,armasEnVenta,armasEnVentaEstadisticas);
+    }
+
+    public static void generarArmaPrincipalHospital(String[][] armasPosibles, String[] armasEnVenta, int[][] armasEnVentaEstadisticas){
+        switch (getEnteroAleatorioEntre(0,1)){    //se genera un arma principal aleatoria
+            case 0:
+                armasEnVenta[0] = armasPosibles[0][0];  //revolver
+                armasEnVentaEstadisticas[0][0] = 25;   //daño
+                armasEnVentaEstadisticas[0][1] = 20;     //precio
+                armasEnVentaEstadisticas[0][2] = 1;     //ronda municion
+                break;
+            case 1:
+                armasEnVenta[0] = armasPosibles[0][1];  //subfusil
+                armasEnVentaEstadisticas[0][0] = 35;   //daño
+                armasEnVentaEstadisticas[0][1] = 25;     //precio
+                armasEnVentaEstadisticas[0][2] = 5;     //ronda municion
+                break;
+        }
+    }
+
+    public static void generarArmaSecundariaHospital(String[][] armasPosibles, String[] armasEnVenta, int[][] armasEnVentaEstadisticas){
+        switch (getEnteroAleatorioEntre(0,1)){    //se genera un arma secundaria aleatoria
+            case 0:
+                armasEnVenta[1] = armasPosibles[1][0];  //cuchillo
+                armasEnVentaEstadisticas[1][0] = 11;   //daño
+                armasEnVentaEstadisticas[1][1] = 10;     //precio
+                break;
+            case 1:
+                armasEnVenta[1] = armasPosibles[1][1];  //bate de beisbol
+                armasEnVentaEstadisticas[1][0] = 13;   //daño
+                armasEnVentaEstadisticas[1][1] = 13;     //precio
+                break;
+        }
+    }
+
+    public static void generarArmasAleatoriasCuartel(String[][] armasPosibles, String[] armasEnVenta, int[][] armasEnVentaEstadisticas){
+        generarArmaPrincipalCuartel(armasPosibles,armasEnVenta,armasEnVentaEstadisticas);
+        generarArmaSecundariaCuartel(armasPosibles,armasEnVenta,armasEnVentaEstadisticas);
+    }
+
+    public static void generarArmaPrincipalCuartel(String[][] armasPosibles, String[] armasEnVenta, int[][] armasEnVentaEstadisticas){
         switch (getEnteroAleatorioEntre(0,3)){    //se genera un arma principal aleatoria
             case 0:
-                armasEnVenta[0] = armas[0][0];
-                armasEnVentaEstadisticas[0][0] = 10;   //daño
-                armasEnVentaEstadisticas[0][1] = 1;     //ronda municion
-                armasEnVentaEstadisticas[0][2] = 30;     //precio
-            break;
+                armasEnVenta[0] = armasPosibles[0][0];  //revolver
+                armasEnVentaEstadisticas[0][0] = 25;   //daño
+                armasEnVentaEstadisticas[0][1] = 15;     //precio
+                armasEnVentaEstadisticas[0][2] = 1;     //ronda municion
+                break;
             case 1:
-                armasEnVenta[0] = armas[0][1];
-                armasEnVentaEstadisticas[0][0] = 15;   //daño
-                armasEnVentaEstadisticas[0][1] = 5;     //ronda municion
-                armasEnVentaEstadisticas[0][2] = 60;     //precio
-            break;
+                armasEnVenta[0] = armasPosibles[0][1];  //subfusil
+                armasEnVentaEstadisticas[0][0] = 35;   //daño
+                armasEnVentaEstadisticas[0][1] = 20;     //precio
+                armasEnVentaEstadisticas[0][2] = 5;     //ronda municion
+                break;
             case 2:
-                armasEnVenta[0] = armas[0][2];
-                armasEnVentaEstadisticas[0][0] = 20;   //daño
-                armasEnVentaEstadisticas[0][1] = 5;     //ronda municion
-                armasEnVentaEstadisticas[0][2] = 90;     //precio
-            break;
+                armasEnVenta[0] = armasPosibles[0][2];  //rifle
+                armasEnVentaEstadisticas[0][0] = 40;   //daño
+                armasEnVentaEstadisticas[0][1] = 25;     //precio
+                armasEnVentaEstadisticas[0][2] = 3;     //ronda municion
+                break;
             case 3:
-                armasEnVenta[0] = armas[0][3];
-                armasEnVentaEstadisticas[0][0] = 30;   //daño
-                armasEnVentaEstadisticas[0][1] = 1;     //ronda municion
-                armasEnVentaEstadisticas[0][2] = 150;     //precio
-            break;
-        }
-
-        switch (getEnteroAleatorioEntre(0,2)){    //se genera un arma secundaria aleatoria
-            case 0:
-                armasEnVenta[1] = armas[1][0];
-                armasEnVentaEstadisticas[1][0] = 8;   //daño
-                armasEnVentaEstadisticas[1][1] = 0;     //ronda municion
-                armasEnVentaEstadisticas[1][2] = 30;     //precio
-                break;
-            case 1:
-                armasEnVenta[1] = armas[1][1];
-                armasEnVentaEstadisticas[1][0] = 15;   //daño
-                armasEnVentaEstadisticas[1][1] = 0;     //ronda municion
-                armasEnVentaEstadisticas[1][2] = 60;     //precio
-                break;
-            case 2:
-                armasEnVenta[1] = armas[1][2];
-                armasEnVentaEstadisticas[1][0] = 20;   //daño
-                armasEnVentaEstadisticas[1][1] = 0;     //ronda municion
-                armasEnVentaEstadisticas[1][2] = 90;     //precio
+                armasEnVenta[0] = armasPosibles[0][3];  //francotirador
+                armasEnVentaEstadisticas[0][0] = 60;   //daño
+                armasEnVentaEstadisticas[0][1] = 40;     //precio
+                armasEnVentaEstadisticas[0][2] = 1;     //ronda municion
                 break;
         }
     }
 
-    public static void comprarEnCuartel(int[] estadisticasJugador, int[] inventarioJugador){
+    public static void generarArmaSecundariaCuartel(String[][] armasPosibles, String[] armasEnVenta, int[][] armasEnVentaEstadisticas){
+        switch (getEnteroAleatorioEntre(0,2)){    //se genera un arma secundaria aleatoria
+            case 0:
+                armasEnVenta[1] = armasPosibles[1][0];  //cuchillo
+                armasEnVentaEstadisticas[1][0] = 11;   //daño
+                armasEnVentaEstadisticas[1][1] = 8;     //precio
+                break;
+            case 1:
+                armasEnVenta[1] = armasPosibles[1][1];  //bate de beisbol
+                armasEnVentaEstadisticas[1][0] = 13;   //daño
+                armasEnVentaEstadisticas[1][1] = 11;     //precio
+                break;
+            case 2:
+                armasEnVenta[1] = armasPosibles[1][2];  //hacha
+                armasEnVentaEstadisticas[1][0] = 20;   //daño
+                armasEnVentaEstadisticas[1][1] = 15;     //precio
+                break;
+        }
+    }
+
+    public static void ofrecerArmasEnVentaEstadisticas(String[] armasEnVenta, int[][] armasEnVentaEstadisticas){
 
     }
 
@@ -154,20 +214,95 @@ public class Juego {
 
     }
 
-    public static void curarse(int[] estadisticasJugador){
+    public static void curarse(int[] estadisticasJugador, int[] inventarioJugador){
+        int precio = 15;   //cuantas fichas cuesta curarse
 
+        mostrarFichasActuales(inventarioJugador);
+        mostrarPrecioCurarse(precio);
+        realizarCompraCurarse(estadisticasJugador,inventarioJugador,precio);
     }
 
-    public static void cargarMunicion(int[] estadisticasJugador){
+    public static void cargarMunicion(int[] estadisticasJugador, int[] inventarioJugador){
+        int precio = 15;   //cuantas fichas cuesta curarse
 
+        mostrarFichasActuales(inventarioJugador);
+        mostrarPrecioCargarMunicion(precio);
+        realizarCompraCargarMunicion(estadisticasJugador,inventarioJugador,precio);
     }
 
-    public static String generarTiendaActual(String[] tipoTienda){
-        return tipoTienda[(int) (Math.random()*2)];
+    public static void realizarCompraCurarse(int[] estadisticasJugador, int[] inventarioJugador, int precio){
+        int opcionElegida;   //1. Si  2. No
+
+        if(inventarioJugador[2] > precio){
+            confirmarCompra();
+            opcionElegida = elegirOpcionYValidar(1,2);
+            if(opcionElegida == 1){
+                estadisticasJugador[0] = estadisticasJugador[5];    //se llena la vida del jugador
+                restarFichas(inventarioJugador,precio);
+                mostrarExitoCompra();
+            }
+        }else{
+            anularCompra();
+        }
+    }
+
+    public static void realizarCompraCargarMunicion(int[] estadisticasJugador, int[] inventarioJugador, int precio){
+        int opcionElegida;   //1. Si  2. No
+
+        if(inventarioJugador[2] > precio){
+            confirmarCompra();
+            opcionElegida = elegirOpcionYValidar(1,2);
+            if(opcionElegida == 1){
+                inventarioJugador[0] = estadisticasJugador[6];   //se llena la munición del jugador
+                restarFichas(inventarioJugador,precio);
+                mostrarExitoCompra();
+            }
+        }else{
+            anularCompra();
+        }
+    }
+
+    public static void mostrarFichasActuales(int[] inventarioJugador){
+        println("\nFichas actuales: " + inventarioJugador[3]);
+    }
+
+    public static void restarFichas(int[] inventarioJugador, int precio){
+        inventarioJugador[2] -= precio;
+    }
+
+    public static void confirmarCompra(){
+        println("¿Estás seguro de realizar la compra?");
+        mostrarOpcionesSiNo();
+    }
+
+    public static void anularCompra(){
+        println("No quedan fichas disponibles. Inténtalo más tarde.");
+    }
+
+    public static void mostrarExitoCompra(){
+        println("La compra ha sido exitosa.");
+    }
+
+    public static void mostrarOpcionesSiNo(){
+        println("Elige una opción: ");
+        println("1. Si");
+        println("2. No");
+    }
+
+    public static void mostrarPrecioCurarse(int precio){
+        println("Precio para restablecer vida por completo: " + precio + " fichas.");
+    }
+
+    public static void mostrarPrecioCargarMunicion(int precio){
+        println("Precio para llenar de munición el inventario: " + precio + " fichas.");
     }
 
     public static void darBienvenidaTienda(String tiendaActual){
         println("\nBienvenido al " + tiendaActual + ". ¿Qué desea?");
+    }
+
+    public static String generarTiendaActual(String[] tipoTienda){
+        return tipoTienda[(int) (Math.random()*2)];
     }
 
     public static void mostrarOpcionesHospital(){
@@ -215,16 +350,12 @@ public class Juego {
         }
     }
 
-    public static void mostrarFichasActuales(int[] inventarioJugador){
-        println("\nFichas actuales: " + inventarioJugador[3]);
+    public static int ingresarEntero(){
+        return input.nextInt();
     }
 
     public static int getEnteroAleatorioEntre(int min, int max){
         return (int) (Math.random() * ((max + 1) - min)) + min;
-    }
-
-    public static int ingresarEntero(){
-        return input.nextInt();
     }
 
     public static void println(String mensaje){
