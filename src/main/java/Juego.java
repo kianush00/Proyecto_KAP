@@ -8,7 +8,7 @@ public class Juego {
 
 
     public static void intentarPelear(int[] estadisticasJugador, int[] inventarioJugador) {
-        if (estadisticasJugador[2] % 3 != 0) {     //Si el nivel actual no es multiplo de 3 inicia la pelea
+        if (estadisticasJugador[4] % 3 != 0) {     //Si el nivel actual no es multiplo de 3 inicia la pelea
             pelear(estadisticasJugador, inventarioJugador);
         }
     }
@@ -16,13 +16,13 @@ public class Juego {
     public static void pelear(int[] estadisticasJugador, int[] inventarioJugador) {
         int[] enemigo = new int[2];
         Scanner entrada = new Scanner(System.in);
-        enemigo[0] = (int) (Math.floor(Math.random() * 70 + 30) + (estadisticasJugador[2] / 2));
+        enemigo[0] = (int) (Math.floor(Math.random() * 70 + 30) + (estadisticasJugador[4] / 2));
         System.out.println(enemigo[0]);
-        enemigo[1] = (int) Math.floor((Math.random() * 7 + 3) + (estadisticasJugador[2] / 2));
+        enemigo[1] = (int) Math.floor((Math.random() * 7 + 3) + (estadisticasJugador[4] / 2));
         System.out.println(enemigo[1]);
         boolean turno = true;
 
-        System.out.println("Inicia la batalla del nivel " + estadisticasJugador[2]);
+        System.out.println("Inicia la batalla del nivel " + estadisticasJugador[4]);
         boolean huir = false;
         while (estadisticasJugador[0] > 0 && enemigo[0] > 0 && huir == false) {
 
@@ -32,15 +32,14 @@ public class Juego {
                 int opcion = elegirOpcionYValidar(1, 4);
                 switch (opcion) {
                     case 1:
-                        if (inventarioJugador[0] > 0) {
+                        if (inventarioJugador[5] > 0) {
                             enemigo[0] = enemigo[0] - estadisticasJugador[1];
-                            inventarioJugador[0] = inventarioJugador[0] - estadisticasJugador[4];
+                            inventarioJugador[0] = inventarioJugador[0] - estadisticasJugador[2];
                             System.out.println("Has atacado al enemigo con " + estadisticasJugador[1] + " Puntos de daño, su vida actual es " + enemigo[0]);
                         } else {
                             System.out.println("Solo tienes tus puños, suerte.");
-                            enemigo[0] = enemigo[0] - estadisticasJugador[1];
-                            inventarioJugador[0] = inventarioJugador[0] - estadisticasJugador[4];
-                            System.out.println("Has atacado al enemigo con " + estadisticasJugador[1] + " Puntos de daño, su vida actual es " + enemigo[0]);
+                            enemigo[0] = enemigo[0] - estadisticasJugador[3];
+                            System.out.println("Has atacado al enemigo con " + estadisticasJugador[3] + " Puntos de daño, su vida actual es " + enemigo[0]);
                         }
                         break;
                     case 2:
@@ -63,7 +62,6 @@ public class Juego {
                     System.out.println("El enemigo ha fallado.");
                 } else {
                     estadisticasJugador[0] = estadisticasJugador[0] - enemigo[1];
-                    System.out.println(estadisticasJugador[0]);
                     System.out.println("Te han atacado con " + enemigo[1] + " Puntos de daño, tu vida actual es " + estadisticasJugador[0]);
                 }
 
@@ -102,14 +100,14 @@ public class Juego {
     public static void curar(int[] estadisticasJugador, int[] inventarioJugador) {
         if (inventarioJugador[0] > 0) {
             estadisticasJugador[0] = estadisticasJugador[0] + 50;
-            inventarioJugador[0] = inventarioJugador[0] - 1;
+            inventarioJugador[1] = inventarioJugador[1] - 1;
         }
         System.out.println("Ahora tu vida actual es " + estadisticasJugador[0]);
     }
 
-    public static void obtenerDinero(int[] estadisticasJugador, int[] inventarioJugador, int[] enemigo) {
-        estadisticasJugador[0] = estadisticasJugador[0] + enemigo[0]/3+enemigo[1]/2;
-        inventarioJugador[0] = inventarioJugador[0] - 1;
-        System.out.println("Has ganado " + estadisticasJugador[0] + "monedas");
+    public static void obtenerDinero(int[] inventarioJugador, int[] enemigo) {
+        int dinero=enemigo[0]/3+enemigo[1]/2;
+        inventarioJugador[2] = inventarioJugador[2] + dinero;
+        System.out.println("Has ganado " + dinero + " monedas");
     }
 }
