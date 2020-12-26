@@ -5,9 +5,10 @@ public class Juego {
     static Scanner input = new Scanner(System.in);    //se declara variable que guarda el valor introducido
 
     public static void lanzarJuego(){
-        int[] estadisticasJugador = new int[7];   // 0-> vida actual  1-> daño ataque principal  2->ronda municion
-                              // 3-> daño ataque secundario  4-> nivelActual  5-> vida máxima  6-> munición máxima
-        int[] inventarioJugador = new int[3];   //0-> munición actual  1-> jeringas  2-> fichas
+        int[] estadisticasJugador = new int[8];   // 0-> vida actual  1-> daño ataque principal  2->ronda municion
+                              // 3-> daño ataque secundario  4-> nivel actual  5-> municion actual
+                            // 6-> vida máxima  7-> munición máxima
+        int[] inventarioJugador = new int[3];   //0-> cartuchos de 15 balas  1-> jeringas  2-> fichas
 
         inicializarJugador(estadisticasJugador,inventarioJugador);
         for(int i=1; i <= 30; i++){
@@ -21,18 +22,19 @@ public class Juego {
     public static void inicializarJugador(int[] estadisticasJugador, int[] inventarioJugador){
         //El jugador empezará con las siguientes estadísticas e inventario iniciales:
         estadisticasJugador[0] = 100;   //vida
-        estadisticasJugador[1] = 15;    //daño ataque principal
-        estadisticasJugador[2] = 1;     //ronda municion
-        estadisticasJugador[3] = 7;    //daño ataque secundario
-        estadisticasJugador[5] = 100;    //vida máxima
-        estadisticasJugador[6] = 50;    //munición máxima
-        inventarioJugador[0]=30;    //munición
+        estadisticasJugador[1] = 15;    //daño ataque principal   (empezará con una pistola 9mm)
+        estadisticasJugador[2] = 1;     //ronda municion    (empezará con una pistola 9mm)
+        estadisticasJugador[3] = 7;    //daño ataque secundario     (empezará usando los puños)
+        estadisticasJugador[5] = 30;    //munición inicial
+        estadisticasJugador[6] = 100;    //vida máxima
+        estadisticasJugador[7] = 50;    //munición máxima
+        inventarioJugador[0]=0;    //cartuchos de 15 balas
         inventarioJugador[1]=0;     //jeringas
         inventarioJugador[2]=0;     //fichas
     }
 
     public static void intentarGenerarYAbrirTienda(int[] estadisticasJugador, int[] inventarioJugador){
-        if(estadisticasJugador[2] % 3 == 0){     //Si el nivel actual es múltiplo de tres se abre la tienda
+        if(estadisticasJugador[4] % 3 == 0){     //Si el nivel actual es múltiplo de tres se abre la tienda
             generarYAbrirTienda(estadisticasJugador,inventarioJugador);
         }
     }
@@ -53,18 +55,15 @@ public class Juego {
         boolean salirHospital = false;        //bandera que indica si el jugador desea salir de la tienda
 
         while(!salirHospital){    //se ejecuta bucle mientras el jugador no desee salir de la tienda
-            mostrarOpcionesHospital();    //1.-Comprar  2.-Vender  3.-Curarse 4.-Salir
-            switch (elegirOpcionYValidar(1,4)){
+            mostrarOpcionesHospital();    //1.-Comprar   2.-Curarse   3.-Salir
+            switch (elegirOpcionYValidar(1,3)){
                 case 1:
                     comprarEnHospital(estadisticasJugador,inventarioJugador);
                     break;
                 case 2:
-                    vender(estadisticasJugador,inventarioJugador);
-                    break;
-                case 3:
                     curarse(estadisticasJugador,inventarioJugador);
                     break;
-                case 4:
+                case 3:
                     salirHospital = true;
                     break;
             }
@@ -75,44 +74,77 @@ public class Juego {
         boolean salirCuartel = false;        //bandera que indica si el jugador desea salir de la tienda
 
         while(!salirCuartel){    //se ejecuta bucle mientras el jugador no desee salir de la tienda
-            mostrarOpcionesCuartel();    //1.-Comprar  2.-Vender  3.-Cargar municion 4.-Salir
-            switch (elegirOpcionYValidar(1,4)){
+            mostrarOpcionesCuartel();    //1.-Comprar   2.-Cargar municion   3.-Salir
+            switch (elegirOpcionYValidar(1,3)){
                 case 1:
                     comprarEnCuartel(estadisticasJugador,inventarioJugador);
                     break;
                 case 2:
-                    vender(estadisticasJugador,inventarioJugador);
-                    break;
-                case 3:
                     cargarMunicion(estadisticasJugador,inventarioJugador);
                     break;
-                case 4:
+                case 3:
                     salirCuartel = true;
                     break;
             }
         }
     }
 
-    //En el hospital las armas son más caras y escasas, pero las jeringas son más baratas
+    //En el hospital la munición y armas son más caras y escasas, pero las jeringas son más baratas
     public static void comprarEnHospital(int[] estadisticasJugador, int[] inventarioJugador){
                                     /*    Armas primarias           Armas secundarias      */
         String[][] armasPosibles = { {"revolver","subfusil"}, {"cuchillo","bate de beisbol"} };
         String[] armasEnVenta = new String[2];   //una sola arma en venta de cada tipo
-        int[][] armasEnVentaEstadisticas = new int[2][2];   //filas   0-> arma principal  1-> arma secundaria
+        int[][] armasEnVentaEstadisticas = new int[3][3];   //filas   0-> arma principal  1-> arma secundaria
                               //columnas  0-> daño   1-> precio   2-> ronda municion (solo para armas principales)
+        int[] preciosUtilidades = {8,20};   // 0-> precio jeringa   1-> precio cartucho de 15 balas
+
         generarArmasAleatoriasHospital(armasPosibles,armasEnVenta,armasEnVentaEstadisticas);
-        ofrecerArmasEnVentaEstadisticas(armasEnVenta,armasEnVentaEstadisticas);
+        mostrarDatosTienda(inventarioJugador,armasEnVenta,armasEnVentaEstadisticas,preciosUtilidades);
+        elegirOpcionYDesarrollarCompra(estadisticasJugador,inventarioJugador,armasEnVentaEstadisticas,preciosUtilidades);
     }
 
-    //En el cuartel las armas son más baratas y tienen más opciones, pero las jeringas son más caras
+    //En el cuartel la munición y armas son más baratas y tienen más opciones, pero las jeringas son más caras
     public static void comprarEnCuartel(int[] estadisticasJugador, int[] inventarioJugador){
                                      /*    Armas primarias           Armas secundarias      */
         String[][] armasPosibles = { {"revolver","subfusil","rifle","francotirador"}, {"cuchillo","bate de beisbol","hacha"} };
         String[] armasEnVenta = new String[2];   //una sola arma en venta de cada tipo
-        int[][] armasEnVentaEstadisticas = new int[2][2];   //filas   0-> arma principal  1-> arma secundaria
+        int[][] armasEnVentaEstadisticas = new int[3][3];   //filas   0-> arma principal  1-> arma secundaria
                             //columnas  0-> daño   1-> precio   2-> ronda municion (solo para armas principales)
+        int[] preciosUtilidades = {20,12};   // 0-> precio jeringa   1-> precio cartucho de 15 balas
+
         generarArmasAleatoriasCuartel(armasPosibles,armasEnVenta,armasEnVentaEstadisticas);
-        ofrecerArmasEnVentaEstadisticas(armasEnVenta,armasEnVentaEstadisticas);
+        mostrarDatosTienda(inventarioJugador,armasEnVenta,armasEnVentaEstadisticas,preciosUtilidades);
+        elegirOpcionYDesarrollarCompra(estadisticasJugador,inventarioJugador,armasEnVentaEstadisticas,preciosUtilidades);
+    }
+
+    public static void elegirOpcionYDesarrollarCompra(int[] estadisticasJugador, int[] inventarioJugador, int[][] armasEnVentaEstadisticas, int[] preciosUtilidades){
+        int precio;     //precio de la opcion seleccionada
+        int opcionTienda;   //opcion seleccionada al momento de comprar
+
+        do{
+            mostrarOpcionesComprarTienda();
+            opcionTienda = elegirOpcionYValidar(1,5);
+            switch (opcionTienda){
+                case 1:     //comprar arma principal
+                    precio = armasEnVentaEstadisticas[0][1];
+                    realizarCompraArmaPrimaria(estadisticasJugador,inventarioJugador,precio,armasEnVentaEstadisticas);
+                    break;
+                case 2:     //comprar arma secundaria
+                    precio = armasEnVentaEstadisticas[1][1];
+                    realizarCompraArmaSecundaria(estadisticasJugador,inventarioJugador,precio,armasEnVentaEstadisticas);
+                    break;
+                case 3:     //comprar jeringa
+                    precio = preciosUtilidades[0];
+                    realizarCompraJeringa(inventarioJugador,precio);
+                    break;
+                case 4:     //comprar cartucho de 15 balas
+                    precio = preciosUtilidades[1];
+                    realizarCompraCartucho15Balas(inventarioJugador,precio);
+                    break;
+                case 5:     //salir (no hacer nada)
+                    break;
+            }
+        }while(opcionTienda != 5);
     }
 
     public static void generarArmasAleatoriasHospital(String[][] armasPosibles, String[] armasEnVenta, int[][] armasEnVentaEstadisticas){
@@ -206,64 +238,125 @@ public class Juego {
         }
     }
 
-    public static void ofrecerArmasEnVentaEstadisticas(String[] armasEnVenta, int[][] armasEnVentaEstadisticas){
-
+    public static void mostrarDatosTienda(int[] inventarioJugador, String[] armasEnVenta, int[][] armasEnVentaEstadisticas, int[] preciosUtilidades){
+        ofrecerArmasEnVenta(armasEnVenta,armasEnVentaEstadisticas);
+        ofrecerJeringasYMunicion(preciosUtilidades);
+        mostrarFichasActuales(inventarioJugador);
     }
 
-    public static void vender(int[] estadisticasJugador, int[] inventarioJugador){
+    public static void mostrarOpcionesComprarTienda(){
+        println("Elige una opción: ");
+        println("1. Comprar arma primaria");
+        println("2. Cargar arma secundaria");
+        println("3. Comprar jeringa");
+        println("4. Comprar cartucho de 15 balas");
+        println("5. Salir");
+    }
 
+    public static void ofrecerArmasEnVenta(String[] armasEnVenta, int[][] armasEnVentaEstadisticas){
+        println("Arma primaria disponible: " + armasEnVenta[0]);
+        println("-Daño: " + armasEnVentaEstadisticas[0][0]);
+        println("-Ronda de munición: " + armasEnVentaEstadisticas[0][2]);
+        println("-Precio: " + armasEnVentaEstadisticas[0][1] + " fichas");
+        println("\nArma secundaria disponible: " + armasEnVenta[1]);
+        println("-Daño: " + armasEnVentaEstadisticas[1][0]);
+        println("-Precio: " + armasEnVentaEstadisticas[1][1] + " fichas\n");
+    }
+
+    public static void ofrecerJeringasYMunicion(int[] preciosUtilidades){
+        println("Precio por cada jeringa: " + preciosUtilidades[0] + " fichas");
+        println("Precio por cada cartucho de 15 balas: " + preciosUtilidades[1] + " fichas\n");
     }
 
     public static void curarse(int[] estadisticasJugador, int[] inventarioJugador){
         int precio = 15;   //cuantas fichas cuesta curarse
 
-        mostrarFichasActuales(inventarioJugador);
         mostrarPrecioCurarse(precio);
+        mostrarFichasActuales(inventarioJugador);
         realizarCompraCurarse(estadisticasJugador,inventarioJugador,precio);
     }
 
     public static void cargarMunicion(int[] estadisticasJugador, int[] inventarioJugador){
         int precio = 15;   //cuantas fichas cuesta curarse
 
-        mostrarFichasActuales(inventarioJugador);
         mostrarPrecioCargarMunicion(precio);
+        mostrarFichasActuales(inventarioJugador);
         realizarCompraCargarMunicion(estadisticasJugador,inventarioJugador,precio);
     }
 
     public static void realizarCompraCurarse(int[] estadisticasJugador, int[] inventarioJugador, int precio){
-        int opcionElegida;   //1. Si  2. No
+        int opcionElegida = gestionarCompra(inventarioJugador,precio);    // 1. Si  2. No
 
-        if(inventarioJugador[2] > precio){
-            confirmarCompra();
-            opcionElegida = elegirOpcionYValidar(1,2);
-            if(opcionElegida == 1){
-                estadisticasJugador[0] = estadisticasJugador[5];    //se llena la vida del jugador
-                restarFichas(inventarioJugador,precio);
-                mostrarExitoCompra();
-            }
-        }else{
-            anularCompra();
+        if(opcionElegida == 1){
+            estadisticasJugador[0] = estadisticasJugador[6];    //se llena la vida del jugador
+            restarFichas(inventarioJugador,precio);
+            mostrarExitoCompra();
         }
     }
 
     public static void realizarCompraCargarMunicion(int[] estadisticasJugador, int[] inventarioJugador, int precio){
-        int opcionElegida;   //1. Si  2. No
+        int opcionElegida = gestionarCompra(inventarioJugador,precio);    // 1. Si  2. No
 
-        if(inventarioJugador[2] > precio){
+        if(opcionElegida == 1){
+            estadisticasJugador[5] = estadisticasJugador[7];   //se llena la munición del jugador
+            restarFichas(inventarioJugador,precio);
+            mostrarExitoCompra();
+        }
+    }
+
+    public static void realizarCompraArmaPrimaria(int[] estadisticasJugador, int[] inventarioJugador, int precio, int[][] armasEnVentaEstadisticas){
+        int opcionElegida = gestionarCompra(inventarioJugador,precio);    // 1. Si  2. No
+
+        if(opcionElegida == 1){
+            estadisticasJugador[1] = armasEnVentaEstadisticas[0][0];    //se cambia el valor de daño principal
+            estadisticasJugador[2] = armasEnVentaEstadisticas[0][2];    //se cambia el valor de ronda de municion
+            restarFichas(inventarioJugador,precio);
+            mostrarExitoCompra();
+        }
+    }
+
+    public static void realizarCompraArmaSecundaria(int[] estadisticasJugador, int[] inventarioJugador, int precio, int[][] armasEnVentaEstadisticas){
+        int opcionElegida = gestionarCompra(inventarioJugador,precio);    // 1. Si  2. No
+
+        if(opcionElegida == 1){
+            estadisticasJugador[3] = armasEnVentaEstadisticas[1][0];    //se cambia el valor de daño principal
+            restarFichas(inventarioJugador,precio);
+            mostrarExitoCompra();
+        }
+    }
+
+    public static void realizarCompraJeringa(int[] inventarioJugador, int precio){
+        int opcionElegida = gestionarCompra(inventarioJugador,precio);    // 1. Si  2. No
+
+        if(opcionElegida == 1){
+            inventarioJugador[1]++;    //se agrega la jeringa al inventario
+            restarFichas(inventarioJugador,precio);
+            mostrarExitoCompra();
+        }
+    }
+
+    public static void realizarCompraCartucho15Balas(int[] inventarioJugador, int precio){
+        int opcionElegida = gestionarCompra(inventarioJugador,precio);    // 1. Si  2. No
+
+        if(opcionElegida == 1){
+            inventarioJugador[0]++;    //se agrega el cartucho al inventario
+            restarFichas(inventarioJugador,precio);
+            mostrarExitoCompra();
+        }
+    }
+
+    public static int gestionarCompra(int[] inventarioJugador, int precio){
+        if(inventarioJugador[2] > precio) {     //solo se puede comprar si se dispone de las fichas
             confirmarCompra();
-            opcionElegida = elegirOpcionYValidar(1,2);
-            if(opcionElegida == 1){
-                inventarioJugador[0] = estadisticasJugador[6];   //se llena la munición del jugador
-                restarFichas(inventarioJugador,precio);
-                mostrarExitoCompra();
-            }
+            return elegirOpcionYValidar(1,2);
         }else{
             anularCompra();
+            return -1;
         }
     }
 
     public static void mostrarFichasActuales(int[] inventarioJugador){
-        println("\nFichas actuales: " + inventarioJugador[3]);
+        println("Fichas actuales: " + inventarioJugador[2]);
     }
 
     public static void restarFichas(int[] inventarioJugador, int precio){
@@ -308,17 +401,15 @@ public class Juego {
     public static void mostrarOpcionesHospital(){
         println("Elige una opción: ");
         println("1. Comprar");
-        println("2. Vender");
-        println("3. Curarse");
-        println("4. Salir");
+        println("2. Curarse");
+        println("3. Salir");
     }
 
     public static void mostrarOpcionesCuartel(){
         println("Elige una opción: ");
         println("1. Comprar");
-        println("2. Vender");
-        println("3. Cargar munición");
-        println("4. Salir");
+        println("2. Cargar munición");
+        println("3. Salir");
     }
 
     public static int elegirOpcionYValidar(int minimaOpcion, int maximaOpcion){
@@ -360,9 +451,5 @@ public class Juego {
 
     public static void println(String mensaje){
         System.out.println(mensaje);
-    }
-
-    public static void print(String mensaje){
-        System.out.print(mensaje);
     }
 }
