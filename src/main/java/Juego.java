@@ -52,40 +52,71 @@ public class Juego {
     }
 
     public static void abrirHospital(int[] estadisticasJugador, int[] inventarioJugador){
-        boolean salirHospital = false;        //bandera que indica si el jugador desea salir de la tienda
+        boolean[] opcionesHospital = {false,false,false};
+        // posiciones 0-> se salio del hospital  1-> se intentó comprar  2-> se intentó curar
 
-        while(!salirHospital){    //se ejecuta bucle mientras el jugador no desee salir de la tienda
+        while(!opcionesHospital[0]){    //se ejecuta bucle mientras el jugador no desee salir de la tienda
             mostrarOpcionesHospital();    //1.-Comprar   2.-Curarse   3.-Salir
-            switch (elegirOpcionYValidar(1,3)){
-                case 1:
-                    comprarEnHospital(estadisticasJugador,inventarioJugador);
-                    break;
-                case 2:
-                    curarse(estadisticasJugador,inventarioJugador);
-                    break;
-                case 3:
-                    salirHospital = true;
-                    break;
-            }
+            accederOpcionesHospital(estadisticasJugador,inventarioJugador,opcionesHospital);
         }
     }
 
     public static void abrirCuartel(int[] estadisticasJugador, int[] inventarioJugador){
-        boolean salirCuartel = false;        //bandera que indica si el jugador desea salir de la tienda
+        boolean[] opcionesCuartel = {false,false,false};
+        // posiciones 0-> se salio del cuartel  1-> se intentó comprar  2-> se intentó cargar munición
 
-        while(!salirCuartel){    //se ejecuta bucle mientras el jugador no desee salir de la tienda
+        while(!opcionesCuartel[0]){    //se ejecuta bucle mientras el jugador no desee salir de la tienda
             mostrarOpcionesCuartel();    //1.-Comprar   2.-Cargar municion   3.-Salir
-            switch (elegirOpcionYValidar(1,3)){
-                case 1:
+            accederOpcionesCuartel(estadisticasJugador,inventarioJugador,opcionesCuartel);
+        }
+    }
+
+
+    public static void accederOpcionesHospital(int[] estadisticasJugador, int[] inventarioJugador, boolean[] opcionesHospital){
+        switch (elegirOpcionYValidar(1,3)){
+            case 1:
+                if(!opcionesHospital[1]){   //si no ha comprado
+                    comprarEnHospital(estadisticasJugador,inventarioJugador);
+                    opcionesHospital[1] = true;     //se indica que se compró
+                }else{
+                    opcionAgotada();
+                }
+                break;
+            case 2:
+                if(!opcionesHospital[2]){   //si no se ha curado
+                    curarse(estadisticasJugador,inventarioJugador);
+                    opcionesHospital[2] = true;     //se indica que se curó
+                }else{
+                    opcionAgotada();
+                }
+                break;
+            case 3:
+                opcionesHospital[0] = true;     //se indica que se quiere salir del hospital
+                break;
+        }
+    }
+
+    public static void accederOpcionesCuartel(int[] estadisticasJugador, int[] inventarioJugador, boolean[] opcionesCuartel){
+        switch (elegirOpcionYValidar(1,3)){
+            case 1:
+                if(!opcionesCuartel[1]){   //si no ha comprado
                     comprarEnCuartel(estadisticasJugador,inventarioJugador);
-                    break;
-                case 2:
+                    opcionesCuartel[1] = true;     //se indica que se compró
+                }else{
+                    opcionAgotada();
+                }
+                break;
+            case 2:
+                if(!opcionesCuartel[2]){   //si no se ha curado
                     cargarMunicion(estadisticasJugador,inventarioJugador);
-                    break;
-                case 3:
-                    salirCuartel = true;
-                    break;
-            }
+                    opcionesCuartel[2] = true;     //se indica que se cargó munición
+                }else{
+                    opcionAgotada();
+                }
+                break;
+            case 3:
+                opcionesCuartel[0] = true;     //se indica que se quiere salir del cuartel
+                break;
         }
     }
 
@@ -245,7 +276,7 @@ public class Juego {
     }
 
     public static void mostrarOpcionesComprarTienda(){
-        println("Elige una opción: ");
+        println("\nElige una opción: ");
         println("1. Comprar arma primaria");
         println("2. Cargar arma secundaria");
         println("3. Comprar jeringa");
@@ -439,6 +470,10 @@ public class Juego {
         }else{
             return true;
         }
+    }
+
+    public static void opcionAgotada(){
+        println("La opción ya ha sido seleccionada una vez. Inténtalo más tarde.");
     }
 
     public static int ingresarEntero(){
