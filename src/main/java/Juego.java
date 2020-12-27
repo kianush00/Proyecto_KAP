@@ -498,8 +498,8 @@ public class Juego {
     public static void pelear(int[] estadisticasJugador, int[] inventarioJugador) {
         int[] estadisticasEnemigo = new int[3];
         //posicion  0-> vida inicial   1-> daño de ataque   2-> vida actual
-        estadisticasEnemigo[0] = (int) ((Math.random() * 70) + (estadisticasJugador[4] / 2) + 30);
-        estadisticasEnemigo[1] = (int) ((Math.random() * 7) + (estadisticasJugador[4] / 2) + 3);
+        estadisticasEnemigo[0] = (int) ((Math.random() * 70) + (estadisticasJugador[4]*0.75) + 30);
+        estadisticasEnemigo[1] = (int) ((Math.random() * 7) + (estadisticasJugador[4]*0.75) + 3);
         estadisticasEnemigo[2] = estadisticasEnemigo[0];
         boolean turnoJugador = true;
         boolean huir = false;
@@ -508,7 +508,7 @@ public class Juego {
         while ((estadisticasJugador[0] > 0) && (estadisticasEnemigo[2] > 0) && (!huir)) {
             if (turnoJugador) {
                 println("Opcion 1 para atacar, 2 para pasar, 3 para huir, 4 para curarte y finalmente 5 para usar un cartucho: ");
-                int opcion = elegirOpcionYValidar(1,4);
+                int opcion = elegirOpcionYValidar(1,5);
                 switch (opcion) {
                     case 1:
                         if (estadisticasJugador[5] >= estadisticasJugador[2]) {   //si la municion del jugador es mayor o igual que la ronda de municion
