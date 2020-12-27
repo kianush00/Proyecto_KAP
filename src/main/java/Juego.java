@@ -420,65 +420,76 @@ public class Juego {
         int[] estadisticasEnemigo = new int[3];
         //posicion  0-> vida inicial   1-> daño de ataque   2-> vida actual
         estadisticasEnemigo[0] = (int) ((Math.random() * 70) + (estadisticasJugador[4]*0.75) + 30);
+        //se calcula la vida inicial del enemigo en base a aleatoriedad y nivel actual
         estadisticasEnemigo[1] = (int) ((Math.random() * 7) + (estadisticasJugador[4]*0.75) + 3);
+        //se calcula el daño de ataque del enemigo en base a aleatoriedad y nivel actual
         estadisticasEnemigo[2] = estadisticasEnemigo[0];
         boolean turnoJugador = true;
         boolean huir = false;
 
         iniciarBatalla(estadisticasJugador);
+        mostrarInventarioActual(inventarioJugador);
         while ((estadisticasJugador[0] > 0) && (estadisticasEnemigo[2] > 0) && (!huir)) {
+            //se desarrolla pelea dentro del bucle while; se detiene cuando alguien muere o el jugador logra huir
             if (turnoJugador) {
                 println("Opcion 1 para atacar, 2 para huir, 3 para curarte y finalmente 4 para usar un cartucho: ");
                 int opcion = elegirOpcionYValidar(1,4);
                 switch (opcion) {
                     case 1:
-                        if (estadisticasJugador[5] >= estadisticasJugador[2]) {   //si la municion del jugador es mayor o igual que la ronda de municion
-                            estadisticasEnemigo[2] -= estadisticasJugador[1];
-                            estadisticasJugador[5] -= estadisticasJugador[2];
-                            println("Has atacado al enemigo con " + estadisticasJugador[1] + " Puntos de daño, su vida actual es " + estadisticasEnemigo[2]);
-                        } else {
-                            println("Solo tienes tu arma secundaria, suerte.");
-                            estadisticasEnemigo[2] -= estadisticasJugador[3];
-                            println("Has atacado al enemigo con " + estadisticasJugador[3] + " Puntos de daño, su vida actual es " + estadisticasEnemigo[2]);
-                        }
+                        atacar(estadisticasJugador,estadisticasEnemigo);
                         break;
-
                     case 2:
-                        int escapar = (int) (Math.random() * 2);
-                        if (escapar == 1) {
-                            huir = true;
-                        }
+                        huir = intentarHuir();   //si el jugador logra huir, retorna true. Viceversa retorna false
                         break;
-
                     case 3:
-                        usarJeringa(estadisticasJugador, inventarioJugador);
+                        usarJeringa(estadisticasJugador,inventarioJugador);
                         break;
-
                     case 4:
-                        usarCartucho(estadisticasJugador, inventarioJugador);
+                        usarCartucho(estadisticasJugador,inventarioJugador);
                         break;
                 }
             } else {
-                int opcion = (int) (Math.random() * 3);
-                if (opcion == 0) {
-                    println("El enemigo ha fallado.");
-                } else {
-                    estadisticasJugador[0] -= estadisticasEnemigo[1];
-                    println("Te han atacado con " + estadisticasEnemigo[1] + " Puntos de daño, tu vida actual es " + estadisticasJugador[0]);
-                }
+                desarrollarTurnoEnemigo(estadisticasJugador,estadisticasEnemigo);
             }
             turnoJugador = !turnoJugador;   //se cambia el turno
         }
+        desarrollarTerminoPelea(estadisticasJugador,inventarioJugador,estadisticasEnemigo,huir);
+    }
 
-        if (estadisticasJugador[0] < 0) {
-            morir();
+    public static void atacar(int[] estadisticasJugador, int[] estadisticasEnemigo){
+        if (estadisticasJugador[5] >= estadisticasJugador[2]) {
+            //si la municion del jugador es mayor o igual que la ronda de municion
+            atacarArmaPrimaria(estadisticasJugador,estadisticasEnemigo);
         } else {
-            if (huir) {
-                println("Huiste de la batalla");
-            } else {
-                println("Ganaste la batalla");
-                obtenerFichas(inventarioJugador,estadisticasEnemigo);
-            }
+            atacarArmaSecundaria(estadisticasJugador,estadisticasEnemigo);
+        }
+    }
+
+    public static void atacarArmaPrimaria(int[] estadisticasJugador, int[] estadisticasEnemigo){
+        estadisticasEnemigo[2] -= estadisticasJugador[1];   //se resta vida del enemigo
+        estadisticasJugador[5] -= estadisticasJugador[2];   //se resta municion del jugador
+        println("Has atacado al enemigo con " + estadisticasJugador[1] + " Puntos de daño.");
+        mostrarBalasGastadas(estadisticasJugador);
+        mostrarMunicionActual(estadisticasJugador);
+        calcularVidaActualEnemigo(estadisticasEnemigo);
+    }
+
+    public static void atacarArmaSecundaria(int[] estadisticasJugador, int[] estadisticasEnemigo){
+        println("Solo tienes tu arma secundaria, suerte.");
+        estadisticasEnemigo[2] -= estadisticasJugador[3];
+        println("Has atacado al enemigo con " + estadisticasJugador[3] + " Puntos de daño.");
+        calcularVidaActualEnemigo(estadisticasEnemigo);
+    }
+
+    public static boolean intentarHuir(){
+        int probabilidadesEscapar = (int) (Math.random() * 2);
+
+        if (probabilidadesEscapar == 1) {   //un medio de prob. de huir exitosamente
+            println("Huiste de la batalla.");
+            return true;
+        }else{
+            println("Falló tu intento de huir!");
+            return false;
         }
     }
 
@@ -490,7 +501,7 @@ public class Juego {
                 estadisticasJugador[0] = estadisticasJugador[6];    //el jugador se cura al 100% de su vida
             }
             inventarioJugador[1]--;     //se usa una jeringa
-            println("Ahora tu vida actual es " + estadisticasJugador[0]);
+            mostrarVidaActual(estadisticasJugador);
         }else{
             println("No puedes curarte, no te quedan jeringas.");
         }
@@ -498,20 +509,59 @@ public class Juego {
 
     public static void usarCartucho(int[] estadisticasJugador, int[] inventarioJugador) {
         if (inventarioJugador[0] > 0) {     //si quedan cartuchos
-            if (estadisticasJugador[5] <= 35) {     //si la municion actual está por debajo de los 50 puntos
-                estadisticasJugador[5] += 15;   //se añaden 15 balas de vida a la vida actual
+            if (estadisticasJugador[5] <= 35) {     //si la municion actual está por debajo de 35 balas
+                estadisticasJugador[5] += 15;   //se añaden 15 balas a la munición actual
             }else{
-                estadisticasJugador[5] = estadisticasJugador[7];    //el jugador recupera su municion
+                estadisticasJugador[5] = estadisticasJugador[7];    //el jugador llena su munición al máximo
             }
             inventarioJugador[0]--;     //se usa un cartucho
-            println("Ahora tu munición actual es " + estadisticasJugador[5]);
+            mostrarMunicionActual(estadisticasJugador);
         }else{
-            println("No puedes curarte, no te quedan jeringas.");
+            println("No puedes usar munición, no te quedan cartuchos.");
+        }
+    }
+
+    public static void desarrollarTurnoEnemigo(int[] estadisticasJugador, int[] estadisticasEnemigo){
+        int probabilidadesAtacar = (int) (Math.random() * 3);
+
+        if (probabilidadesAtacar == 0) {    // un tercio de prob. de que el enemigo falle
+            println("El enemigo ha fallado.");
+        } else {
+            estadisticasJugador[0] -= estadisticasEnemigo[1];   //se resta vida al jugador
+            println("Te han atacado con " + estadisticasEnemigo[1] + " Puntos de daño.");
+            mostrarVidaActual(estadisticasJugador);
+        }
+    }
+
+    public static void mostrarInventarioActual(int[] inventarioJugador){
+        println("Tu inventario actual es el siguiente:");
+        println("-" + inventarioJugador[0] + " cartucho(s) de 15 balas.");
+        println("-" + inventarioJugador[1] + " jeringa(s).");
+    }
+
+    public static void calcularVidaActualEnemigo(int[] estadisticasEnemigo){
+        if(estadisticasEnemigo[2] >= 0){
+            mostrarVidaActualEnemigo(estadisticasEnemigo);
+        }else{
+            estadisticasEnemigo[2] = 0;
+            mostrarVidaActualEnemigo(estadisticasEnemigo);
+        }
+    }
+
+    public static void desarrollarTerminoPelea(int[] estadisticasJugador, int[] inventarioJugador, int[] estadisticasEnemigo, boolean huir){
+        if(!huir){
+            if (estadisticasJugador[0] < 0) {
+                morir();
+            } else {
+                println("Ganaste la batalla!");
+                obtenerFichas(inventarioJugador,estadisticasEnemigo);
+            }
         }
     }
 
     public static void obtenerFichas(int[] inventarioJugador, int[] estadisticasEnemigo) {
         int fichas = (estadisticasEnemigo[0] / 3) + (estadisticasEnemigo[1] / 2);
+        //se calculan las fichas en base a la vida y ataque del enemigo
         inventarioJugador[2] += fichas;
         println("Has ganado " + fichas + " fichas.");
     }
@@ -526,6 +576,10 @@ public class Juego {
 
     public static void mostrarVidaActual(int[] estadisticasJugador){
         println("Vida actual: " + estadisticasJugador[0]);
+    }
+
+    public static void mostrarVidaActualEnemigo(int[] estadisticasEnemigo){
+        println("Vida actual del enemigo: " + estadisticasEnemigo[2]);
     }
 
     public static void mostrarMunicionActual(int[] estadisticasJugador){
@@ -616,13 +670,19 @@ public class Juego {
     }
 
     public static void darBienvenida() {
-        println("Felicidades sobreviviente, bienvenido al apocalipsis.");
-        println("Tu misión es sobrevivir, usa bien tu inventario y municiones, son escasas.");
-        println("Mucha suerte.");
+        println("Varios años después de una abominable pandemia...");
+        println("Bienvenido al apocalipsis, sobreviviente...");
+        println("Tu misión es sobrevivir, actualmente posees una pistola de 9mm con 30 balas que recogiste del suelo y un par de puños.");
+        println("Usa bien tu inventario y municiones, son escasas.");
+        println("Mucha suerte...");
     }
 
     public static void iniciarBatalla(int[] estadisticasJugador){
         println("\nInicia la batalla del nivel " + estadisticasJugador[4]);
+    }
+
+    public static void mostrarBalasGastadas(int[] estadisticasJugador){
+        println("Has usado " + estadisticasJugador[2] + " bala(s).");
     }
 
     public static void morir() {
