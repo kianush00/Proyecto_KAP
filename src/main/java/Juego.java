@@ -11,12 +11,13 @@ public class Juego {
         int[] inventarioJugador = new int[3];   //0-> cartuchos de 15 balas  1-> jeringas  2-> fichas
 
         inicializarJugador(estadisticasJugador,inventarioJugador);
-        for(int i=1; i <= 30; i++){
+        darBienvenida();
+        for(int i=1; i < 30; i++){
             estadisticasJugador[4] = i;     //Nivel actual del jugador
-            //Se desarrolla el juego
-            //...
+            intentarPelear(estadisticasJugador,inventarioJugador);
             intentarGenerarYAbrirTienda(estadisticasJugador,inventarioJugador);
         }
+        escapeFinal();
     }
 
     public static void inicializarJugador(int[] estadisticasJugador, int[] inventarioJugador){
@@ -153,6 +154,7 @@ public class Juego {
         int opcionTienda;   //opcion seleccionada al momento de comprar
 
         do{
+            mostrarFichasActuales(inventarioJugador);
             mostrarOpcionesComprarTienda();
             opcionTienda = elegirOpcionYValidar(1,5);
             switch (opcionTienda){
@@ -187,13 +189,13 @@ public class Juego {
         switch (getEnteroAleatorioEntre(0,1)){    //se genera un arma principal aleatoria
             case 0:
                 armasEnVenta[0] = armasPosibles[0][0];  //revolver
-                armasEnVentaEstadisticas[0][0] = 25;   //daño
+                armasEnVentaEstadisticas[0][0] = 22;   //daño
                 armasEnVentaEstadisticas[0][1] = 20;     //precio
                 armasEnVentaEstadisticas[0][2] = 1;     //ronda municion
                 break;
             case 1:
                 armasEnVenta[0] = armasPosibles[0][1];  //subfusil
-                armasEnVentaEstadisticas[0][0] = 35;   //daño
+                armasEnVentaEstadisticas[0][0] = 30;   //daño
                 armasEnVentaEstadisticas[0][1] = 25;     //precio
                 armasEnVentaEstadisticas[0][2] = 5;     //ronda municion
                 break;
@@ -224,25 +226,25 @@ public class Juego {
         switch (getEnteroAleatorioEntre(0,3)){    //se genera un arma principal aleatoria
             case 0:
                 armasEnVenta[0] = armasPosibles[0][0];  //revolver
-                armasEnVentaEstadisticas[0][0] = 25;   //daño
+                armasEnVentaEstadisticas[0][0] = 22;   //daño
                 armasEnVentaEstadisticas[0][1] = 15;     //precio
                 armasEnVentaEstadisticas[0][2] = 1;     //ronda municion
                 break;
             case 1:
                 armasEnVenta[0] = armasPosibles[0][1];  //subfusil
-                armasEnVentaEstadisticas[0][0] = 35;   //daño
+                armasEnVentaEstadisticas[0][0] = 30;   //daño
                 armasEnVentaEstadisticas[0][1] = 20;     //precio
                 armasEnVentaEstadisticas[0][2] = 5;     //ronda municion
                 break;
             case 2:
                 armasEnVenta[0] = armasPosibles[0][2];  //rifle
-                armasEnVentaEstadisticas[0][0] = 40;   //daño
+                armasEnVentaEstadisticas[0][0] = 35;   //daño
                 armasEnVentaEstadisticas[0][1] = 25;     //precio
                 armasEnVentaEstadisticas[0][2] = 3;     //ronda municion
                 break;
             case 3:
                 armasEnVenta[0] = armasPosibles[0][3];  //francotirador
-                armasEnVentaEstadisticas[0][0] = 60;   //daño
+                armasEnVentaEstadisticas[0][0] = 50;   //daño
                 armasEnVentaEstadisticas[0][1] = 40;     //precio
                 armasEnVentaEstadisticas[0][2] = 1;     //ronda municion
                 break;
@@ -263,7 +265,7 @@ public class Juego {
                 break;
             case 2:
                 armasEnVenta[1] = armasPosibles[1][2];  //hacha
-                armasEnVentaEstadisticas[1][0] = 20;   //daño
+                armasEnVentaEstadisticas[1][0] = 19;   //daño
                 armasEnVentaEstadisticas[1][1] = 15;     //precio
                 break;
         }
@@ -272,13 +274,12 @@ public class Juego {
     public static void mostrarDatosTienda(int[] inventarioJugador, String[] armasEnVenta, int[][] armasEnVentaEstadisticas, int[] preciosUtilidades){
         ofrecerArmasEnVenta(armasEnVenta,armasEnVentaEstadisticas);
         ofrecerJeringasYMunicion(preciosUtilidades);
-        mostrarFichasActuales(inventarioJugador);
     }
 
     public static void mostrarOpcionesComprarTienda(){
         println("\nElige una opción: ");
         println("1. Comprar arma primaria");
-        println("2. Cargar arma secundaria");
+        println("2. Comprar arma secundaria");
         println("3. Comprar jeringa");
         println("4. Comprar cartucho de 15 balas");
         println("5. Salir");
@@ -489,42 +490,39 @@ public class Juego {
     }
 
     public static void intentarPelear(int[] estadisticasJugador, int[] inventarioJugador) {
-        if (estadisticasJugador[4] % 3 != 0) {     //Si el nivel actual no es multiplo de 3 inicia la pelea
-            pelear(estadisticasJugador, inventarioJugador);
+        if(estadisticasJugador[4] % 3 != 0) {     //Si el nivel actual no es multiplo de 3 inicia la pelea
+            pelear(estadisticasJugador,inventarioJugador);
         }
     }
 
     public static void pelear(int[] estadisticasJugador, int[] inventarioJugador) {
-        int[] enemigo = new int[2];
-        Scanner entrada = new Scanner(System.in);
-        enemigo[0] = (int) (Math.floor(Math.random() * 70 + 30) + (estadisticasJugador[4] / 2));
-        System.out.println(enemigo[0]);
-        enemigo[1] = (int) Math.floor((Math.random() * 7 + 3) + (estadisticasJugador[4] / 2));
-        System.out.println(enemigo[1]);
-        boolean turno = true;
-
-        System.out.println("Inicia la batalla del nivel " + estadisticasJugador[4]);
+        int[] estadisticasEnemigo = new int[3];
+        //posicion  0-> vida inicial   1-> daño de ataque   2-> vida actual
+        estadisticasEnemigo[0] = (int) ((Math.random() * 70) + (estadisticasJugador[4] / 2) + 30);
+        estadisticasEnemigo[1] = (int) ((Math.random() * 7) + (estadisticasJugador[4] / 2) + 3);
+        estadisticasEnemigo[2] = estadisticasEnemigo[0];
+        boolean turnoJugador = true;
         boolean huir = false;
-        while (estadisticasJugador[0] > 0 && enemigo[0] > 0 && huir == false) {
 
-            if (turno) {
-                System.out.print("Opcion 1 para atacar, 2 para pasar, 3 para huir, finalmente 4 para curarte: ");
-
-                int opcion = elegirOpcionYValidar(1, 4);
+        iniciarBatalla(estadisticasJugador);
+        while ((estadisticasJugador[0] > 0) && (estadisticasEnemigo[2] > 0) && (!huir)) {
+            if (turnoJugador) {
+                println("Opcion 1 para atacar, 2 para pasar, 3 para huir, finalmente 4 para curarte: ");
+                int opcion = elegirOpcionYValidar(1,4);
                 switch (opcion) {
                     case 1:
-                        if (inventarioJugador[5] > 0) {
-                            enemigo[0] = enemigo[0] - estadisticasJugador[1];
-                            inventarioJugador[0] = inventarioJugador[0] - estadisticasJugador[2];
-                            System.out.println("Has atacado al enemigo con " + estadisticasJugador[1] + " Puntos de daño, su vida actual es " + enemigo[0]);
+                        if (estadisticasJugador[5] >= estadisticasJugador[2]) {   //si la municion del jugador es mayor o igual que la ronda de municion
+                            estadisticasEnemigo[2] -= estadisticasJugador[1];
+                            estadisticasJugador[5] -= estadisticasJugador[2];
+                            println("Has atacado al enemigo con " + estadisticasJugador[1] + " Puntos de daño, su vida actual es " + estadisticasEnemigo[2]);
                         } else {
-                            System.out.println("Solo tienes tus puños, suerte.");
-                            enemigo[0] = enemigo[0] - estadisticasJugador[3];
-                            System.out.println("Has atacado al enemigo con " + estadisticasJugador[3] + " Puntos de daño, su vida actual es " + enemigo[0]);
+                            println("Solo tienes tu arma secundaria, suerte.");
+                            estadisticasEnemigo[2] -= estadisticasJugador[3];
+                            println("Has atacado al enemigo con " + estadisticasJugador[3] + " Puntos de daño, su vida actual es " + estadisticasEnemigo[2]);
                         }
                         break;
                     case 2:
-                        System.out.println("Has pasado");
+                        println("Has pasado");
                         break;
                     case 3:
                         int escapar = (int) (Math.random() * 2);
@@ -537,58 +535,67 @@ public class Juego {
                         break;
                 }
             } else {
-                int opcion = (int) (Math.random() * 2);
-                System.out.println(opcion);
+                int opcion = (int) (Math.random() * 3);
                 if (opcion == 0) {
-                    System.out.println("El enemigo ha fallado.");
+                    println("El enemigo ha fallado.");
                 } else {
-                    estadisticasJugador[0] = estadisticasJugador[0] - enemigo[1];
-                    System.out.println("Te han atacado con " + enemigo[1] + " Puntos de daño, tu vida actual es " + estadisticasJugador[0]);
+                    estadisticasJugador[0] -= estadisticasEnemigo[1];
+                    println("Te han atacado con " + estadisticasEnemigo[1] + " Puntos de daño, tu vida actual es " + estadisticasJugador[0]);
                 }
-
-
             }
-            turno = !turno;
+            turnoJugador = !turnoJugador;   //se cambia el turno
         }
+
         if (estadisticasJugador[0] < 0) {
             morir();
         } else {
-            if (huir == true) {
-                System.out.println("Huiste de la batalla");
+            if (huir) {
+                println("Huiste de la batalla");
             } else {
-                System.out.println("Ganaste la batalla");
+                println("Ganaste la batalla");
+                obtenerFichas(inventarioJugador,estadisticasEnemigo);
             }
         }
     }
 
     public static void morir() {
-        System.err.println("Te moriste, fin de la aventura.");
+        System.err.println("Moriste, fin de la aventura.");
         System.exit(1);
     }
 
     public static void escapeFinal() {
-        System.out.println("Has llegado al final de la aventura, felicidades.");
-        System.out.println("Ya puedes escapar.");
+        println("Has llegado al final de la aventura, felicidades.");
+        println("Ya puedes escapar.");
         System.exit(1);
     }
 
-    public static void bienvenida() {
-        System.out.println("Felicidades sobreviviente, bienvenido al apocalipsis.");
-        System.out.println("Tu mision es sobrevivir, usa bien tu inventario y municiones, son escasas.");
-        System.out.println("Mucha suerte.");
+    public static void darBienvenida() {
+        println("Felicidades sobreviviente, bienvenido al apocalipsis.");
+        println("Tu misión es sobrevivir, usa bien tu inventario y municiones, son escasas.");
+        println("Mucha suerte.");
     }
 
     public static void curar(int[] estadisticasJugador, int[] inventarioJugador) {
-        if (inventarioJugador[0] > 0) {
-            estadisticasJugador[0] = estadisticasJugador[0] + 50;
-            inventarioJugador[1] = inventarioJugador[1] - 1;
+        if (inventarioJugador[1] > 0) {     //si quedan jeringas
+            if (estadisticasJugador[0] <= 50) {     //si la vida actual está por debajo de los 50 puntos
+                estadisticasJugador[0] += 50;   //se añaden 50 puntos de vida a la vida actual
+            }else{
+                estadisticasJugador[0] = estadisticasJugador[6];    //el jugador se cura al 100% de su vida
+            }
+            inventarioJugador[1]--;     //se usa una jeringa
+            println("Ahora tu vida actual es " + estadisticasJugador[0]);
+        }else{
+            println("No puedes curarte, no te quedan jeringas.");
         }
-        System.out.println("Ahora tu vida actual es " + estadisticasJugador[0]);
     }
 
-    public static void obtenerDinero(int[] inventarioJugador, int[] enemigo) {
-        int dinero=enemigo[0]/3+enemigo[1]/2;
-        inventarioJugador[2] = inventarioJugador[2] + dinero;
-        System.out.println("Has ganado " + dinero + " monedas");
+    public static void obtenerFichas(int[] inventarioJugador, int[] estadisticasEnemigo) {
+        int fichas = (estadisticasEnemigo[0] / 3) + (estadisticasEnemigo[1] / 2);
+        inventarioJugador[2] += fichas;
+        println("Has ganado " + fichas + " fichas.");
+    }
+
+    public static void iniciarBatalla(int[] estadisticasJugador){
+        println("\nInicia la batalla del nivel " + estadisticasJugador[4]);
     }
 }
