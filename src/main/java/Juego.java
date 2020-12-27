@@ -507,7 +507,7 @@ public class Juego {
         iniciarBatalla(estadisticasJugador);
         while ((estadisticasJugador[0] > 0) && (estadisticasEnemigo[2] > 0) && (!huir)) {
             if (turnoJugador) {
-                println("Opcion 1 para atacar, 2 para pasar, 3 para huir, finalmente 4 para curarte: ");
+                println("Opcion 1 para atacar, 2 para pasar, 3 para huir, 4 para curarte, finalmente 5 para cargar municion: ");
                 int opcion = elegirOpcionYValidar(1,4);
                 switch (opcion) {
                     case 1:
@@ -521,18 +521,26 @@ public class Juego {
                             println("Has atacado al enemigo con " + estadisticasJugador[3] + " Puntos de daño, su vida actual es " + estadisticasEnemigo[2]);
                         }
                         break;
+
                     case 2:
                         println("Has pasado");
                         break;
+
                     case 3:
                         int escapar = (int) (Math.random() * 2);
                         if (escapar == 1) {
                             huir = true;
                         }
                         break;
+
                     case 4:
-                        curar(estadisticasJugador, inventarioJugador);
+                    curar(estadisticasJugador, inventarioJugador);
                         break;
+
+                    case 5:
+                        usarCartucho(estadisticasJugador, inventarioJugador);
+                        break;
+
                 }
             } else {
                 int opcion = (int) (Math.random() * 3);
@@ -584,6 +592,20 @@ public class Juego {
             }
             inventarioJugador[1]--;     //se usa una jeringa
             println("Ahora tu vida actual es " + estadisticasJugador[0]);
+        }else{
+            println("No puedes curarte, no te quedan jeringas.");
+        }
+    }
+
+    public static void usarCartucho(int[] estadisticasJugador, int[] inventarioJugador) {
+        if (inventarioJugador[0] > 0) {     //si quedan jeringas
+            if (estadisticasJugador[5] <= 35) {     //si la vida actual está por debajo de los 50 puntos
+                estadisticasJugador[5] += 15;   //se añaden 15 balas
+            }else{
+                estadisticasJugador[5] = estadisticasJugador[7];    //el jugador se cura al 100% de su vida
+            }
+            inventarioJugador[0]--;     //se usa una jeringa
+            println("Recargaste tus municiones, ahora tienes " + estadisticasJugador[5]);
         }else{
             println("No puedes curarte, no te quedan jeringas.");
         }
