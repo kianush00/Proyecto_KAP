@@ -521,17 +521,24 @@ public class Juego {
                             println("Has atacado al enemigo con " + estadisticasJugador[3] + " Puntos de daño, su vida actual es " + estadisticasEnemigo[2]);
                         }
                         break;
+
                     case 2:
                         println("Has pasado");
                         break;
+
                     case 3:
                         int escapar = (int) (Math.random() * 2);
                         if (escapar == 1) {
                             huir = true;
                         }
                         break;
+
                     case 4:
                         usarJeringa(estadisticasJugador, inventarioJugador);
+                        break;
+
+                    case 5:
+                        usarCartucho(estadisticasJugador, inventarioJugador);
                         break;
                 }
             } else {
@@ -584,6 +591,20 @@ public class Juego {
             }
             inventarioJugador[1]--;     //se usa una jeringa
             println("Ahora tu vida actual es " + estadisticasJugador[0]);
+        }else{
+            println("No puedes curarte, no te quedan jeringas.");
+        }
+    }
+
+    public static void usarCartucho(int[] estadisticasJugador, int[] inventarioJugador) {
+        if (inventarioJugador[0] > 0) {     //si quedan cartuchos
+            if (estadisticasJugador[5] <= 35) {     //si la municion actual está por debajo de los 50 puntos
+                estadisticasJugador[5] += 15;   //se añaden 15 balas de vida a la vida actual
+            }else{
+                estadisticasJugador[5] = estadisticasJugador[7];    //el jugador recupera su municion
+            }
+            inventarioJugador[0]--;     //se usa un cartucho
+            println("Ahora tu municion actual es " + estadisticasJugador[5]);
         }else{
             println("No puedes curarte, no te quedan jeringas.");
         }
