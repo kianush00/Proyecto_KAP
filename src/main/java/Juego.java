@@ -507,7 +507,7 @@ public class Juego {
         iniciarBatalla(estadisticasJugador);
         while ((estadisticasJugador[0] > 0) && (estadisticasEnemigo[2] > 0) && (!huir)) {
             if (turnoJugador) {
-                println("Opcion 1 para atacar, 2 para pasar, 3 para huir, finalmente 4 para curarte: ");
+                println("Opcion 1 para atacar, 2 para pasar, 3 para huir, 4 para curarte y finalmente 5 para usar un cartucho: ");
                 int opcion = elegirOpcionYValidar(1,4);
                 switch (opcion) {
                     case 1:
