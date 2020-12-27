@@ -672,7 +672,8 @@ public class Juego {
     public static void darBienvenida() {
         println("Varios años después de una abominable pandemia...");
         println("Bienvenido al apocalipsis, sobreviviente...");
-        println("Tu misión es sobrevivir, actualmente posees una pistola de 9mm con 30 balas que recogiste del suelo y un par de puños.");
+        println("Tu misión es sobrevivir, actualmente posees una pistola de 9mm con 30 balas que recogiste del suelo" +
+                " y un par de puños.");
         println("Usa bien tu inventario y municiones, son escasas.");
         println("Mucha suerte...");
     }
