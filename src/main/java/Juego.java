@@ -131,7 +131,7 @@ public class Juego {
         /*    Armas primarias           Armas secundarias      */
         String[][] armasPosibles = { {"revolver","subfusil"}, {"cuchillo","bate de beisbol"} };
         String[] armasEnVenta = new String[2];   //una sola arma en venta de cada tipo
-        int[][] armasEnVentaEstadisticas = new int[3][3];   //filas   0-> arma principal  1-> arma secundaria
+        int[][] armasEnVentaEstadisticas = new int[2][3];   //filas   0-> arma principal  1-> arma secundaria
         //columnas  0-> daño   1-> precio   2-> ronda municion (solo para armas principales)
         int[] preciosUtilidades = {8,20};   // 0-> precio jeringa   1-> precio cartucho de 15 balas
 
@@ -145,7 +145,7 @@ public class Juego {
         /*    Armas primarias           Armas secundarias      */
         String[][] armasPosibles = { {"revolver","subfusil","rifle","francotirador"}, {"cuchillo","bate de beisbol","hacha"} };
         String[] armasEnVenta = new String[2];   //una sola arma en venta de cada tipo
-        int[][] armasEnVentaEstadisticas = new int[3][3];   //filas   0-> arma principal  1-> arma secundaria
+        int[][] armasEnVentaEstadisticas = new int[2][3];   //filas   0-> arma principal  1-> arma secundaria
         //columnas  0-> daño   1-> precio   2-> ronda municion (solo para armas principales)
         int[] preciosUtilidades = {20,12};   // 0-> precio jeringa   1-> precio cartucho de 15 balas
 
@@ -550,7 +550,7 @@ public class Juego {
 
     public static void desarrollarTerminoPelea(int[] estadisticasJugador, int[] inventarioJugador, int[] estadisticasEnemigo, boolean huir){
         if(!huir){
-            if (estadisticasJugador[0] < 0) {
+            if (estadisticasJugador[0] <= 0) {
                 morir();
             } else {
                 println("Ganaste la batalla!");
@@ -585,7 +585,6 @@ public class Juego {
     public static void mostrarMunicionActual(int[] estadisticasJugador){
         println("Munición actual: " + estadisticasJugador[5]);
     }
-
 
     public static void confirmarCompra(){
         println("¿Estás seguro de realizar la compra?");
