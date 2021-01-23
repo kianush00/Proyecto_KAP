@@ -1,23 +1,25 @@
 package backend_kap;
 
 public class Arma {
-	protected int puntosDeDa�o;
+	protected int puntosDeDaño;
 	protected int precio;
 
-	public Arma(int puntosDeDa�o) {
-		throw new UnsupportedOperationException();
+	public Arma(int puntosDeDaño) {
+		this.puntosDeDaño=puntosDeDaño;
 	}
 
-	public int getPuntosDeDa�o() {
-		return this.puntosDeDa�o;
+
+
+	public int getPuntosDeDaño() {
+		return this.puntosDeDaño;
 	}
 
-	public void setPuntosDeDa�o(int puntosDeDa�o) {
-		this.puntosDeDa�o = puntosDeDa�o;
+	public void setPuntosDeDaño(int puntosDeDaño) {
+		this.puntosDeDaño = puntosDeDaño;
 	}
 
 	public void atacarEnemigo(Enemigo enem) {
-		throw new UnsupportedOperationException();
+		enem.setVidaActual((enem.getVidaActual()-this.puntosDeDaño));
 	}
 
 	public int getPrecio() {

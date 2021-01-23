@@ -4,8 +4,10 @@ public class ArmaPrimaria extends Arma {
 	private int rondaMunicion;
 	private TipoArmaPrimaria tipo;
 
-	public ArmaPrimaria(int puntosDeDa�o, TipoArmaPrimaria tipo, int rondaMunicion) {
-		throw new UnsupportedOperationException();
+	public ArmaPrimaria(int puntosDeDaño, TipoArmaPrimaria tipo, int rondaMunicion) {
+		super(puntosDeDaño);
+		this.tipo=tipo;
+		this.rondaMunicion=rondaMunicion;
 	}
 
 	public int getRondaMunicion() {
@@ -25,6 +27,11 @@ public class ArmaPrimaria extends Arma {
 	}
 
 	public void restarMunicion(Inventario inv) {
-		throw new UnsupportedOperationException();
+		inv.setMunicion(inv.getMunicion()-this.rondaMunicion);
+	}
+
+	public void atacarEnemigo(Enemigo enem, Inventario inv) {
+		super.atacarEnemigo(enem);
+		restarMunicion(inv);
 	}
 }

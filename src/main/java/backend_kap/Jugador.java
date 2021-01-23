@@ -5,11 +5,20 @@ public class Jugador extends Personaje {
 	private Inventario inventario;
 	private ArmaSecundaria armaSecundaria;
 
-	public Jugador() {
-		throw new UnsupportedOperationException();
+	public Jugador(ArmaPrimaria armaPrimaria, Inventario inventario, ArmaSecundaria armaSecundaria) {
+		this.armaPrimaria=armaPrimaria;
+		this.inventario=inventario;
+		this.armaSecundaria=armaSecundaria;
 	}
 
 	public boolean intentarHuir() {
-		throw new UnsupportedOperationException();
+		int probabilidadesEscapar = (int) (Math.random() * 2);
+
+		if (probabilidadesEscapar == 1) {   //un medio de prob. de huir exitosamente
+			return true;
+		}else{
+			return false;
+		}
 	}
+
 }
