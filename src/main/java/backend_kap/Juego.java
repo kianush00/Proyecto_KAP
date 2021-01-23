@@ -1,14 +1,16 @@
 package backend_kap;
 
 public class Juego {
-	private int nivelActual = 1;
-	private final_int niveles = 29;
+	private int nivelActual;
+	private final int NIVELES;
 	private Enemigo enemigo;
 	private Jugador jugador;
 	private Tienda tiendaActual;
 
-	public Juego(int nivelActual, final_int niveles, Jugador jugador) {
-		throw new UnsupportedOperationException();
+	public Juego(int nivelActual, final int NIVELES, Jugador jugador) {
+		this.nivelActual = 1;
+		this.NIVELES = 29;
+		this.jugador = jugador;
 	}
 
 	public int getNivelActual() {
@@ -19,8 +21,8 @@ public class Juego {
 		this.nivelActual = nivelActual;
 	}
 
-	public final_int getNiveles() {
-		return this.niveles;
+	public final int getNIVELES() {
+		return this.NIVELES;
 	}
 
 	public Jugador getJugador() {
