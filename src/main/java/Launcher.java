@@ -1,6 +1,9 @@
+import frontend_kap.InterfazCLI;
+
 public class Launcher {
 
 	public static void main(String[] args) {
-		throw new UnsupportedOperationException();
+		InterfazCLI interfaz = new InterfazCLI();
+		interfaz.lanzarVentana();
 	}
 }
