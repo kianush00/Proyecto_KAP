@@ -5,10 +5,10 @@ public class Personaje {
 	protected final_int vidaMaxima;
 
 	public Personaje() {
-		throw new UnsupportedOperationException();
+
 	}
 
-	public Personaje(int vidaActual, final_int vidaMaxima) {
+	public Personaje(Juego juego) {
 		throw new UnsupportedOperationException();
 	}
 

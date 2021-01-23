@@ -2,7 +2,7 @@ package backend_kap;
 
 public class Inventario {
 	private int fichas;
-	private int cartuchos15Balas;
+	private int cargadores15Balas;
 	private int jeringas;
 	private int municion;
 	private final int LIMITE_MUNICION;
@@ -12,7 +12,7 @@ public class Inventario {
 
 	public Inventario(Jugador jugador) {
 		this.fichas = 0;
-		this.cartuchos15Balas = 0;
+		this.cargadores15Balas = 0;
 		this.jeringas = 0;
 		this.municion = 30;
 		this.LIMITE_MUNICION = 50;
@@ -29,12 +29,12 @@ public class Inventario {
 		this.fichas = fichas;
 	}
 
-	public int getCartuchos15Balas() {
-		return this.cartuchos15Balas;
+	public int getCargadores15Balas() {
+		return this.cargadores15Balas;
 	}
 
-	public void setCartuchos15Balas(int cartuchos15Balas) {
-		this.cartuchos15Balas = cartuchos15Balas;
+	public void setCargadores15Balas(int cargadores15Balas) {
+		this.cargadores15Balas = cargadores15Balas;
 	}
 
 	public int getJeringas() {
@@ -53,13 +53,17 @@ public class Inventario {
 		this.municion = municion;
 	}
 
+	public int getLIMITE_MUNICION() {
+		return LIMITE_MUNICION;
+	}
+
 	public Jugador getJugador() {
 		return this.jugador;
 	}
 
 	public void usarCartucho() {
 		this.municion += 15;
-		this.cartuchos15Balas--;
+		this.cargadores15Balas--;
 	}
 
 	public void usarJeringa() {

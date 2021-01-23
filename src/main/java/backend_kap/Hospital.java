@@ -3,10 +3,9 @@ package backend_kap;
 public class Hospital extends Tienda {
 	private int precioCurarse;
 
-	public Hospital(Jugador jugador) {
-		super(jugador);
+	public Hospital() {
 		super.precioJeringa = 8;
-		super.precioCartucho = 20;
+		super.precioCargador = 20;
 		super.armaPrimariaEnVenta = generarArmaPrimariaAleatoriaHospital();
 		super.armaSecundariaEnVenta = generarArmaSecundariaAleatoriaHospital();
 		this.precioCurarse = 15;
@@ -24,7 +23,8 @@ public class Hospital extends Tienda {
 		return this.precioCurarse;
 	}
 
-	public void curarse() {
-
+	public void curarse(Jugador jugador) {
+		jugador.setVidaActual(jugador.getVidaMaxima());
+		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.precioCurarse);
 	}
 }

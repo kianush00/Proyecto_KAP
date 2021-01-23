@@ -1,18 +1,18 @@
 package backend_kap;
 
 public class Enemigo extends Personaje {
-	private int puntosDeDaño;
+	private int puntosDeDaÃ±o;
 
-	public Enemigo(int vidaActual, final_int vidaMaxima, int puntosDeDaño) {
-		throw new UnsupportedOperationException();
+	public Enemigo(Juego juego) {
+
 	}
 
-	public int getPuntosDeDaño() {
-		return this.puntosDeDaño;
+	public int getPuntosDeDaÃ±o() {
+		return this.puntosDeDaÃ±o;
 	}
 
-	public void setPuntosDeDaño(int puntosDeDaño) {
-		this.puntosDeDaño = puntosDeDaño;
+	public void setPuntosDeDaÃ±o(int puntosDeDaÃ±o) {
+		this.puntosDeDaÃ±o = puntosDeDaÃ±o;
 	}
 
 	public void atacarJugador(Jugador jugador) {

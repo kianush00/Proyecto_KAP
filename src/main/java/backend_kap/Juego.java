@@ -35,16 +35,18 @@ public class Juego {
 
 	public void generarNuevaTiendaAleatoria() {
 		if(calcularIntAleatorioEntre(1,2) == 1){
-			this.tiendaActual = new Hospital();
+			generarNuevoHospital();
+		}else{
+			generarNuevoCuartel();
 		}
 	}
 
 	private void generarNuevoCuartel() {
-		throw new UnsupportedOperationException();
+		this.tiendaActual = new Hospital();
 	}
 
 	private void generarNuevoHospital() {
-		throw new UnsupportedOperationException();
+		this.tiendaActual = new Cuartel();
 	}
 
 	public Enemigo getEnemigo() {
@@ -52,7 +54,7 @@ public class Juego {
 	}
 
 	public void generarNuevoEnemigo() {
-		throw new UnsupportedOperationException();
+		this.enemigo = new Enemigo(this);
 	}
 
 	private int calcularIntAleatorioEntre(int min, int max) {
@@ -60,6 +62,6 @@ public class Juego {
 	}
 
 	private int calcularFichasGanadas() {
-		throw new UnsupportedOperationException();
+		return (this.enemigo.getVidaMaxima() / 3) + (this.enemigo.getPuntosDeDaño()/2);
 	}
 }

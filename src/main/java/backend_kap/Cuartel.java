@@ -3,10 +3,9 @@ package backend_kap;
 public class Cuartel extends Tienda {
 	private int precioCargarMunicion;
 
-	public Cuartel(Jugador jugador) {
-		super(jugador);
+	public Cuartel() {
 		super.precioJeringa = 20;
-		super.precioCartucho = 12;
+		super.precioCargador = 12;
 		super.armaPrimariaEnVenta = generarArmaPrimariaAleatoriaCuartel();
 		super.armaSecundariaEnVenta = generarArmaSecundariaAleatoriaCuartel();
 		this.precioCargarMunicion = 15;
@@ -24,7 +23,8 @@ public class Cuartel extends Tienda {
 		return this.precioCargarMunicion;
 	}
 
-	public void cargarMunicion() {
-
+	public void cargarMunicion(Jugador jugador) {
+		jugador.getInventario().setMunicion(jugador.getInventario().getLIMITE_MUNICION());
+		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.precioCargarMunicion);
 	}
 }
