@@ -1,14 +1,16 @@
 package backend_kap;
 
 public class Juego {
-	private int nivelActual = 1;
-	private final_int niveles = 29;
+	private int nivelActual;
+	private final int NIVELES;
 	private Enemigo enemigo;
 	private Jugador jugador;
 	private Tienda tiendaActual;
 
-	public Juego(int nivelActual, final_int niveles, Jugador jugador) {
-		throw new UnsupportedOperationException();
+	public Juego(int nivelActual, final int NIVELES, Jugador jugador) {
+		this.nivelActual = 1;
+		this.NIVELES = 29;
+		this.jugador = jugador;
 	}
 
 	public int getNivelActual() {
@@ -19,24 +21,12 @@ public class Juego {
 		this.nivelActual = nivelActual;
 	}
 
-	public final_int getNiveles() {
-		return this.niveles;
+	public final int getNIVELES() {
+		return this.NIVELES;
 	}
 
 	public Jugador getJugador() {
 		return this.jugador;
-	}
-
-	public int desarrollarTurnoJugador() {
-		throw new UnsupportedOperationException();
-	}
-
-	public int desarrollarTurnoEnemigo() {
-		throw new UnsupportedOperationException();
-	}
-
-	public void desarrollarTerminoPelea() {
-		throw new UnsupportedOperationException();
 	}
 
 	public Tienda getTiendaActual() {
@@ -44,15 +34,19 @@ public class Juego {
 	}
 
 	public void generarNuevaTiendaAleatoria() {
-		throw new UnsupportedOperationException();
+		if(calcularIntAleatorioEntre(1,2) == 1){
+			generarNuevoHospital();
+		}else{
+			generarNuevoCuartel();
+		}
 	}
 
 	private void generarNuevoCuartel() {
-		throw new UnsupportedOperationException();
+		this.tiendaActual = new Hospital();
 	}
 
 	private void generarNuevoHospital() {
-		throw new UnsupportedOperationException();
+		this.tiendaActual = new Cuartel();
 	}
 
 	public Enemigo getEnemigo() {
@@ -60,14 +54,14 @@ public class Juego {
 	}
 
 	public void generarNuevoEnemigo() {
-		throw new UnsupportedOperationException();
+		this.enemigo = new Enemigo(this);
 	}
 
 	private int calcularIntAleatorioEntre(int min, int max) {
-		throw new UnsupportedOperationException();
+		return (int) (Math.random() * ((max + 1) - min)) + min;
 	}
 
 	private int calcularFichasGanadas() {
-		throw new UnsupportedOperationException();
+		return (this.enemigo.getVidaMaxima() / 3) + (this.enemigo.getPuntosDeDaño()/2);
 	}
 }

@@ -2,14 +2,11 @@ package backend_kap;
 
 public class Tienda {
 	protected int precioJeringa;
-	protected int precioCartucho;
+	protected int precioCargador;
 	protected ArmaPrimaria armaPrimariaEnVenta;
 	protected ArmaSecundaria armaSecundariaEnVenta;
-	protected Jugador jugador;
 
-	public Tienda(Jugador jugador) {
-		throw new UnsupportedOperationException();
-	}
+	public Tienda() {}
 
 	public ArmaPrimaria getArmaPrimariaEnVenta() {
 		return this.armaPrimariaEnVenta;
@@ -27,31 +24,31 @@ public class Tienda {
 		this.precioJeringa = precioJeringa;
 	}
 
-	public int getPrecioCartucho() {
-		return this.precioCartucho;
+	public int getPrecioCargador() {
+		return this.precioCargador;
 	}
 
-	public void setPrecioCartucho(int precioCartucho) {
-		this.precioCartucho = precioCartucho;
+	public void setPrecioCargador(int precioCartucho) {
+		this.precioCargador = precioCartucho;
 	}
 
-	public Jugador getJugador() {
-		return this.jugador;
+	public void venderArmaPrimaria(Jugador jugador) {
+		jugador.setArmaPrimaria(this.armaPrimariaEnVenta);
+		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - jugador.getArmaPrimaria().getPrecio());
 	}
 
-	public void venderArmaPrimaria() {
-		throw new UnsupportedOperationException();
+	public void venderArmaSecundaria(Jugador jugador) {
+		jugador.setArmaSecundaria(this.armaSecundariaEnVenta);
+		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - jugador.getArmaSecundaria().getPrecio());
 	}
 
-	public void venderArmaSecundaria() {
-		throw new UnsupportedOperationException();
+	public void venderJeringa(Jugador jugador) {
+		jugador.getInventario().setJeringas(jugador.getInventario().getJeringas() + 1);
+		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.precioJeringa);
 	}
 
-	public void venderJeringa() {
-		throw new UnsupportedOperationException();
-	}
-
-	public void venderCartucho() {
-		throw new UnsupportedOperationException();
+	public void venderCargador(Jugador jugador) {
+		jugador.getInventario().setCargadores15Balas(jugador.getInventario().getCargadores15Balas() + 1);
+		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.precioCargador);
 	}
 }

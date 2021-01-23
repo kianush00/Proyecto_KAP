@@ -2,11 +2,14 @@ package backend_kap;
 
 public class Personaje {
 	protected int vidaActual;
-	protected int vidaMaxima;
+	protected final_int vidaMaxima;
 
 	public Personaje() {
 
+	}
 
+	public Personaje(Juego juego) {
+		throw new UnsupportedOperationException();
 	}
 
 	public int getVidaActual() {
@@ -18,10 +21,14 @@ public class Personaje {
 	}
 
 	public int getVidaMaxima() {
-		return this.vidaMaxima;
+		throw new UnsupportedOperationException();
+	}
+
+	public void atacar() {
+		throw new UnsupportedOperationException();
 	}
 
 	public void morir() {
-		System.exit(1);
+		throw new UnsupportedOperationException();
 	}
 }

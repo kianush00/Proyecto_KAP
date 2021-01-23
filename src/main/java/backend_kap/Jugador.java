@@ -1,24 +1,37 @@
 package backend_kap;
 
 public class Jugador extends Personaje {
-	private ArmaPrimaria armaPrimaria;
 	private Inventario inventario;
+	private ArmaPrimaria armaPrimaria;
 	private ArmaSecundaria armaSecundaria;
 
-	public Jugador(ArmaPrimaria armaPrimaria, Inventario inventario, ArmaSecundaria armaSecundaria) {
-		this.armaPrimaria=armaPrimaria;
-		this.inventario=inventario;
-		this.armaSecundaria=armaSecundaria;
+	public Jugador(Inventario inventario, ArmaPrimaria armaPrimaria, ArmaSecundaria armaSecundaria) {
+		this.inventario = inventario;
+		this.armaPrimaria = armaPrimaria;
+		this.armaSecundaria = armaSecundaria;
+	}
+
+	public Inventario getInventario() {
+		return inventario;
+	}
+
+	public ArmaPrimaria getArmaPrimaria() {
+		return armaPrimaria;
+	}
+
+	public void setArmaPrimaria(ArmaPrimaria armaPrimaria) {
+		this.armaPrimaria = armaPrimaria;
+	}
+
+	public ArmaSecundaria getArmaSecundaria() {
+		return armaSecundaria;
+	}
+
+	public void setArmaSecundaria(ArmaSecundaria armaSecundaria) {
+		this.armaSecundaria = armaSecundaria;
 	}
 
 	public boolean intentarHuir() {
-		int probabilidadesEscapar = (int) (Math.random() * 2);
-
-		if (probabilidadesEscapar == 1) {   //un medio de prob. de huir exitosamente
-			return true;
-		}else{
-			return false;
-		}
+		return true;
 	}
-
 }
