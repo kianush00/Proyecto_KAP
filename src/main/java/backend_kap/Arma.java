@@ -4,11 +4,10 @@ public class Arma {
 	protected int puntosDeDaño;
 	protected int precio;
 
-	public Arma(int puntosDeDaño) {
-		this.puntosDeDaño=puntosDeDaño;
+	public Arma(int puntosDeDaño, int precio) {
+		this.puntosDeDaño = puntosDeDaño;
+		this.precio = precio;
 	}
-
-
 
 	public int getPuntosDeDaño() {
 		return this.puntosDeDaño;
@@ -16,10 +15,6 @@ public class Arma {
 
 	public void setPuntosDeDaño(int puntosDeDaño) {
 		this.puntosDeDaño = puntosDeDaño;
-	}
-
-	public void atacarEnemigo(Enemigo enem) {
-		enem.setVidaActual((enem.getVidaActual()-this.puntosDeDaño));
 	}
 
 	public int getPrecio() {

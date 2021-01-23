@@ -11,6 +11,7 @@ public class Inventario {
 	private Jugador jugador;
 
 	public Inventario(Jugador jugador) {
+		this.jugador = jugador;
 		this.fichas = 0;
 		this.cargadores15Balas = 0;
 		this.jeringas = 0;
@@ -18,7 +19,6 @@ public class Inventario {
 		this.LIMITE_MUNICION = 50;
 		this.LIMITE_CARTUCHOS = 8;
 		this.LIMITE_JERINGAS = 8;
-		this.jugador = jugador;
 	}
 
 	public int getFichas() {
@@ -62,15 +62,19 @@ public class Inventario {
 	}
 
 	public void usarCartucho() {
-		this.municion += 15;
+		if((this.LIMITE_MUNICION - this.municion) > 15){
+			this.municion += 15;
+		}else{
+			this.municion = this.LIMITE_MUNICION;
+		}
 		this.cargadores15Balas--;
 	}
 
 	public void usarJeringa() {
-		if(this.jugador.getVidaActual() < 50){
+		if((this.jugador.getVIDA_MAXIMA() - this.jugador.getVidaActual()) > 50){
 			this.jugador.setVidaActual(this.jugador.getVidaActual()+50);
 		}else{
-			this.jugador.setVidaActual(this.jugador.getVidaMaxima());
+			this.jugador.setVidaActual(this.jugador.getVIDA_MAXIMA());
 		}
 		this.jeringas--;
 	}

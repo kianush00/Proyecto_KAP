@@ -62,6 +62,6 @@ public class Juego {
 	}
 
 	private int calcularFichasGanadas() {
-		return (this.enemigo.getVidaMaxima() / 3) + (this.enemigo.getPuntosDeDaño()/2);
+		return (this.enemigo.getVIDA_MAXIMA() / 3) + (this.enemigo.getPuntosDeDaño()/2);
 	}
 }

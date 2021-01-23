@@ -32,6 +32,12 @@ public class Jugador extends Personaje {
 	}
 
 	public boolean intentarHuir() {
-		return true;
+		int probabilidadesEscapar = (int) (Math.random() * 2);
+
+		if (probabilidadesEscapar == 0) {   // 1/2 prob. de huir exitosamente
+			return true;
+		}else{
+			return false;
+		}
 	}
 }

@@ -24,7 +24,7 @@ public class Hospital extends Tienda {
 	}
 
 	public void curarse(Jugador jugador) {
-		jugador.setVidaActual(jugador.getVidaMaxima());
+		jugador.setVidaActual(jugador.getVIDA_MAXIMA());
 		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.precioCurarse);
 	}
 }
