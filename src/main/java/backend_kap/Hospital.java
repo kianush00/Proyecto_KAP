@@ -4,15 +4,20 @@ public class Hospital extends Tienda {
 	private int precioCurarse;
 
 	public Hospital(Jugador jugador) {
-		throw new UnsupportedOperationException();
+		super(jugador);
+		super.precioJeringa = 8;
+		super.precioCartucho = 20;
+		super.armaPrimariaEnVenta = generarArmaPrimariaAleatoriaHospital();
+		super.armaSecundariaEnVenta = generarArmaSecundariaAleatoriaHospital();
+		this.precioCurarse = 15;
 	}
 
 	private ArmaPrimaria generarArmaPrimariaAleatoriaHospital() {
-		throw new UnsupportedOperationException();
+
 	}
 
 	private ArmaSecundaria generarArmaSecundariaAleatoriaHospital() {
-		throw new UnsupportedOperationException();
+
 	}
 
 	public int getPrecioCurarse() {
@@ -20,6 +25,6 @@ public class Hospital extends Tienda {
 	}
 
 	public void curarse() {
-		throw new UnsupportedOperationException();
+
 	}
 }

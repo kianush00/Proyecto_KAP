@@ -29,24 +29,14 @@ public class Juego {
 		return this.jugador;
 	}
 
-	public int desarrollarTurnoJugador() {
-		throw new UnsupportedOperationException();
-	}
-
-	public int desarrollarTurnoEnemigo() {
-		throw new UnsupportedOperationException();
-	}
-
-	public void desarrollarTerminoPelea() {
-		throw new UnsupportedOperationException();
-	}
-
 	public Tienda getTiendaActual() {
 		return this.tiendaActual;
 	}
 
 	public void generarNuevaTiendaAleatoria() {
-		throw new UnsupportedOperationException();
+		if(calcularIntAleatorioEntre(1,2) == 1){
+			this.tiendaActual = new Hospital();
+		}
 	}
 
 	private void generarNuevoCuartel() {
@@ -66,7 +56,7 @@ public class Juego {
 	}
 
 	private int calcularIntAleatorioEntre(int min, int max) {
-		throw new UnsupportedOperationException();
+		return (int) (Math.random() * ((max + 1) - min)) + min;
 	}
 
 	private int calcularFichasGanadas() {

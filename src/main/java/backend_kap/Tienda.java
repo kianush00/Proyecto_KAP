@@ -8,7 +8,7 @@ public class Tienda {
 	protected Jugador jugador;
 
 	public Tienda(Jugador jugador) {
-		throw new UnsupportedOperationException();
+		this.jugador = jugador;
 	}
 
 	public ArmaPrimaria getArmaPrimariaEnVenta() {
@@ -40,18 +40,18 @@ public class Tienda {
 	}
 
 	public void venderArmaPrimaria() {
-		throw new UnsupportedOperationException();
+
 	}
 
 	public void venderArmaSecundaria() {
-		throw new UnsupportedOperationException();
+
 	}
 
 	public void venderJeringa() {
-		throw new UnsupportedOperationException();
+
 	}
 
 	public void venderCartucho() {
-		throw new UnsupportedOperationException();
+
 	}
 }

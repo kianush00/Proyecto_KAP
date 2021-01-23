@@ -4,15 +4,20 @@ public class Cuartel extends Tienda {
 	private int precioCargarMunicion;
 
 	public Cuartel(Jugador jugador) {
-		throw new UnsupportedOperationException();
+		super(jugador);
+		super.precioJeringa = 20;
+		super.precioCartucho = 12;
+		super.armaPrimariaEnVenta = generarArmaPrimariaAleatoriaCuartel();
+		super.armaSecundariaEnVenta = generarArmaSecundariaAleatoriaCuartel();
+		this.precioCargarMunicion = 15;
 	}
 
 	private ArmaPrimaria generarArmaPrimariaAleatoriaCuartel() {
-		throw new UnsupportedOperationException();
+
 	}
 
 	private ArmaSecundaria generarArmaSecundariaAleatoriaCuartel() {
-		throw new UnsupportedOperationException();
+
 	}
 
 	public int getPrecioCargarMunicion() {
@@ -20,6 +25,6 @@ public class Cuartel extends Tienda {
 	}
 
 	public void cargarMunicion() {
-		throw new UnsupportedOperationException();
+
 	}
 }
