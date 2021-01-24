@@ -11,34 +11,31 @@ public class Cuartel extends Tienda {
 		this.PRECIO_CARGAR_MUNICION = 15;
 	}
 
-	private ArmaPrimaria generarArmaPrimariaAleatoriaCuartel() {
+	private ArmaPrimaria generarArmaPrimariaAleatoriaCuartel() throws IllegalArgumentException{
 		switch(calcularIntAleatorioEntre(1,4)){
 			case 1:
 				return generarRevolver();
-			break;
 			case 2:
 				return generarSubfusil();
-			break;
 			case 3:
 				return generarRifle();
-				break;
 			case 4:
 				return generarFrancotirador();
-				break;
+			default:
+				throw new IllegalArgumentException("Argumento inválido.");
 		}
 	}
 
-	private ArmaSecundaria generarArmaSecundariaAleatoriaCuartel() {
+	private ArmaSecundaria generarArmaSecundariaAleatoriaCuartel() throws IllegalArgumentException{
 		switch(calcularIntAleatorioEntre(1,3)){
 			case 1:
 				return generarCuchillo();
-			break;
 			case 2:
 				return generarBateBeisbol();
-			break;
 			case 3:
 				return generarHacha();
-				break;
+			default:
+				throw new IllegalArgumentException("Argumento inválido.");
 		}
 	}
 
@@ -52,14 +49,14 @@ public class Cuartel extends Tienda {
 	}
 
 	private ArmaPrimaria generarRifle(){
-		return new ArmaPrimaria();
+		return new ArmaPrimaria(35,25,TipoArmaPrimaria.RIFLE,3);
 	}
 
 	private ArmaPrimaria generarFrancotirador(){
-		return new ArmaPrimaria();
+		return new ArmaPrimaria(50,40,TipoArmaPrimaria.FRANCOTIRADOR,1);
 	}
 
 	private ArmaSecundaria generarHacha(){
-		return new ArmaSecundaria();
+		return new ArmaSecundaria(19,15,TipoArmaSecundaria.HACHA);
 	}
 }

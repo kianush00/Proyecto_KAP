@@ -11,25 +11,25 @@ public class Hospital extends Tienda {
 		this.PRECIO_CURARSE = 15;
 	}
 
-	private ArmaPrimaria generarArmaPrimariaAleatoriaHospital() {
+	private ArmaPrimaria generarArmaPrimariaAleatoriaHospital() throws IllegalArgumentException{
 		switch(calcularIntAleatorioEntre(1,2)){
 			case 1:
 				return generarRevolver();
-				break;
-			case 2:
+            case 2:
 				return generarSubfusil();
-				break;
-		}
-	}
+            default:
+                throw new IllegalArgumentException("Argumento inválido.");
+        }
+    }
 
-	private ArmaSecundaria generarArmaSecundariaAleatoriaHospital() {
+	private ArmaSecundaria generarArmaSecundariaAleatoriaHospital() throws IllegalArgumentException{
 		switch(calcularIntAleatorioEntre(1,2)){
 			case 1:
 				return generarCuchillo();
-				break;
 			case 2:
 				return generarBateBeisbol();
-				break;
+            default:
+                throw new IllegalArgumentException("Argumento inválido.");
 		}
 	}
 

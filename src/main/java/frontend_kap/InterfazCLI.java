@@ -151,11 +151,11 @@ public class InterfazCLI {
 		throw new UnsupportedOperationException();
 	}
 
-	private void mostrarAtaqueDelEnemigo(int dañoCausado) {
+	private void mostrarAtaqueDelEnemigo(int daÃ±oCausado) {
 		throw new UnsupportedOperationException();
 	}
 
-	private void mostrarAtaqueDelJugador(int dañoCausado) {
+	private void mostrarAtaqueDelJugador(int daÃ±oCausado) {
 		throw new UnsupportedOperationException();
 	}
 

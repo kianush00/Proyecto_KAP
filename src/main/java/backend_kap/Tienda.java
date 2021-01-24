@@ -53,22 +53,22 @@ public class Tienda {
 	}
 
 	protected ArmaPrimaria generarRevolver(){
-		return new ArmaPrimaria();
+		return new ArmaPrimaria(22,15,TipoArmaPrimaria.REVOLVER,1);
 	}
 
 	protected ArmaPrimaria generarSubfusil(){
-		return new ArmaPrimaria();
+		return new ArmaPrimaria(30,20,TipoArmaPrimaria.SUBFUSIL,5);
 	}
 
 	protected ArmaSecundaria generarCuchillo(){
-		return new ArmaSecundaria();
+		return new ArmaSecundaria(11,8,TipoArmaSecundaria.CUCHILLO);
 	}
 
 	protected ArmaSecundaria generarBateBeisbol(){
-		return new ArmaSecundaria();
+		return new ArmaSecundaria(13,11,TipoArmaSecundaria.BATE_BEISBOL);
 	}
 
 	protected int calcularIntAleatorioEntre(int min, int max) {
-		return (int) (Math.random() * ((max + 1) - min)) + min;
+		return (int) (Math.random() * ((max + 1) - min) + min);
 	}
 }

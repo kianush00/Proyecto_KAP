@@ -64,7 +64,7 @@ public class Juego {
 	}
 
 	private int calcularIntAleatorioEntre(int min, int max) {
-		return (int) (Math.random() * ((max + 1) - min)) + min;
+		return (int) (Math.random() * ((max + 1) - min) + min);
 	}
 
 	private int calcularFichasGanadas() {
