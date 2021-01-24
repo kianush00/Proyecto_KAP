@@ -25,8 +25,12 @@ public class Inventario {
 		return this.fichas;
 	}
 
-	public void setFichas(int fichas) {
-		this.fichas = fichas;
+	public void setFichas(int fichas) throws IllegalArgumentException{
+		if (fichas >= 0){
+			this.fichas = fichas;
+		}else{
+			throw new IllegalArgumentException("No te quedan fichas disponibles. Inténtalo más tarde.");
+		}
 	}
 
 	public int getCargadores15Balas() {

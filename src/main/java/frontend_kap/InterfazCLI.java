@@ -34,35 +34,35 @@ public class InterfazCLI {
 	}
 
 	private void desarrollarTienda(Juego juego){
-		boolean salir = false;
+		boolean salirTienda = false;
 
 		juego.generarNuevaTiendaAleatoria();
 		darBienvenidaTienda(juego.getTiendaActual());
-		while(!salir){
+		while(!salirTienda){
 			if(juego.getTiendaActual() instanceof Hospital){
 				mostrarOpcionesHospital();
 				switch (elegirOpcionYValidar(1,3)){
-					case 1:
+					case 1:		//comprar
 						desarrollarCompraTienda(juego);
 						break;
-					case 2:
+					case 2:		//curarse
 						desarrollarCompraCurarse(juego);
 						break;
-					case 3:
-						salir = true;
+					case 3:		//salir de la tienda
+						salirTienda = true;
 						break;
 				}
 			}else{
 				mostrarOpcionesCuartel();
 				switch (elegirOpcionYValidar(1,3)){
-					case 1:
+					case 1:		//comprar
 						desarrollarCompraTienda(juego);
 						break;
-					case 2:
+					case 2:		//cargar munición
 						desarrollarCompraCargarMunicion(juego);
 						break;
-					case 3:
-						salir = true;
+					case 3:		//salir de la tienda
+						salirTienda = true;
 						break;
 				}
 			}
@@ -88,31 +88,104 @@ public class InterfazCLI {
 	}
 
 	private void desarrollarCompraTienda(Juego juego) {
+		boolean salirCompra = false;
 
+		ofrecerProductosTienda(juego.getTiendaActual());
+		do {
+			mostrarFichasActuales(juego.getJugador().getInventario());
+			mostrarOpcionesComprarEnTienda();
+			switch (elegirOpcionYValidar(1,5)){
+				case 1:		//comprar arma principal
+					desarrollarCompraArmaPrimaria(juego);
+					break;
+				case 2:		//comprar arma secundaria
+					desarrollarCompraArmaSecundaria(juego);
+					break;
+				case 3:		//comprar jeringa
+					desarrollarCompraJeringa(juego);
+					break;
+				case 4:		//comprar cargador de 15 balas
+					desarrollarCompraCargador15balas(juego);
+					break;
+				case 5:		//salir de la compra
+					salirCompra = true;
+					break;
+			}
+		} while (!salirCompra);
 	}
 
 	private void ofrecerProductosTienda(Tienda tienda) {
-		throw new UnsupportedOperationException();
+		System.out.println("Arma primaria disponible: " + tienda.getArmaPrimariaEnVenta().getTipo());
+		System.out.println("-Daño: " + tienda.getArmaPrimariaEnVenta().getPuntosDeDaño());
+		System.out.println("-Ronda de munición: " + tienda.getArmaPrimariaEnVenta().getRondaMunicion());
+		System.out.println("-Precio: " + tienda.getArmaPrimariaEnVenta().getPrecio() + " fichas.");
+		System.out.println("\nArma secundaria disponible: " + tienda.getArmaSecundariaEnVenta().getTipo());
+		System.out.println("-Daño: " + tienda.getArmaSecundariaEnVenta().getPuntosDeDaño());
+		System.out.println("-Precio: " + tienda.getArmaSecundariaEnVenta().getPrecio() + " fichas.");
+		System.out.println("\nPrecio por cada jeringa: " + tienda.getPrecioJeringa() + " fichas.");
+		System.out.println("\nPrecio por cada cargador con 15 balas: " + tienda.getPrecioCargador() + " fichas.");
 	}
 
 	private void mostrarOpcionesComprarEnTienda() {
-		throw new UnsupportedOperationException();
+		System.out.println("\nElige una opción: ");
+		System.out.println("1. Comprar arma primaria");
+		System.out.println("2. Comprar arma secundaria");
+		System.out.println("3. Comprar jeringa");
+		System.out.println("4. Comprar cargador de 15 balas");
+		System.out.println("5. Salir");
 	}
 
-	private void comprarArmaPrimaria(Tienda tienda) {
-		throw new UnsupportedOperationException();
+	private void desarrollarCompraArmaPrimaria(Juego juego) {
+		try {
+			if(confirmarCompra() == 1){
+				juego.getJugador().setArmaPrimaria(juego.getTiendaActual().getArmaPrimariaEnVenta());
+				juego.getJugador().getInventario().setFichas(juego.getJugador().getInventario().getFichas() -
+						juego.getTiendaActual().getArmaPrimariaEnVenta().getPrecio());
+				mostrarExitoCompra();
+			}
+		} catch (IllegalArgumentException iae){
+			System.err.println(iae.getMessage());
+		}
 	}
 
-	private void comprarArmaSecundaria(Tienda tienda) {
-		throw new UnsupportedOperationException();
+	private void desarrollarCompraArmaSecundaria(Juego juego) {
+		try {
+			if(confirmarCompra() == 1){
+				juego.getJugador().setArmaSecundaria(juego.getTiendaActual().getArmaSecundariaEnVenta());
+				juego.getJugador().getInventario().setFichas(juego.getJugador().getInventario().getFichas() -
+						juego.getTiendaActual().getArmaSecundariaEnVenta().getPrecio());
+				mostrarExitoCompra();
+			}
+		} catch (IllegalArgumentException iae){
+			System.err.println(iae.getMessage());
+		}
 	}
 
-	private void comprarJeringa(Tienda tienda) {
-		throw new UnsupportedOperationException();
+	private void desarrollarCompraJeringa(Juego juego) {
+		try {
+			if(confirmarCompra() == 1){
+				juego.getJugador().getInventario().setJeringas(juego.getJugador().getInventario().getJeringas() + 1);
+				juego.getJugador().getInventario().setFichas(juego.getJugador().getInventario().getFichas() -
+						juego.getTiendaActual().getPrecioJeringa());
+				mostrarExitoCompra();
+			}
+		} catch (IllegalArgumentException iae){
+			System.err.println(iae.getMessage());
+		}
 	}
 
-	private void comprarCartucho15balas(Tienda tienda) {
-		throw new UnsupportedOperationException();
+	private void desarrollarCompraCargador15balas(Juego juego) {
+		try {
+			if(confirmarCompra() == 1){
+				juego.getJugador().getInventario().setCargadores15Balas(juego.getJugador().getInventario().
+						getCargadores15Balas() + 1);
+				juego.getJugador().getInventario().setFichas(juego.getJugador().getInventario().getFichas() -
+						juego.getTiendaActual().getPrecioCargador());
+				mostrarExitoCompra();
+			}
+		} catch (IllegalArgumentException iae){
+			System.err.println(iae.getMessage());
+		}
 	}
 
 	private void mostrarPrecioCurarse(Hospital hospital) {
@@ -154,6 +227,7 @@ public class InterfazCLI {
 
 	private int confirmarCompra() {
 		System.out.println("¿Estás seguro de realizar la compra?");
+		System.out.println("Elige una opción: ");
 		System.out.println("1. Si");
 		System.out.println("2. No");
 		return elegirOpcionYValidar(1,2);
@@ -199,7 +273,7 @@ public class InterfazCLI {
 		System.out.println("Fichas actuales: " + inventario.getFichas());
 	}
 
-	private void mostrarJeringasYCartuchosActuales(Inventario inventario) {
+	private void mostrarJeringasYCargadoresActuales(Inventario inventario) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -50,9 +50,7 @@ public class Cuartel extends Tienda {
 	public void cargarMunicion(Jugador jugador) throws IllegalArgumentException{
 		if(jugador.getInventario().getMunicion() == jugador.getInventario().getLIMITE_MUNICION()){
 			throw new IllegalArgumentException("No necesitas cargar tu munición, está al máximo.");
-		}else if(jugador.getInventario().getFichas() < this.PRECIO_CARGAR_MUNICION){
-			throw new IllegalArgumentException("No te quedan fichas disponibles. Inténtalo más tarde.");
-		}else{
+		} else {
 			jugador.getInventario().setMunicion(jugador.getInventario().getLIMITE_MUNICION());
 			jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.PRECIO_CARGAR_MUNICION);
 		}

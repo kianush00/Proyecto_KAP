@@ -44,9 +44,7 @@ public class Hospital extends Tienda {
 	public void curarse(Jugador jugador) throws IllegalArgumentException{
 		if(jugador.getVidaActual() == jugador.getVIDA_MAXIMA()){
 			throw new IllegalArgumentException("No necesitas curarte, tu vida está al máximo.");
-		}else if(jugador.getInventario().getFichas() < this.PRECIO_CURARSE){
-			throw new IllegalArgumentException("No te quedan fichas disponibles. Inténtalo más tarde.");
-		}else{
+		} else {
 			jugador.setVidaActual(jugador.getVIDA_MAXIMA());
 			jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.PRECIO_CURARSE);
 		}
