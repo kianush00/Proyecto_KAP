@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class InterfazCLI {
 
 	public void lanzarVentana() {
-		Juego juego = new Juego(1,29);
+		Juego juego = new Juego(29);
 		darBienvenida();
 		for (juego.getNivelActual(); juego.getNivelActual() <= juego.getNIVELES();
 			 juego.setNivelActual(juego.getNivelActual() + 1)) {
