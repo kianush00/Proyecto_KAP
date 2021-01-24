@@ -12,7 +12,8 @@ public class ArmaSecundaria extends Arma {
 		return this.TIPO;
 	}
 
-	public void atacarEnemigo(Enemigo enemigo) {
+	public int atacarEnemigo(Enemigo enemigo) {
 		enemigo.setVidaActual((enemigo.getVidaActual() - this.puntosDeDaño));
+		return enemigo.getVidaActual();
 	}
 }
