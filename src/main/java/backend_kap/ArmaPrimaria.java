@@ -26,12 +26,14 @@ public class ArmaPrimaria extends Arma {
 		this.rondaMunicion = rondaMunicion;
 	}
 
-	public void atacarEnemigo(Enemigo enemigo, Inventario inv) {
+	public int atacarEnemigo(Enemigo enemigo, Inventario inv) {
 		enemigo.setVidaActual((enemigo.getVidaActual() - this.puntosDeDaño));
 		restarMunicion(inv);
+		return enemigo.getVidaActual();
 	}
 
-	private void restarMunicion(Inventario inv) {
+	public int restarMunicion(Inventario inv) {
 		inv.setMunicion(inv.getMunicion() - this.rondaMunicion);
+		return inv.getMunicion();
 	}
 }
