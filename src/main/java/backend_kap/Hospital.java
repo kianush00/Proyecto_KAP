@@ -6,9 +6,13 @@ public class Hospital extends Tienda {
 	public Hospital() {
 		super.precioJeringa = 8;
 		super.precioCargador = 20;
-		super.armaPrimariaEnVenta = generarArmaPrimariaAleatoriaHospital();
-		super.armaSecundariaEnVenta = generarArmaSecundariaAleatoriaHospital();
 		this.PRECIO_CURARSE = 15;
+		try{
+			super.armaPrimariaEnVenta = generarArmaPrimariaAleatoriaHospital();
+			super.armaSecundariaEnVenta = generarArmaSecundariaAleatoriaHospital();
+		}catch (IllegalArgumentException iae){
+			System.err.println(iae.getMessage());
+		}
 	}
 
 	private ArmaPrimaria generarArmaPrimariaAleatoriaHospital() throws IllegalArgumentException{
@@ -38,11 +42,13 @@ public class Hospital extends Tienda {
 	}
 
 	public void curarse(Jugador jugador) throws IllegalArgumentException{
-		if(jugador.getVidaActual() != jugador.getVIDA_MAXIMA()){
+		if(jugador.getVidaActual() == jugador.getVIDA_MAXIMA()){
+			throw new IllegalArgumentException("No necesitas curarte, tu vida está al máximo.");
+		}else if(jugador.getInventario().getFichas() < this.PRECIO_CURARSE){
+			throw new IllegalArgumentException("No te quedan fichas disponibles. Inténtalo más tarde.");
+		}else{
 			jugador.setVidaActual(jugador.getVIDA_MAXIMA());
 			jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.PRECIO_CURARSE);
-		}else{
-			throw new IllegalArgumentException("No necesitas curarte, tu vida está al máximo.");
 		}
 	}
 }

@@ -6,9 +6,13 @@ public class Cuartel extends Tienda {
 	public Cuartel() {
 		super.precioJeringa = 20;
 		super.precioCargador = 12;
-		super.armaPrimariaEnVenta = generarArmaPrimariaAleatoriaCuartel();
-		super.armaSecundariaEnVenta = generarArmaSecundariaAleatoriaCuartel();
 		this.PRECIO_CARGAR_MUNICION = 15;
+		try{
+			super.armaPrimariaEnVenta = generarArmaPrimariaAleatoriaCuartel();
+			super.armaSecundariaEnVenta = generarArmaSecundariaAleatoriaCuartel();
+		}catch (IllegalArgumentException iae){
+			System.err.println(iae.getMessage());
+		}
 	}
 
 	private ArmaPrimaria generarArmaPrimariaAleatoriaCuartel() throws IllegalArgumentException{
@@ -44,11 +48,13 @@ public class Cuartel extends Tienda {
 	}
 
 	public void cargarMunicion(Jugador jugador) throws IllegalArgumentException{
-		if(jugador.getInventario().getMunicion() != jugador.getInventario().getLIMITE_MUNICION()){
+		if(jugador.getInventario().getMunicion() == jugador.getInventario().getLIMITE_MUNICION()){
+			throw new IllegalArgumentException("No necesitas cargar tu munición, está al máximo.");
+		}else if(jugador.getInventario().getFichas() < this.PRECIO_CARGAR_MUNICION){
+			throw new IllegalArgumentException("No te quedan fichas disponibles. Inténtalo más tarde.");
+		}else{
 			jugador.getInventario().setMunicion(jugador.getInventario().getLIMITE_MUNICION());
 			jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.PRECIO_CARGAR_MUNICION);
-		}else{
-			throw new IllegalArgumentException("No necesitas curarte, tu vida está al máximo.");
 		}
 	}
 

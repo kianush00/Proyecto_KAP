@@ -5,7 +5,9 @@ public class Jugador extends Personaje {
 	private ArmaPrimaria armaPrimaria;
 	private ArmaSecundaria armaSecundaria;
 
-	public Jugador(Inventario inventario, ArmaPrimaria armaPrimaria, ArmaSecundaria armaSecundaria) {
+	public Jugador(int vidaMaxima, Inventario inventario, ArmaPrimaria armaPrimaria, ArmaSecundaria armaSecundaria) {
+		super.VIDA_MAXIMA = vidaMaxima;
+		super.vidaActual = super.VIDA_MAXIMA;
 		this.inventario = inventario;
 		this.armaPrimaria = armaPrimaria;
 		this.armaSecundaria = armaSecundaria;

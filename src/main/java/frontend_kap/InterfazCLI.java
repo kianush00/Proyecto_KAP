@@ -16,7 +16,7 @@ public class InterfazCLI {
 	static Scanner input = new Scanner(System.in);
 
 	public void lanzarVentana() {
-		Juego juego = new Juego(1,29);
+		Juego juego = new Juego(29);
 		darBienvenida();
 		for (juego.getNivelActual(); juego.getNivelActual() <= juego.getNIVELES();
 			 juego.setNivelActual(juego.getNivelActual() + 1)) {
@@ -43,17 +43,10 @@ public class InterfazCLI {
 				mostrarOpcionesHospital();
 				switch (elegirOpcionYValidar(1,3)){
 					case 1:
-
+						desarrollarCompraTienda(juego);
 						break;
 					case 2:
-						try{
-							mostrarPrecioCurarse((Hospital) juego.getTiendaActual());
-							mostrarFichasActuales(juego.getJugador().getInventario());
-							mostrarVidaActualJugador(juego.getJugador());
-							((Hospital) juego.getTiendaActual()).curarse(juego.getJugador());
-						}catch (IllegalArgumentException iae){
-							System.err.println(iae.getMessage());
-						}
+						desarrollarCompraCurarse(juego);
 						break;
 					case 3:
 						salir = true;
@@ -63,17 +56,10 @@ public class InterfazCLI {
 				mostrarOpcionesCuartel();
 				switch (elegirOpcionYValidar(1,3)){
 					case 1:
-
+						desarrollarCompraTienda(juego);
 						break;
 					case 2:
-						try{
-							mostrarPrecioCargarMunicion((Cuartel) juego.getTiendaActual());
-							mostrarFichasActuales(juego.getJugador().getInventario());
-							mostrarMunicionActual(juego.getJugador().getInventario());
-							((Cuartel) juego.getTiendaActual()).cargarMunicion(juego.getJugador());
-						}catch (IllegalArgumentException iae){
-							System.out.println(iae.getMessage());
-						}
+						desarrollarCompraCargarMunicion(juego);
 						break;
 					case 3:
 						salir = true;
@@ -101,41 +87,8 @@ public class InterfazCLI {
 		System.out.println("3. Salir");
 	}
 
-	private int elegirOpcionYValidar(int min, int max) {
-		int opcion = -1;    //se inicializa la opción
-		boolean opcionEsValida = false;
+	private void desarrollarCompraTienda(Juego juego) {
 
-		while(!opcionEsValida){
-			validarOpcionInt();
-			opcion = ingresarInt();
-			opcionEsValida = opcionEstaDentroDeRango(opcion,min,max);
-		}
-
-		return opcion;
-	}
-
-	private void validarOpcionInt() {
-		while(!input.hasNextInt()){
-			System.err.println("La opción ingresada no es un entero. Intenta nuevamente:");
-			input.next();   //pasa al siguiente iterador
-		}
-	}
-
-	private int ingresarInt() {
-		return input.nextInt();
-	}
-
-	private boolean opcionEstaDentroDeRango(int opcion, int min, int max) {
-		if((opcion < min) || (opcion > max)){
-			System.err.println("La opción ingresada no se encuentra dentro del rango. Intenta nuevamente:");
-			return false;
-		}else{
-			return true;
-		}
-	}
-
-	private void comprarEnTienda(Tienda tienda) {
-		throw new UnsupportedOperationException();
 	}
 
 	private void ofrecerProductosTienda(Tienda tienda) {
@@ -143,10 +96,6 @@ public class InterfazCLI {
 	}
 
 	private void mostrarOpcionesComprarEnTienda() {
-		throw new UnsupportedOperationException();
-	}
-
-	private void elegirOpcionYDesarrollarCompra(Tienda tienda) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -175,32 +124,43 @@ public class InterfazCLI {
 				+ " fichas.");
 	}
 
-	private void realizarCompraCurarse(Hospital hospital) {
-		throw new UnsupportedOperationException();
+	private void desarrollarCompraCurarse(Juego juego) {
+		try{
+			mostrarPrecioCurarse((Hospital) juego.getTiendaActual());
+			mostrarFichasActuales(juego.getJugador().getInventario());
+			mostrarVidaActualJugador(juego.getJugador());
+			if(confirmarCompra() == 1){
+				((Hospital) juego.getTiendaActual()).curarse(juego.getJugador());
+				mostrarExitoCompra();
+			}
+		}catch (IllegalArgumentException iae){
+			System.err.println(iae.getMessage());
+		}
 	}
 
-	private void realizarCompraCargarMunicion(Cuartel cuartel) {
-		throw new UnsupportedOperationException();
+	private void desarrollarCompraCargarMunicion(Juego juego) {
+		try{
+			mostrarPrecioCargarMunicion((Cuartel) juego.getTiendaActual());
+			mostrarFichasActuales(juego.getJugador().getInventario());
+			mostrarMunicionActual(juego.getJugador().getInventario());
+			if(confirmarCompra() == 1){
+				((Cuartel) juego.getTiendaActual()).cargarMunicion(juego.getJugador());
+				mostrarExitoCompra();
+			}
+		}catch (IllegalArgumentException iae){
+			System.err.println(iae.getMessage());
+		}
 	}
 
-	private int gestionarCompra(Jugador jugador, int precio) {
-		throw new UnsupportedOperationException();
-	}
-
-	private void confirmarCompra() {
-		throw new UnsupportedOperationException();
-	}
-
-	private void anularCompra() {
-		throw new UnsupportedOperationException();
+	private int confirmarCompra() {
+		System.out.println("¿Estás seguro de realizar la compra?");
+		System.out.println("1. Si");
+		System.out.println("2. No");
+		return elegirOpcionYValidar(1,2);
 	}
 
 	private void mostrarExitoCompra() {
-		throw new UnsupportedOperationException();
-	}
-
-	private void mostrarOpcionesSiNo() {
-		throw new UnsupportedOperationException();
+		System.out.println("La compra ha sido exitosa.");
 	}
 
 	private void anunciarInicioPelea(Juego juego) {
@@ -241,6 +201,39 @@ public class InterfazCLI {
 
 	private void mostrarJeringasYCartuchosActuales(Inventario inventario) {
 		throw new UnsupportedOperationException();
+	}
+
+	private int elegirOpcionYValidar(int min, int max) {
+		int opcion = -1;    //se inicializa la opción
+		boolean opcionEsValida = false;
+
+		while(!opcionEsValida){
+			validarOpcionInt();
+			opcion = ingresarInt();
+			opcionEsValida = opcionEstaDentroDeRango(opcion,min,max);
+		}
+
+		return opcion;
+	}
+
+	private void validarOpcionInt() {
+		while(!input.hasNextInt()){
+			System.err.println("La opción ingresada no es un entero. Intenta nuevamente:");
+			input.next();   //pasa al siguiente iterador
+		}
+	}
+
+	private int ingresarInt() {
+		return input.nextInt();
+	}
+
+	private boolean opcionEstaDentroDeRango(int opcion, int min, int max) {
+		if((opcion < min) || (opcion > max)){
+			System.err.println("La opción ingresada no se encuentra dentro del rango. Intenta nuevamente:");
+			return false;
+		}else{
+			return true;
+		}
 	}
 
 	public static void darBienvenida() {

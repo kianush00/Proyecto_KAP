@@ -7,10 +7,10 @@ public class Juego {
 	private Jugador jugador;
 	private Tienda tiendaActual;
 
-	public Juego(int nivelActual, final int NIVELES) {
+	public Juego(final int NIVELES) {
+		this.NIVELES = NIVELES;
 		this.nivelActual = 1;
-		this.NIVELES = 29;
-		jugador = new Jugador(new Inventario(jugador),
+		jugador = new Jugador(100,new Inventario(jugador),
 				new ArmaPrimaria(15,0,TipoArmaPrimaria.PISTOLA9MM,1),
 				new ArmaSecundaria(7,0,TipoArmaSecundaria.PUÑOS));
 	}
