@@ -30,7 +30,45 @@ public class InterfazCLI {
 	}
 
 	private void desarrollarPelea(Juego juego){
+		boolean turnoJugador = true;
+		boolean huir = false;
 
+		juego.generarNuevoEnemigo();
+		anunciarInicioPelea(juego);
+		mostrarJeringasYCargadoresActuales(juego.getJugador().getInventario());
+		while ((juego.getJugador().getVidaActual() > 0) && (juego.getEnemigoActual().getVidaActual() > 0) && (!huir)) {
+			//se desarrolla pelea dentro del bucle while; se detiene cuando alguien muere o el jugador logra huir
+			if (turnoJugador) {
+				System.out.println("Opcion 1 para atacar, 2 para huir, 3 para curarte y finalmente 4 para usar un cartucho: ");
+				switch (elegirOpcionYValidar(1,4)) {
+					case 1:
+						mostrarAtaqueDelJugador(juego);
+						break;
+					case 2:
+						huir = juego.getJugador().intentarHuir();   //si el jugador logra huir, retorna true. Viceversa retorna false
+						break;
+					case 3:
+						try {
+							juego.getJugador().getInventario().usarJeringa();
+						}
+						catch (IllegalArgumentException iae){
+							System.err.println(iae.getMessage());
+						}
+						break;
+					case 4:
+						try{
+							juego.getJugador().getInventario().usarCartucho();}
+						catch (IllegalArgumentException iae){
+							System.err.println(iae.getMessage());
+						}
+						break;
+				}
+			} else {
+				mostrarAtaqueDelEnemigo(juego);
+			}
+			turnoJugador = !turnoJugador;   //se cambia el turno
+		}
+		desarrollarTerminoPelea(juego,huir);
 	}
 
 	private void desarrollarTienda(Juego juego){
@@ -238,19 +276,20 @@ public class InterfazCLI {
 	}
 
 	private void anunciarInicioPelea(Juego juego) {
-		throw new UnsupportedOperationException();
+		System.out.println("\nInicia la batalla del nivel " + juego.getNivelActual());
 	}
 
 	private void mostrarBalasGastadas(ArmaPrimaria armaPrimaria) {
-		throw new UnsupportedOperationException();
+		System.out.println("Gastaste "+armaPrimaria.getRondaMunicion()+ " balas.");
 	}
 
 	private void mostrarMunicionActual(Inventario inventario) {
 		System.out.println("Munición actual: " + inventario.getMunicion());
 	}
 
-	private void anunciarMuerteJugador() {
-		throw new UnsupportedOperationException();
+	private void anunciarMuerteJugador(Juego juego) {
+		System.err.println("Moriste, fin de la aventura.");
+		juego.getJugador().morir();
 	}
 
 	private void mostrarVidaActualEnemigo(Enemigo enemigo) {
@@ -261,12 +300,28 @@ public class InterfazCLI {
 		System.out.println("Tu vida actual es: " + jugador.getVidaActual());
 	}
 
-	private void mostrarAtaqueDelEnemigo(int dañoCausado) {
+	private void mostrarAtaqueDelEnemigo(Juego juego) {
+		int probabilidadesAtacar = (int) (Math.random() * 3);
 
+		if (probabilidadesAtacar == 0) {    // un tercio de prob. de que el enemigo falle
+			System.out.println("El enemigo ha fallado.");
+		} else {
+			juego.getEnemigoActual().atacarJugador(juego.getJugador());
+			System.out.println("Te han atacado con " + juego.getEnemigoActual().getPuntosDeDaño() + " Puntos de daño.");
+			mostrarVidaActualJugador(juego.getJugador());
+		}
 	}
 
-	private void mostrarAtaqueDelJugador(int dañoCausado) {
-
+	private void mostrarAtaqueDelJugador(Juego juego) {
+		if (juego.getJugador().getInventario().getMunicion() >= juego.getJugador().getArmaPrimaria().getRondaMunicion()) {
+			//si la municion del jugador es mayor o igual que la ronda de municion
+			juego.getJugador().getArmaPrimaria().atacarEnemigo(juego.getEnemigoActual(), juego.getJugador().getInventario());
+			mostrarBalasGastadas(juego.getJugador().getArmaPrimaria());
+			mostrarVidaActualEnemigo(juego.getEnemigoActual());
+		} else {
+			juego.getJugador().getArmaSecundaria().atacarEnemigo(juego.getEnemigoActual());
+			mostrarVidaActualEnemigo(juego.getEnemigoActual());
+		}
 	}
 
 	private void mostrarFichasActuales(Inventario inventario) {
@@ -274,11 +329,20 @@ public class InterfazCLI {
 	}
 
 	private void mostrarJeringasYCargadoresActuales(Inventario inventario) {
-		throw new UnsupportedOperationException();
+		System.out.println("Tus recursos actuales son: ");
+		System.out.println("-" + inventario.getCargadores15Balas() + " cartucho(s) de 15 balas.");
+		System.out.println("-" + inventario.getJeringas() + " jeringa(s).");
 	}
 
 	private void desarrollarTerminoPelea(Juego juego, boolean huir){
-
+		if(!huir){
+			if (juego.getJugador().getVidaActual() <= 0) {
+				anunciarMuerteJugador(juego);
+			} else {
+				System.out.println("Ganaste la batalla!");
+				juego.calcularFichasGanadas();
+			}
+		}
 	}
 
 	private int elegirOpcionYValidar(int min, int max) {
@@ -314,7 +378,7 @@ public class InterfazCLI {
 		}
 	}
 
-	public static void darBienvenida() {
+	private void darBienvenida() {
 		System.out.println("\nVarios años después de una abominable pandemia...");
 		System.out.println("Bienvenido al apocalipsis, sobreviviente...");
 		System.out.println("Tu misión es sobrevivir, actualmente posees una pistola de 9mm con 30 balas que recogiste" +

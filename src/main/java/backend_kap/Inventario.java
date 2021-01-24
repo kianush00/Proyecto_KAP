@@ -65,21 +65,29 @@ public class Inventario {
 		return this.jugador;
 	}
 
-	public void usarCartucho() {
-		if((this.LIMITE_MUNICION - this.municion) > 15){
-			this.municion += 15;
-		}else{
-			this.municion = this.LIMITE_MUNICION;
+	public void usarCartucho() throws IllegalArgumentException {
+		if (this.cargadores15Balas > 0) {
+			if ((this.LIMITE_MUNICION - this.municion) > 15) {
+				this.municion += 15;
+			} else {
+				this.municion = this.LIMITE_MUNICION;
+			}
+			this.cargadores15Balas--;
+		} else {
+			throw new IllegalArgumentException("No te quedan cargadores");
 		}
-		this.cargadores15Balas--;
 	}
 
-	public void usarJeringa() {
-		if((this.jugador.getVIDA_MAXIMA() - this.jugador.getVidaActual()) > 50){
-			this.jugador.setVidaActual(this.jugador.getVidaActual()+50);
-		}else{
-			this.jugador.setVidaActual(this.jugador.getVIDA_MAXIMA());
+	public void usarJeringa() throws IllegalArgumentException {
+		if (this.jeringas > 0) {
+			if ((this.jugador.getVIDA_MAXIMA() - this.jugador.getVidaActual()) > 50) {
+				this.jugador.setVidaActual(this.jugador.getVidaActual() + 50);
+			} else {
+				this.jugador.setVidaActual(this.jugador.getVIDA_MAXIMA());
+			}
+			this.jeringas--;
+		} else {
+			throw new IllegalArgumentException("No te quedan jeringas");
 		}
-		this.jeringas--;
 	}
 }

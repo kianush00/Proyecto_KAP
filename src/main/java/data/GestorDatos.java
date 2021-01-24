@@ -10,12 +10,14 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 
 public class GestorDatos {
-	private String nombreArchivo;
 
-	public void GuardarPuntaje()throws IOException {
+	public GestorDatos() {
+	}
 
-		String[] entries = { "book", "coin", "pencil", "cup" };
-		String fileName = "src/main/resources/items.csv";
+	public void GuardarPuntaje(String puntaje, String nombreJugador)throws IOException {
+
+		String[] entries = { puntaje, nombreJugador };
+		String fileName = "src/main/resources/puntajes.csv";
 
 		try (var fos = new FileOutputStream(fileName,true);
 			 var osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
@@ -27,7 +29,7 @@ public class GestorDatos {
 
 	public void VerPuntajes() throws IOException,
 			CsvValidationException {
-		var fileName = "src/main/resources/items.csv";
+		var fileName = "src/main/resources/puntajes.csv";
 
 		try (var fr = new FileReader(fileName, StandardCharsets.UTF_8);
 			 var reader = new CSVReader(fr)) {
@@ -38,19 +40,9 @@ public class GestorDatos {
 
 				for (var e : nextLine) {
 					System.out.format("%s ", e);
-
-
 				}
 			}
 		}
 
-	}
-
-	public String getNombreArchivo() {
-		return this.nombreArchivo;
-	}
-
-	public void setNombreArchivo(String nombreArchivo) {
-		this.nombreArchivo = nombreArchivo;
 	}
 }
