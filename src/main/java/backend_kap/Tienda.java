@@ -20,36 +20,36 @@ public class Tienda {
 		return this.precioJeringa;
 	}
 
-	public void setPrecioJeringa(int precioJeringa) {
-		this.precioJeringa = precioJeringa;
-	}
-
 	public int getPrecioCargador() {
 		return this.precioCargador;
 	}
 
-	public void setPrecioCargador(int precioCartucho) {
-		this.precioCargador = precioCartucho;
-	}
-
 	public void venderArmaPrimaria(Jugador jugador) {
+		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.armaPrimariaEnVenta.getPrecio());
 		jugador.setArmaPrimaria(this.armaPrimariaEnVenta);
-		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - jugador.getArmaPrimaria().getPrecio());
 	}
 
 	public void venderArmaSecundaria(Jugador jugador) {
+		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.armaSecundariaEnVenta.getPrecio());
 		jugador.setArmaSecundaria(this.armaSecundariaEnVenta);
-		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - jugador.getArmaSecundaria().getPrecio());
 	}
 
 	public void venderJeringa(Jugador jugador) {
-		jugador.getInventario().setJeringas(jugador.getInventario().getJeringas() + 1);
-		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.precioJeringa);
+		try {
+			jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.precioJeringa);
+			jugador.getInventario().setJeringas(jugador.getInventario().getJeringas() + 1);
+		} catch (IllegalArgumentException iae){
+			System.err.println(iae.getMessage());
+		}
 	}
 
 	public void venderCargador(Jugador jugador) {
-		jugador.getInventario().setCargadores15Balas(jugador.getInventario().getCargadores15Balas() + 1);
-		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.precioCargador);
+		try {
+			jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.precioCargador);
+			jugador.getInventario().setCargadores15Balas(jugador.getInventario().getCargadores15Balas() + 1);
+		} catch (IllegalArgumentException iae){
+			System.err.println(iae.getMessage());
+		}
 	}
 
 	protected ArmaPrimaria generarRevolver(){

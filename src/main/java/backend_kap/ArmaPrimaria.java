@@ -1,29 +1,21 @@
 package backend_kap;
 
 public class ArmaPrimaria extends Arma {
-	private TipoArmaPrimaria tipo;
-	private int rondaMunicion;
+	private final TipoArmaPrimaria TIPO;
+	private final int RONDA_MUNICION;
 
-	public ArmaPrimaria(int puntosDeDaño, int precio, TipoArmaPrimaria tipo, int rondaMunicion) {
+	public ArmaPrimaria(int puntosDeDaño, int precio, TipoArmaPrimaria TIPO, int RONDA_MUNICION) {
 		super(puntosDeDaño,precio);
-		this.tipo = tipo;
-		this.rondaMunicion = rondaMunicion;
+		this.TIPO = TIPO;
+		this.RONDA_MUNICION = RONDA_MUNICION;
 	}
 
-	public TipoArmaPrimaria getTipo() {
-		return this.tipo;
+	public TipoArmaPrimaria getTIPO() {
+		return this.TIPO;
 	}
 
-	public void setTipo(TipoArmaPrimaria tipo) {
-		this.tipo = tipo;
-	}
-
-	public int getRondaMunicion() {
-		return this.rondaMunicion;
-	}
-
-	public void setRondaMunicion(int rondaMunicion) {
-		this.rondaMunicion = rondaMunicion;
+	public int getRONDA_MUNICION() {
+		return this.RONDA_MUNICION;
 	}
 
 	public void atacarEnemigo(Enemigo enemigo, Inventario inv) {
@@ -32,6 +24,6 @@ public class ArmaPrimaria extends Arma {
 	}
 
 	private void restarMunicion(Inventario inv) {
-		inv.setMunicion(inv.getMunicion() - this.rondaMunicion);
+		inv.setMunicion(inv.getMunicion() - this.RONDA_MUNICION);
 	}
 }

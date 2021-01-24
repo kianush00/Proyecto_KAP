@@ -6,18 +6,16 @@ public class Inventario {
 	private int jeringas;
 	private int municion;
 	private final int LIMITE_MUNICION;
-	private final int LIMITE_CARTUCHOS;
+	private final int LIMITE_CARGADORES;
 	private final int LIMITE_JERINGAS;
-	private Jugador jugador;
 
-	public Inventario(Jugador jugador) {
-		this.jugador = jugador;
+	public Inventario() {
 		this.fichas = 0;
 		this.cargadores15Balas = 0;
 		this.jeringas = 0;
 		this.municion = 30;
 		this.LIMITE_MUNICION = 50;
-		this.LIMITE_CARTUCHOS = 8;
+		this.LIMITE_CARGADORES = 8;
 		this.LIMITE_JERINGAS = 8;
 	}
 
@@ -37,8 +35,13 @@ public class Inventario {
 		return this.cargadores15Balas;
 	}
 
-	public void setCargadores15Balas(int cargadores15Balas) {
-		this.cargadores15Balas = cargadores15Balas;
+	public void setCargadores15Balas(int cargadores15Balas) throws IllegalArgumentException{
+		if (cargadores15Balas <= this.LIMITE_CARGADORES) {
+			this.cargadores15Balas = cargadores15Balas;
+		} else {
+			throw new IllegalArgumentException("Te excediste del límite de cargadores que puedes llevar actualmente.");
+		}
+
 	}
 
 	public int getJeringas() {
@@ -46,7 +49,12 @@ public class Inventario {
 	}
 
 	public void setJeringas(int jeringas) {
-		this.jeringas = jeringas;
+		if (jeringas <= this.LIMITE_JERINGAS) {
+			this.jeringas = jeringas;
+		} else {
+			throw new IllegalArgumentException("Te excediste del límite de jeringas que puedes llevar actualmente.");
+		}
+
 	}
 
 	public int getMunicion() {
@@ -61,11 +69,7 @@ public class Inventario {
 		return LIMITE_MUNICION;
 	}
 
-	public Jugador getJugador() {
-		return this.jugador;
-	}
-
-	public void usarCartucho() throws IllegalArgumentException {
+	public void usarCargador() throws IllegalArgumentException {
 		if (this.cargadores15Balas > 0) {
 			if ((this.LIMITE_MUNICION - this.municion) > 15) {
 				this.municion += 15;
@@ -78,12 +82,12 @@ public class Inventario {
 		}
 	}
 
-	public void usarJeringa() throws IllegalArgumentException {
+	public void usarJeringa(Jugador jugador) throws IllegalArgumentException {
 		if (this.jeringas > 0) {
-			if ((this.jugador.getVIDA_MAXIMA() - this.jugador.getVidaActual()) > 50) {
-				this.jugador.setVidaActual(this.jugador.getVidaActual() + 50);
+			if ((jugador.getVIDA_MAXIMA() - jugador.getVidaActual()) > 50) {
+				jugador.setVidaActual(jugador.getVidaActual() + 50);
 			} else {
-				this.jugador.setVidaActual(this.jugador.getVIDA_MAXIMA());
+				jugador.setVidaActual(jugador.getVIDA_MAXIMA());
 			}
 			this.jeringas--;
 		} else {

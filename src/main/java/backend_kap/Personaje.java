@@ -11,7 +11,7 @@ public class Personaje {
 	}
 
 	public void setVidaActual(int vidaActual) {
-		this.vidaActual = vidaActual;
+		this.vidaActual = Math.max(vidaActual, 0);
 	}
 
 	public int getVIDA_MAXIMA() {

@@ -10,7 +10,7 @@ public class Juego {
 	public Juego(final int NIVELES) {
 		this.NIVELES = NIVELES;
 		this.nivelActual = 1;
-		jugador = new Jugador(100,new Inventario(jugador),
+		jugador = new Jugador(100,new Inventario(),
 				new ArmaPrimaria(15,0,TipoArmaPrimaria.PISTOLA9MM,1),
 				new ArmaSecundaria(7,0,TipoArmaSecundaria.PUÑOS));
 	}
@@ -57,10 +57,6 @@ public class Juego {
 
 	public void generarNuevoEnemigo() {
 		this.enemigoActual = new Enemigo(this);
-	}
-
-	public void eliminarEnemigoActual(){
-		this.enemigoActual = null;
 	}
 
 	private int calcularIntAleatorioEntre(int min, int max) {

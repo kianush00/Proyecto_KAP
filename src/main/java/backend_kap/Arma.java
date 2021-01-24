@@ -13,15 +13,7 @@ public class Arma {
 		return this.puntosDeDaño;
 	}
 
-	public void setPuntosDeDaño(int puntosDeDaño) {
-		this.puntosDeDaño = puntosDeDaño;
-	}
-
 	public int getPrecio() {
 		return this.precio;
-	}
-
-	public void setPrecio(int precio) {
-		this.precio = precio;
 	}
 }

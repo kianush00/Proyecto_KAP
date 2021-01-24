@@ -51,8 +51,8 @@ public class Cuartel extends Tienda {
 		if(jugador.getInventario().getMunicion() == jugador.getInventario().getLIMITE_MUNICION()){
 			throw new IllegalArgumentException("No necesitas cargar tu munición, está al máximo.");
 		} else {
-			jugador.getInventario().setMunicion(jugador.getInventario().getLIMITE_MUNICION());
 			jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.PRECIO_CARGAR_MUNICION);
+			jugador.getInventario().setMunicion(jugador.getInventario().getLIMITE_MUNICION());
 		}
 	}
 

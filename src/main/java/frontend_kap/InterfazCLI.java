@@ -20,6 +20,7 @@ public class InterfazCLI {
 		darBienvenida();
 		for (juego.getNivelActual(); juego.getNivelActual() <= juego.getNIVELES();
 			 juego.setNivelActual(juego.getNivelActual() + 1)) {
+			//bucle for que recorre todos los niveles del juego. Se intercalan los métodos de pelea y tienda.
 			if(juego.getNivelActual() % 3 != 0){
 				desarrollarPelea(juego);
 			}else{
@@ -35,36 +36,27 @@ public class InterfazCLI {
 
 		juego.generarNuevoEnemigo();
 		anunciarInicioPelea(juego);
-		mostrarJeringasYCargadoresActuales(juego.getJugador().getInventario());
+		mostrarDatosJugador(juego.getJugador());
 		while ((juego.getJugador().getVidaActual() > 0) && (juego.getEnemigoActual().getVidaActual() > 0) && (!huir)) {
 			//se desarrolla pelea dentro del bucle while; se detiene cuando alguien muere o el jugador logra huir
 			if (turnoJugador) {
-				System.out.println("Opcion 1 para atacar, 2 para huir, 3 para curarte y finalmente 4 para usar un cartucho: ");
+				mostrarOpcionesPelea();
 				switch (elegirOpcionYValidar(1,4)) {
-					case 1:
-						mostrarAtaqueDelJugador(juego);
+					case 1:		//atacar
+						desarrollarAtaqueDelJugador(juego);
 						break;
-					case 2:
-						huir = juego.getJugador().intentarHuir();   //si el jugador logra huir, retorna true. Viceversa retorna false
+					case 2:		//huir
+						huir = desarrollarHuida(juego.getJugador());   //si el jugador logra huir, retorna true. Viceversa retorna false
 						break;
-					case 3:
-						try {
-							juego.getJugador().getInventario().usarJeringa();
-						}
-						catch (IllegalArgumentException iae){
-							System.err.println(iae.getMessage());
-						}
+					case 3:		//usar jeringa
+						desarrollarUsarJeringa(juego.getJugador());
 						break;
-					case 4:
-						try{
-							juego.getJugador().getInventario().usarCartucho();}
-						catch (IllegalArgumentException iae){
-							System.err.println(iae.getMessage());
-						}
+					case 4:		//usar cargador
+						desarrollarUsarCargador(juego.getJugador());
 						break;
 				}
 			} else {
-				mostrarAtaqueDelEnemigo(juego);
+				desarrollarAtaqueDelEnemigo(juego);
 			}
 			turnoJugador = !turnoJugador;   //se cambia el turno
 		}
@@ -130,7 +122,7 @@ public class InterfazCLI {
 
 		ofrecerProductosTienda(juego.getTiendaActual());
 		do {
-			mostrarFichasActuales(juego.getJugador().getInventario());
+			mostrarFichasActuales(juego.getJugador());
 			mostrarOpcionesComprarEnTienda();
 			switch (elegirOpcionYValidar(1,5)){
 				case 1:		//comprar arma principal
@@ -153,11 +145,11 @@ public class InterfazCLI {
 	}
 
 	private void ofrecerProductosTienda(Tienda tienda) {
-		System.out.println("Arma primaria disponible: " + tienda.getArmaPrimariaEnVenta().getTipo());
+		System.out.println("Arma primaria disponible: " + tienda.getArmaPrimariaEnVenta().getTIPO());
 		System.out.println("-Daño: " + tienda.getArmaPrimariaEnVenta().getPuntosDeDaño());
-		System.out.println("-Ronda de munición: " + tienda.getArmaPrimariaEnVenta().getRondaMunicion());
+		System.out.println("-Ronda de munición: " + tienda.getArmaPrimariaEnVenta().getRONDA_MUNICION());
 		System.out.println("-Precio: " + tienda.getArmaPrimariaEnVenta().getPrecio() + " fichas.");
-		System.out.println("\nArma secundaria disponible: " + tienda.getArmaSecundariaEnVenta().getTipo());
+		System.out.println("\nArma secundaria disponible: " + tienda.getArmaSecundariaEnVenta().getTIPO());
 		System.out.println("-Daño: " + tienda.getArmaSecundariaEnVenta().getPuntosDeDaño());
 		System.out.println("-Precio: " + tienda.getArmaSecundariaEnVenta().getPrecio() + " fichas.");
 		System.out.println("\nPrecio por cada jeringa: " + tienda.getPrecioJeringa() + " fichas.");
@@ -176,9 +168,7 @@ public class InterfazCLI {
 	private void desarrollarCompraArmaPrimaria(Juego juego) {
 		try {
 			if(confirmarCompra() == 1){
-				juego.getJugador().setArmaPrimaria(juego.getTiendaActual().getArmaPrimariaEnVenta());
-				juego.getJugador().getInventario().setFichas(juego.getJugador().getInventario().getFichas() -
-						juego.getTiendaActual().getArmaPrimariaEnVenta().getPrecio());
+				juego.getTiendaActual().venderArmaPrimaria(juego.getJugador());
 				mostrarExitoCompra();
 			}
 		} catch (IllegalArgumentException iae){
@@ -189,9 +179,7 @@ public class InterfazCLI {
 	private void desarrollarCompraArmaSecundaria(Juego juego) {
 		try {
 			if(confirmarCompra() == 1){
-				juego.getJugador().setArmaSecundaria(juego.getTiendaActual().getArmaSecundariaEnVenta());
-				juego.getJugador().getInventario().setFichas(juego.getJugador().getInventario().getFichas() -
-						juego.getTiendaActual().getArmaSecundariaEnVenta().getPrecio());
+				juego.getTiendaActual().venderArmaSecundaria(juego.getJugador());
 				mostrarExitoCompra();
 			}
 		} catch (IllegalArgumentException iae){
@@ -202,9 +190,7 @@ public class InterfazCLI {
 	private void desarrollarCompraJeringa(Juego juego) {
 		try {
 			if(confirmarCompra() == 1){
-				juego.getJugador().getInventario().setJeringas(juego.getJugador().getInventario().getJeringas() + 1);
-				juego.getJugador().getInventario().setFichas(juego.getJugador().getInventario().getFichas() -
-						juego.getTiendaActual().getPrecioJeringa());
+				juego.getTiendaActual().venderJeringa(juego.getJugador());
 				mostrarExitoCompra();
 			}
 		} catch (IllegalArgumentException iae){
@@ -215,10 +201,7 @@ public class InterfazCLI {
 	private void desarrollarCompraCargador15balas(Juego juego) {
 		try {
 			if(confirmarCompra() == 1){
-				juego.getJugador().getInventario().setCargadores15Balas(juego.getJugador().getInventario().
-						getCargadores15Balas() + 1);
-				juego.getJugador().getInventario().setFichas(juego.getJugador().getInventario().getFichas() -
-						juego.getTiendaActual().getPrecioCargador());
+				juego.getTiendaActual().venderCargador(juego.getJugador());
 				mostrarExitoCompra();
 			}
 		} catch (IllegalArgumentException iae){
@@ -238,7 +221,7 @@ public class InterfazCLI {
 	private void desarrollarCompraCurarse(Juego juego) {
 		try{
 			mostrarPrecioCurarse((Hospital) juego.getTiendaActual());
-			mostrarFichasActuales(juego.getJugador().getInventario());
+			mostrarFichasActuales(juego.getJugador());
 			mostrarVidaActualJugador(juego.getJugador());
 			if(confirmarCompra() == 1){
 				((Hospital) juego.getTiendaActual()).curarse(juego.getJugador());
@@ -252,8 +235,8 @@ public class InterfazCLI {
 	private void desarrollarCompraCargarMunicion(Juego juego) {
 		try{
 			mostrarPrecioCargarMunicion((Cuartel) juego.getTiendaActual());
-			mostrarFichasActuales(juego.getJugador().getInventario());
-			mostrarMunicionActual(juego.getJugador().getInventario());
+			mostrarFichasActuales(juego.getJugador());
+			mostrarMunicionActual(juego.getJugador());
 			if(confirmarCompra() == 1){
 				((Cuartel) juego.getTiendaActual()).cargarMunicion(juego.getJugador());
 				mostrarExitoCompra();
@@ -275,16 +258,85 @@ public class InterfazCLI {
 		System.out.println("La compra ha sido exitosa.");
 	}
 
+	private void desarrollarAtaqueDelEnemigo(Juego juego) {
+		int probabilidadesAtacar = (int) (Math.random() * 3);
+
+		if (probabilidadesAtacar == 0) {    // un tercio de prob. de que el enemigo falle
+			System.out.println("El enemigo ha fallado.");
+		} else {
+			juego.getEnemigoActual().atacarJugador(juego.getJugador());
+			System.out.println("Te han atacado con " + juego.getEnemigoActual().getPuntosDeDaño() + " Puntos de daño.");
+			mostrarVidaActualJugador(juego.getJugador());
+		}
+	}
+
+	private void desarrollarAtaqueDelJugador(Juego juego) {
+		if (juego.getJugador().getInventario().getMunicion() >= juego.getJugador().getArmaPrimaria().getRONDA_MUNICION()) {
+			//si la municion del jugador es mayor o igual que la ronda de municion
+			juego.getJugador().getArmaPrimaria().atacarEnemigo(juego.getEnemigoActual(), juego.getJugador().getInventario());
+			mostrarBalasGastadas(juego.getJugador().getArmaPrimaria());
+		} else {
+			juego.getJugador().getArmaSecundaria().atacarEnemigo(juego.getEnemigoActual());
+		}
+		mostrarVidaActualEnemigo(juego.getEnemigoActual());
+	}
+
+	private void desarrollarTerminoPelea(Juego juego, boolean huir){
+		if(!huir){
+			if (juego.getJugador().getVidaActual() <= 0) {
+				anunciarMuerteJugador(juego);
+			} else {
+				System.out.println("Ganaste la batalla!");
+				mostrarFichasGanadas(juego);
+			}
+		}
+	}
+
+	private boolean desarrollarHuida(Jugador jugador){
+		if(jugador.intentarHuir()){
+			System.out.println("Huiste de la batalla.");
+			return true;
+		} else {
+			System.out.println("¡Falló tu intento de huir!");
+			return false;
+		}
+	}
+
+	private void desarrollarUsarJeringa(Jugador jugador){
+		try {
+			jugador.getInventario().usarJeringa(jugador);
+		}
+		catch (IllegalArgumentException iae){
+			System.err.println(iae.getMessage());
+		}
+	}
+
+	private void desarrollarUsarCargador(Jugador jugador){
+		try{
+			jugador.getInventario().usarCargador();}
+		catch (IllegalArgumentException iae){
+			System.err.println(iae.getMessage());
+		}
+	}
+
+	private void mostrarOpcionesPelea(){
+		System.out.println("Elige una opción: ");
+		System.out.println("1. Atacar");
+		System.out.println("2. Huir");
+		System.out.println("3. Usar jeringa");
+		System.out.println("4. Usar cargador");
+	}
+
 	private void anunciarInicioPelea(Juego juego) {
 		System.out.println("\nInicia la batalla del nivel " + juego.getNivelActual());
 	}
 
 	private void mostrarBalasGastadas(ArmaPrimaria armaPrimaria) {
-		System.out.println("Gastaste "+armaPrimaria.getRondaMunicion()+ " balas.");
+		System.out.println("Gastaste "+armaPrimaria.getRONDA_MUNICION()+ " bala(s).");
 	}
 
-	private void mostrarMunicionActual(Inventario inventario) {
-		System.out.println("Munición actual: " + inventario.getMunicion());
+	private void mostrarMunicionActual(Jugador jugador) {
+		System.out.println("Munición actual: " + jugador.getInventario().getMunicion());
 	}
 
 	private void anunciarMuerteJugador(Juego juego) {
@@ -300,49 +352,24 @@ public class InterfazCLI {
 		System.out.println("Tu vida actual es: " + jugador.getVidaActual());
 	}
 
-	private void mostrarAtaqueDelEnemigo(Juego juego) {
-		int probabilidadesAtacar = (int) (Math.random() * 3);
-
-		if (probabilidadesAtacar == 0) {    // un tercio de prob. de que el enemigo falle
-			System.out.println("El enemigo ha fallado.");
-		} else {
-			juego.getEnemigoActual().atacarJugador(juego.getJugador());
-			System.out.println("Te han atacado con " + juego.getEnemigoActual().getPuntosDeDaño() + " Puntos de daño.");
-			mostrarVidaActualJugador(juego.getJugador());
-		}
+	private void mostrarFichasActuales(Jugador jugador) {
+		System.out.println("Fichas actuales: " + jugador.getInventario().getFichas());
 	}
 
-	private void mostrarAtaqueDelJugador(Juego juego) {
-		if (juego.getJugador().getInventario().getMunicion() >= juego.getJugador().getArmaPrimaria().getRondaMunicion()) {
-			//si la municion del jugador es mayor o igual que la ronda de municion
-			juego.getJugador().getArmaPrimaria().atacarEnemigo(juego.getEnemigoActual(), juego.getJugador().getInventario());
-			mostrarBalasGastadas(juego.getJugador().getArmaPrimaria());
-			mostrarVidaActualEnemigo(juego.getEnemigoActual());
-		} else {
-			juego.getJugador().getArmaSecundaria().atacarEnemigo(juego.getEnemigoActual());
-			mostrarVidaActualEnemigo(juego.getEnemigoActual());
-		}
+	private void mostrarDatosJugador(Jugador jugador) {
+		System.out.println("Tus datos actuales son: ");
+		System.out.println("-Vida actual: " + jugador.getVidaActual());
+		System.out.println("-Arma primaria: " + jugador.getArmaPrimaria().getTIPO());
+		System.out.println("-Balas: " + jugador.getInventario().getMunicion());
+		System.out.println("-Arma secundaria: " + jugador.getArmaSecundaria().getTIPO());
+		System.out.println("-Cargadores de 15 balas: " + jugador.getInventario().getCargadores15Balas());
+		System.out.println("-Jeringas: " + jugador.getInventario().getJeringas());
 	}
 
-	private void mostrarFichasActuales(Inventario inventario) {
-		System.out.println("Fichas actuales: " + inventario.getFichas());
-	}
-
-	private void mostrarJeringasYCargadoresActuales(Inventario inventario) {
-		System.out.println("Tus recursos actuales son: ");
-		System.out.println("-" + inventario.getCargadores15Balas() + " cartucho(s) de 15 balas.");
-		System.out.println("-" + inventario.getJeringas() + " jeringa(s).");
-	}
-
-	private void desarrollarTerminoPelea(Juego juego, boolean huir){
-		if(!huir){
-			if (juego.getJugador().getVidaActual() <= 0) {
-				anunciarMuerteJugador(juego);
-			} else {
-				System.out.println("Ganaste la batalla!");
-				juego.calcularFichasGanadas();
-			}
-		}
+	private void mostrarFichasGanadas(Juego juego){
+		juego.getJugador().getInventario().setFichas(juego.getJugador().getInventario().getFichas()
+				+ juego.calcularFichasGanadas());
+		System.out.println("Ganase " + juego.calcularFichasGanadas() + " fichas.");
 	}
 
 	private int elegirOpcionYValidar(int min, int max) {

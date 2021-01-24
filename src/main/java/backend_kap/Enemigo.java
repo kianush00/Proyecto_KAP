@@ -13,10 +13,6 @@ public class Enemigo extends Personaje {
 		return this.puntosDeDaño;
 	}
 
-	public void setPuntosDeDaño(int puntosDeDaño) {
-		this.puntosDeDaño = puntosDeDaño;
-	}
-
 	public void atacarJugador(Jugador jugador) {
 		jugador.setVidaActual(jugador.getVidaActual() - this.puntosDeDaño);
 	}

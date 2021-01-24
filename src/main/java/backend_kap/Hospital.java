@@ -45,8 +45,8 @@ public class Hospital extends Tienda {
 		if(jugador.getVidaActual() == jugador.getVIDA_MAXIMA()){
 			throw new IllegalArgumentException("No necesitas curarte, tu vida está al máximo.");
 		} else {
-			jugador.setVidaActual(jugador.getVIDA_MAXIMA());
 			jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.PRECIO_CURARSE);
+			jugador.setVidaActual(jugador.getVIDA_MAXIMA());
 		}
 	}
 }

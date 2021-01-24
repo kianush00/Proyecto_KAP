@@ -1,19 +1,15 @@
 package backend_kap;
 
 public class ArmaSecundaria extends Arma {
-	private TipoArmaSecundaria tipo;
+	private final TipoArmaSecundaria TIPO;
 
-	public ArmaSecundaria(int puntosDeDaño, int precio, TipoArmaSecundaria tipo) {
+	public ArmaSecundaria(int puntosDeDaño, int precio, TipoArmaSecundaria TIPO) {
 		super(puntosDeDaño,precio);
-		this.tipo = tipo;
+		this.TIPO = TIPO;
 	}
 
-	public TipoArmaSecundaria getTipo() {
-		return this.tipo;
-	}
-
-	public void setTipo(TipoArmaSecundaria tipo) {
-		this.tipo = tipo;
+	public TipoArmaSecundaria getTIPO() {
+		return this.TIPO;
 	}
 
 	public void atacarEnemigo(Enemigo enemigo) {
