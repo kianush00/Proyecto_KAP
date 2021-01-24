@@ -43,9 +43,13 @@ public class Cuartel extends Tienda {
 		return this.PRECIO_CARGAR_MUNICION;
 	}
 
-	public void cargarMunicion(Jugador jugador) {
-		jugador.getInventario().setMunicion(jugador.getInventario().getLIMITE_MUNICION());
-		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.PRECIO_CARGAR_MUNICION);
+	public void cargarMunicion(Jugador jugador) throws IllegalArgumentException{
+		if(jugador.getInventario().getMunicion() != jugador.getInventario().getLIMITE_MUNICION()){
+			jugador.getInventario().setMunicion(jugador.getInventario().getLIMITE_MUNICION());
+			jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.PRECIO_CARGAR_MUNICION);
+		}else{
+			throw new IllegalArgumentException("No necesitas curarte, tu vida está al máximo.");
+		}
 	}
 
 	private ArmaPrimaria generarRifle(){

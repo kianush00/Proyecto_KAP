@@ -67,7 +67,7 @@ public class Juego {
 		return (int) (Math.random() * ((max + 1) - min) + min);
 	}
 
-	private int calcularFichasGanadas() {
+	public int calcularFichasGanadas() {
 		return (this.enemigoActual.getVIDA_MAXIMA() / 3) + (this.enemigoActual.getPuntosDeDaño()/2);
 	}
 }
