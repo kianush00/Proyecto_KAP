@@ -277,6 +277,10 @@ public class InterfazCLI {
 		throw new UnsupportedOperationException();
 	}
 
+	private void desarrollarTerminoPelea(Juego juego, boolean huir){
+
+	}
+
 	private int elegirOpcionYValidar(int min, int max) {
 		int opcion = -1;    //se inicializa la opción
 		boolean opcionEsValida = false;
