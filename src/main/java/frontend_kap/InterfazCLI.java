@@ -13,6 +13,8 @@ import java.util.Scanner;
 
 public class InterfazCLI {
 
+	static Scanner input = new Scanner(System.in);
+
 	public void lanzarVentana() {
 		Juego juego = new Juego(1,29);
 		darBienvenida();
@@ -113,8 +115,6 @@ public class InterfazCLI {
 	}
 
 	private void validarOpcionInt() {
-		Scanner input = new Scanner(System.in);
-
 		while(!input.hasNextInt()){
 			System.err.println("La opción ingresada no es un entero. Intenta nuevamente:");
 			input.next();   //pasa al siguiente iterador
@@ -122,7 +122,6 @@ public class InterfazCLI {
 	}
 
 	private int ingresarInt() {
-		Scanner input = new Scanner(System.in);
 		return input.nextInt();
 	}
 
