@@ -51,4 +51,24 @@ public class Tienda {
 		jugador.getInventario().setCargadores15Balas(jugador.getInventario().getCargadores15Balas() + 1);
 		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.precioCargador);
 	}
+
+	protected ArmaPrimaria generarRevolver(){
+		return new ArmaPrimaria();
+	}
+
+	protected ArmaPrimaria generarSubfusil(){
+		return new ArmaPrimaria();
+	}
+
+	protected ArmaSecundaria generarCuchillo(){
+		return new ArmaSecundaria();
+	}
+
+	protected ArmaSecundaria generarBateBeisbol(){
+		return new ArmaSecundaria();
+	}
+
+	protected int calcularIntAleatorioEntre(int min, int max) {
+		return (int) (Math.random() * ((max + 1) - min)) + min;
+	}
 }

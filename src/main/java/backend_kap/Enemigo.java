@@ -18,6 +18,6 @@ public class Enemigo extends Personaje {
 	}
 
 	public void atacarJugador(Jugador jugador) {
-
+		jugador.setVidaActual(jugador.getVidaActual() - this.puntosDeDaño);
 	}
 }

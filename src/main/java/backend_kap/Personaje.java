@@ -4,9 +4,7 @@ public class Personaje {
 	protected int vidaActual;
 	protected int VIDA_MAXIMA;
 
-	public Personaje() {
-
-	}
+	public Personaje() {}
 
 	public int getVidaActual() {
 		return this.vidaActual;
@@ -18,9 +16,5 @@ public class Personaje {
 
 	public int getVIDA_MAXIMA() {
 		return this.VIDA_MAXIMA;
-	}
-
-	public void morir() {
-		System.exit(1);
 	}
 }

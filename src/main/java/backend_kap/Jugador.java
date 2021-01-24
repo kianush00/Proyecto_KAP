@@ -40,4 +40,8 @@ public class Jugador extends Personaje {
 			return false;
 		}
 	}
+
+	public void morir() {
+		System.exit(1);
+	}
 }

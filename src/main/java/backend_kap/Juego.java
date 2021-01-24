@@ -3,14 +3,16 @@ package backend_kap;
 public class Juego {
 	private int nivelActual;
 	private final int NIVELES;
-	private Enemigo enemigo;
+	private Enemigo enemigoActual;
 	private Jugador jugador;
 	private Tienda tiendaActual;
 
-	public Juego(int nivelActual, final int NIVELES, Jugador jugador) {
+	public Juego(int nivelActual, final int NIVELES) {
 		this.nivelActual = 1;
 		this.NIVELES = 29;
-		this.jugador = jugador;
+		jugador = new Jugador(new Inventario(jugador),
+				new ArmaPrimaria(15,0,TipoArmaPrimaria.PISTOLA9MM,1),
+				new ArmaSecundaria(7,0,TipoArmaSecundaria.PUÑOS));
 	}
 
 	public int getNivelActual() {
@@ -49,12 +51,16 @@ public class Juego {
 		this.tiendaActual = new Cuartel();
 	}
 
-	public Enemigo getEnemigo() {
-		return this.enemigo;
+	public Enemigo getEnemigoActual() {
+		return this.enemigoActual;
 	}
 
 	public void generarNuevoEnemigo() {
-		this.enemigo = new Enemigo(this);
+		this.enemigoActual = new Enemigo(this);
+	}
+
+	public void eliminarEnemigoActual(){
+		this.enemigoActual = null;
 	}
 
 	private int calcularIntAleatorioEntre(int min, int max) {
@@ -62,6 +68,6 @@ public class Juego {
 	}
 
 	private int calcularFichasGanadas() {
-		return (this.enemigo.getVIDA_MAXIMA() / 3) + (this.enemigo.getPuntosDeDaño()/2);
+		return (this.enemigoActual.getVIDA_MAXIMA() / 3) + (this.enemigoActual.getPuntosDeDaño()/2);
 	}
 }
