@@ -26,7 +26,9 @@ public class InterfazCLI {
 		}
 		anunciarEscapeFinal();
 	}
+	private void desarrollarTienda(Juego juego){
 
+	}
 	private void desarrollarPelea(Juego juego){
 		juego.generarNuevoEnemigo();
 		boolean turnoJugador = true;
@@ -97,15 +99,7 @@ private void desarrollarTerminoPelea(Juego juego, boolean huir){
 
 	}
 
-	private void accederOpcionesHospital(Jugador jugador) {
-
-	}
-
 	private void mostrarOpcionesCuartel() {
-
-	}
-
-	private void accederOpcionesCuartel(Jugador jugador) {
 
 	}
 
@@ -145,7 +139,7 @@ private void desarrollarTerminoPelea(Juego juego, boolean huir){
 		}
 	}
 
-	private void comprarEnTienda(Tienda tienda) {
+	private void desarrollarCompraTienda(Juego juego) {
 
 	}
 
@@ -157,23 +151,20 @@ private void desarrollarTerminoPelea(Juego juego, boolean huir){
 
 	}
 
-	private void elegirOpcionYDesarrollarCompra(Tienda tienda) {
+
+	private void desarrollarCompraArmaPrimaria(Juego juego) {
 
 	}
 
-	private void comprarArmaPrimaria(Tienda tienda) {
+	private void desarrollarCompraArmaSecundaria(Juego juego) {
 
 	}
 
-	private void comprarArmaSecundaria(Tienda tienda) {
+	private void desarrollarCompraJeringa(Juego juego) {
 
 	}
 
-	private void comprarJeringa(Tienda tienda) {
-
-	}
-
-	private void comprarCartucho15balas(Tienda tienda) {
+	private void desarrollarCompraCargador15balas(Juego juego) {
 
 	}
 
@@ -185,32 +176,24 @@ private void desarrollarTerminoPelea(Juego juego, boolean huir){
 
 	}
 
-	private void realizarCompraCurarse(Hospital hospital) {
+	private void desarrollarCompraCurarse(Juego juego) {
 
 	}
 
-	private void realizarCompraCargarMunicion(Cuartel cuartel) {
+	private void desarrollarCompraCargarMunicion(Juego juego)  {
 
 	}
 
-	private int gestionarCompra(Jugador jugador, int precio) {
 
-	}
 
 	private void confirmarCompra() {
 
 	}
 
-	private void anularCompra() {
-
-	}
 
 	private void mostrarExitoCompra() {
 	}
 
-	private void mostrarOpcionesSiNo() {
-
-	}
 
 	private void anunciarInicioPelea(Juego juego) {
 		System.out.println("\nInicia la batalla del nivel " + juego.getNivelActual());;
@@ -267,8 +250,8 @@ private void desarrollarTerminoPelea(Juego juego, boolean huir){
 		}
 	}
 
-	private void mostrarFichasActuales() {
-
+	private void mostrarFichasActuales(Inventario inventario) {
+		System.out.println("Fichas actuales: " + inventario.getFichas());
 	}
 
 	private void mostrarJeringasYCartuchosActuales(Inventario inventario) {
