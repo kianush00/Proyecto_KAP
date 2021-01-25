@@ -8,16 +8,14 @@ import backend_kap.Juego;
 import backend_kap.ArmaPrimaria;
 import backend_kap.Inventario;
 import backend_kap.Enemigo;
-import com.opencsv.exceptions.CsvValidationException;
 import data.GestorDatos;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class InterfazCLI {
 
 	static Scanner input = new Scanner(System.in);
 
-	public void lanzarVentana() throws IOException, CsvValidationException {
+	public void lanzarVentana(){
 		Juego juego = new Juego(29);
 		GestorDatos gestor= new GestorDatos();
 		darBienvenida();
@@ -31,9 +29,10 @@ public class InterfazCLI {
 			}
 
 		}
+		anunciarEscapeFinal();
 		gestor.GuardarPuntaje(juego.getJugador().getInventario().getFichas());
 		gestor.VerPuntajes();
-		anunciarEscapeFinal();
+
 
 	}
 
@@ -421,6 +420,5 @@ public class InterfazCLI {
 	private void anunciarEscapeFinal() {
 		System.out.println("\nHas llegado al final de la aventura, felicidades.");
 		System.out.println("Ya puedes escapar.");
-		System.exit(1);
 	}
 }

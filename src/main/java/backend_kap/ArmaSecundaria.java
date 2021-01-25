@@ -3,6 +3,12 @@ package backend_kap;
 public class ArmaSecundaria extends Arma {
 	private final TipoArmaSecundaria TIPO;
 
+	/**
+	 * Constructor
+	 * @param puntosDeDaño
+	 * @param precio
+	 * @param TIPO
+	 */
 	public ArmaSecundaria(int puntosDeDaño, int precio, TipoArmaSecundaria TIPO) {
 		super(puntosDeDaño,precio);
 		this.TIPO = TIPO;
