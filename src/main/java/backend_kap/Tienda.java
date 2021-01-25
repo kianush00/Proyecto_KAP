@@ -57,8 +57,9 @@ public class Tienda {
 	 * Primero se restan las fichas al jugador en relación al precio del producto y se le asigna tal producto a su
 	 * inventario asociado.
 	 * @param jugador contiene los atributos y métodos de Jugador que permiten realizar la venta.
+	 *  @throws IllegalArgumentException
 	 */
-	public void venderArmaPrimaria(Jugador jugador) {
+	public void venderArmaPrimaria(Jugador jugador) throws IllegalArgumentException{
 		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.armaPrimariaEnVenta.getPrecio());
 		jugador.setArmaPrimaria(this.armaPrimariaEnVenta);
 	}
@@ -68,8 +69,9 @@ public class Tienda {
 	 * Primero se restan las fichas al jugador en relación al precio del producto y se le asigna tal producto a su
 	 * inventario asociado.
 	 * @param jugador contiene los atributos y métodos de Jugador que permiten realizar la venta.
+	 *  @throws IllegalArgumentException
 	 */
-	public void venderArmaSecundaria(Jugador jugador) {
+	public void venderArmaSecundaria(Jugador jugador) throws IllegalArgumentException{
 		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.armaSecundariaEnVenta.getPrecio());
 		jugador.setArmaSecundaria(this.armaSecundariaEnVenta);
 	}
@@ -79,14 +81,11 @@ public class Tienda {
 	 * Primero se restan las fichas al jugador en relación al precio del producto y se le asigna tal producto a su
 	 * inventario asociado.
 	 * @param jugador contiene los atributos y métodos de Jugador que permiten realizar la venta.
+	 * @throws IllegalArgumentException
 	 */
-	public void venderJeringa(Jugador jugador) {
-		try {
-			jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.precioJeringa);
-			jugador.getInventario().setJeringas(jugador.getInventario().getJeringas() + 1);
-		} catch (IllegalArgumentException iae){
-			System.err.println(iae.getMessage());
-		}
+	public void venderJeringa(Jugador jugador) throws IllegalArgumentException{
+		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.precioJeringa);
+		jugador.getInventario().setJeringas(jugador.getInventario().getJeringas() + 1);
 	}
 
 	/**
@@ -94,14 +93,11 @@ public class Tienda {
 	 * Primero se restan las fichas al jugador en relación al precio del producto y se le asigna tal producto a su
 	 * inventario asociado.
 	 * @param jugador contiene los atributos y métodos de Jugador que permiten realizar la venta.
+	 * @throws IllegalArgumentException
 	 */
-	public void venderCargador(Jugador jugador) {
-		try {
-			jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.precioCargador);
-			jugador.getInventario().setCargadores15Balas(jugador.getInventario().getCargadores15Balas() + 1);
-		} catch (IllegalArgumentException iae){
-			System.err.println(iae.getMessage());
-		}
+	public void venderCargador(Jugador jugador) throws IllegalArgumentException{
+		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.precioCargador);
+		jugador.getInventario().setCargadores15Balas(jugador.getInventario().getCargadores15Balas() + 1);
 	}
 
 	/**
