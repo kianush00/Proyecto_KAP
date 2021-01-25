@@ -555,6 +555,7 @@ public class InterfazCLI {
 	 * por teclado.
 	 * @param min Mínimo valor aceptado dentro del rango de enteros
 	 * @param max Máximo valor aceptado dentro del rango de enteros
+	 * @return opcion entero validado por el usuario
 	 */
 	private int elegirOpcionYValidar(int min, int max) {
 		int opcion = -1;    //se inicializa la opción
