@@ -259,12 +259,9 @@ public class InterfazCLI {
 	}
 
 	private void desarrollarAtaqueDelEnemigo(Juego juego) {
-		int probabilidadesAtacar = (int) (Math.random() * 3);
-
-		if (probabilidadesAtacar == 0) {    // un tercio de prob. de que el enemigo falle
+		if (juego.getEnemigoActual().atacarJugador(juego.getJugador()) == 0){	// un tercio de prob. de que el enemigo falle
 			System.out.println("El enemigo ha fallado.");
 		} else {
-			juego.getEnemigoActual().atacarJugador(juego.getJugador());
 			System.out.println("Te han atacado con " + juego.getEnemigoActual().getPuntosDeDaño() + " Puntos de daño.");
 			mostrarVidaActualJugador(juego.getJugador());
 		}

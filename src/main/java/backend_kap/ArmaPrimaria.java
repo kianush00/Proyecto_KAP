@@ -24,7 +24,7 @@ public class ArmaPrimaria extends Arma {
 		return enemigo.getVidaActual();
 	}
 
-	private int restarMunicion(Inventario inv) {
+	public int restarMunicion(Inventario inv) {
 		inv.setMunicion(inv.getMunicion() - this.RONDA_MUNICION);
 		return inv.getMunicion();
 	}

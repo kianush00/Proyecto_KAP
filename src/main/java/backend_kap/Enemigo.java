@@ -14,7 +14,11 @@ public class Enemigo extends Personaje {
 	}
 
 	public int atacarJugador(Jugador jugador) {
-		jugador.setVidaActual(jugador.getVidaActual() - this.puntosDeDaño);
+		int probabilidadesAtacar = (int) (Math.random() * 3);
+
+		if (probabilidadesAtacar > 0){	// un tercio de prob. de que el enemigo falle
+			jugador.setVidaActual(jugador.getVidaActual() - this.puntosDeDaño);
+		}
 		return jugador.getVidaActual();
 	}
 }
