@@ -8,15 +8,18 @@ import backend_kap.Juego;
 import backend_kap.ArmaPrimaria;
 import backend_kap.Inventario;
 import backend_kap.Enemigo;
-
+import com.opencsv.exceptions.CsvValidationException;
+import data.GestorDatos;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class InterfazCLI {
 
 	static Scanner input = new Scanner(System.in);
 
-	public void lanzarVentana() {
+	public void lanzarVentana() throws IOException, CsvValidationException {
 		Juego juego = new Juego(29);
+		GestorDatos gestor= new GestorDatos();
 		darBienvenida();
 		for (juego.getNivelActual(); juego.getNivelActual() <= juego.getNIVELES();
 			 juego.setNivelActual(juego.getNivelActual() + 1)) {
@@ -26,8 +29,12 @@ public class InterfazCLI {
 			}else{
 				desarrollarTienda(juego);
 			}
+
 		}
+		gestor.GuardarPuntaje(juego.getJugador().getInventario().getFichas());
+		gestor.VerPuntajes();
 		anunciarEscapeFinal();
+
 	}
 
 	private void desarrollarPelea(Juego juego){
