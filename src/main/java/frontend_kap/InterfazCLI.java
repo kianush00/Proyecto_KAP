@@ -36,6 +36,10 @@ public class InterfazCLI {
 
 	}
 
+	/**
+	 *  Permite la ejecución de la pelea entre el jugador y el enemigo, dentro del metodo se instancia el objeto Enemigo.
+	 * @param juego Se pide un Objeto tipo Juego para acceder al jugador y enemigo.
+	 */
 	private void desarrollarPelea(Juego juego){
 		boolean turnoJugador = true;
 		boolean huir = false;
@@ -152,11 +156,11 @@ public class InterfazCLI {
 
 	private void ofrecerProductosTienda(Tienda tienda) {
 		System.out.println("Arma primaria disponible: " + tienda.getArmaPrimariaEnVenta().getTIPO());
-		System.out.println("-Daño: " + tienda.getArmaPrimariaEnVenta().getPuntosDeDaño());
+		System.out.println("-Dano: " + tienda.getArmaPrimariaEnVenta().getpuntosDeDano());
 		System.out.println("-Ronda de munición: " + tienda.getArmaPrimariaEnVenta().getRONDA_MUNICION());
 		System.out.println("-Precio: " + tienda.getArmaPrimariaEnVenta().getPrecio() + " fichas.");
 		System.out.println("\nArma secundaria disponible: " + tienda.getArmaSecundariaEnVenta().getTIPO());
-		System.out.println("-Daño: " + tienda.getArmaSecundariaEnVenta().getPuntosDeDaño());
+		System.out.println("-Dano: " + tienda.getArmaSecundariaEnVenta().getpuntosDeDano());
 		System.out.println("-Precio: " + tienda.getArmaSecundariaEnVenta().getPrecio() + " fichas.");
 		System.out.println("\nPrecio por cada jeringa: " + tienda.getPrecioJeringa() + " fichas.");
 		System.out.println("\nPrecio por cada cargador con 15 balas: " + tienda.getPrecioCargador() + " fichas.");
@@ -264,15 +268,23 @@ public class InterfazCLI {
 		System.out.println("La compra ha sido exitosa.");
 	}
 
+	/**
+	 * Ejecuta un ataque contra el jugador basado en el dano del enemigo.
+	 * @param juego Se pide el objeto Juego para acceder a las variables del enemigo y jugador.
+	 */
 	private void desarrollarAtaqueDelEnemigo(Juego juego) {
 		if (juego.getEnemigoActual().atacarJugador(juego.getJugador()) == 0){	// un tercio de prob. de que el enemigo falle
 			System.out.println("El enemigo ha fallado.");
 		} else {
-			System.out.println("Te han atacado con " + juego.getEnemigoActual().getPuntosDeDaño() + " Puntos de daño.");
+			System.out.println("Te han atacado con " + juego.getEnemigoActual().getpuntosDeDano() + " Puntos de dano.");
 			mostrarVidaActualJugador(juego.getJugador());
 		}
 	}
 
+	/**
+	 * Ejecuta un ataque contra el enemigo basado en el dano del arma del jugador, puede ser la principal o la secundaria.
+	 * @param juego Se pide el objeto Juego para acceder a las variables del enemigo y jugador.
+	 */
 	private void desarrollarAtaqueDelJugador(Juego juego) {
 		if (juego.getJugador().getInventario().getMunicion() >= juego.getJugador().getArmaPrimaria().getRONDA_MUNICION()) {
 			//si la municion del jugador es mayor o igual que la ronda de municion
@@ -284,6 +296,11 @@ public class InterfazCLI {
 		mostrarVidaActualEnemigo(juego.getEnemigoActual());
 	}
 
+	/**
+	 * Método que comprueba si el jugador murió o gano la batalla del nivel.
+	 * @param juego se Pide el objeto juego para comprobar la vida del jugador si no es cero, significa que gano la batalla.
+	 * @param huir el parametro huir comprueba si escapo de la batalla del nivel.
+	 */
 	private void desarrollarTerminoPelea(Juego juego, boolean huir){
 		if(!huir){
 			if (juego.getJugador().getVidaActual() <= 0) {
@@ -295,6 +312,11 @@ public class InterfazCLI {
 		}
 	}
 
+	/**
+	 * Método que asigna valor a la variable huir en desarrollarPelea(), si el booleano es True, se escapa de la pelea del nivel.
+	 * @param jugador Se pide el objeto jugador para acceder al metodo intentarHuir().
+	 * @return
+	 */
 	private boolean desarrollarHuida(Jugador jugador){
 		if(jugador.intentarHuir()){
 			System.out.println("Huiste de la batalla.");
@@ -305,6 +327,10 @@ public class InterfazCLI {
 		}
 	}
 
+	/**
+	 * Permite utilizar una jeringa para aumentar los puntos de vida, siempre y cuando esta esté disponible en inventario.
+	 * @param jugador Se pide como parametro el objeto Jugador para acceder a inventario.
+	 */
 	private void desarrollarUsarJeringa(Jugador jugador){
 		try {
 			jugador.getInventario().usarJeringa(jugador);
@@ -314,6 +340,10 @@ public class InterfazCLI {
 		}
 	}
 
+	/**
+	 * Permite utilizar un cargador para aumentar las balas disponibles, siempre y cuando este esté disponible en inventario.
+	 * @param jugador Se pide como parametro el objeto Jugador para acceder a inventario.
+	 */
 	private void desarrollarUsarCargador(Jugador jugador){
 		try{
 			jugador.getInventario().usarCargador();}
@@ -322,6 +352,9 @@ public class InterfazCLI {
 		}
 	}
 
+	/**
+	 *Pequeno menú que muestra las opciones disponibles en cada iteración de la pelea.
+	 */
 	private void mostrarOpcionesPelea(){
 		System.out.println("Elige una opción: ");
 		System.out.println("1. Atacar");
@@ -330,27 +363,51 @@ public class InterfazCLI {
 		System.out.println("4. Usar cargador");
 	}
 
+	/**
+	 * Mensaje de bienvenida del comienzo de la pelea del nivel.
+	 * @param juego Pide el objeto juego para acceder al nivel actual.
+	 */
 	private void anunciarInicioPelea(Juego juego) {
 		System.out.println("\nInicia la batalla del nivel " + juego.getNivelActual());
 	}
 
+	/**
+	 * Mensaje que muestra la cantidad de balas gastadas por el arma al momento de atacar.
+	 * @param armaPrimaria Toma como parametro el Arma Primaria para obtener el valor de la ronda.
+	 */
 	private void mostrarBalasGastadas(ArmaPrimaria armaPrimaria) {
 		System.out.println("Gastaste "+armaPrimaria.getRONDA_MUNICION()+ " bala(s).");
 	}
 
+	/**
+	 * Mensaje que muestra la munición disponible en el momento
+	 * @param jugador Toma como parametro el Objeto Jugador para acceder a Inventario.
+	 */
 	private void mostrarMunicionActual(Jugador jugador) {
 		System.out.println("Munición actual: " + jugador.getInventario().getMunicion());
 	}
 
+	/**
+	 * Mensaje que muestra la muerte del jugador
+	 * @param juego Pide como parametro el objeto tipo Juego para acceder a jugador y al método morir().
+	 */
 	private void anunciarMuerteJugador(Juego juego) {
 		System.err.println("Moriste, fin de la aventura.");
 		juego.getJugador().morir();
 	}
 
+	/**
+	 * Mensaje que muestra la vida actual del enemigo.
+	 * @param enemigo Toma como parametro el objeto Enemigo para acceder a su variable de vida actual.
+	 */
 	private void mostrarVidaActualEnemigo(Enemigo enemigo) {
 		System.out.println("La vida actual del enemigo es: " + enemigo.getVidaActual());
 	}
 
+	/**
+	 * Mensaje que muestra la vida actual del jugador.
+	 * @param jugador Toma como parametro el objeto Jugador para acceder a su variable de vida actual.
+	 */
 	private void mostrarVidaActualJugador(Jugador jugador) {
 		System.out.println("Tu vida actual es: " + jugador.getVidaActual());
 	}
@@ -369,6 +426,10 @@ public class InterfazCLI {
 		System.out.println("-Jeringas: " + jugador.getInventario().getJeringas());
 	}
 
+	/**
+	 * Muestra la cantidad de fichas que se ganaron al terminar la pelea con el enemigo.
+	 * @param juego Pide como parametro el objeto Juego para acceder a Jugador e Inventario.
+	 */
 	private void mostrarFichasGanadas(Juego juego){
 		juego.getJugador().getInventario().setFichas(juego.getJugador().getInventario().getFichas()
 				+ juego.calcularFichasGanadas());
@@ -409,10 +470,10 @@ public class InterfazCLI {
 	}
 
 	private void darBienvenida() {
-		System.out.println("\nVarios años después de una abominable pandemia...");
+		System.out.println("\nVarios anos después de una abominable pandemia...");
 		System.out.println("Bienvenido al apocalipsis, sobreviviente...");
 		System.out.println("Tu misión es sobrevivir, actualmente posees una pistola de 9mm con 30 balas que recogiste" +
-				" del suelo y un par de puños.");
+				" del suelo y un par de punos.");
 		System.out.println("Usa bien tu inventario y municiones, son escasas.");
 		System.out.println("Mucha suerte...\n");
 	}

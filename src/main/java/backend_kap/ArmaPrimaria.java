@@ -6,13 +6,13 @@ public class ArmaPrimaria extends Arma {
 
 	/**
 	 * Constructor de arma primaria, permite instanciar el arma primaria
-	 * @param puntosDeDaño Variable heredada de Arma, puntos de ataque del arma primaria.
+	 * @param puntosDeDano Variable heredada de Arma, puntos de ataque del arma primaria.
 	 * @param precio Variable heredada de Arma, valor en fichas del arma primaria.
 	 * @param TIPO Tipo de arma, se define por enumeración en TipoDeArmaPrimaria.
 	 * @param RONDA_MUNICION cantidad de balas que gasta cada vez que ataca.
 	 */
-	public ArmaPrimaria(int puntosDeDaño, int precio, TipoArmaPrimaria TIPO, int RONDA_MUNICION) {
-		super(puntosDeDaño,precio);
+	public ArmaPrimaria(int puntosDeDano, int precio, TipoArmaPrimaria TIPO, int RONDA_MUNICION) {
+		super(puntosDeDano,precio);
 		this.TIPO = TIPO;
 		this.RONDA_MUNICION = RONDA_MUNICION;
 	}
@@ -34,13 +34,13 @@ public class ArmaPrimaria extends Arma {
 	}
 
 	/**
-	 * Resta puntos de vida al enemigo en base al daño del arma principal.
+	 * Resta puntos de vida al enemigo en base al dano del arma principal.
 	 * @param enemigo Objeto enemigo al cual accede para restarle puntos de vida.
 	 * @param inv Objeto Inventario necesario para restar balas.
 	 * @return Devuelve la vida actual del enemigo.
 	 */
 	public int atacarEnemigo(Enemigo enemigo, Inventario inv) {
-		enemigo.setVidaActual((enemigo.getVidaActual() - this.puntosDeDaño));
+		enemigo.setVidaActual((enemigo.getVidaActual() - this.puntosDeDano));
 		restarMunicion(inv);
 		return enemigo.getVidaActual();
 	}

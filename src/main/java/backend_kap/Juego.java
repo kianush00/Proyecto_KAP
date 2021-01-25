@@ -12,7 +12,7 @@ public class Juego {
 		this.nivelActual = 1;
 		jugador = new Jugador(100,new Inventario(),
 				new ArmaPrimaria(15,0,TipoArmaPrimaria.PISTOLA9MM,1),
-				new ArmaSecundaria(7,0,TipoArmaSecundaria.PUÑOS));
+				new ArmaSecundaria(7,0,TipoArmaSecundaria.PUNOS));
 	}
 
 	public int getNivelActual() {
@@ -64,6 +64,6 @@ public class Juego {
 	}
 
 	public int calcularFichasGanadas() {
-		return (this.enemigoActual.getVIDA_MAXIMA() / 3) + (this.enemigoActual.getPuntosDeDaño()/2);
+		return (this.enemigoActual.getVIDA_MAXIMA() / 3) + (this.enemigoActual.getpuntosDeDano()/2);
 	}
 }

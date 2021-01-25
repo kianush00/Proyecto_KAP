@@ -10,9 +10,17 @@ public class GestorDatos {
 
 	static Scanner input = new Scanner(System.in);
 
+	/**
+	 * Constructor del Gestor de Datos, inicializa el objeto.
+	 */
 	public GestorDatos() {
 	}
 
+	/**
+	 * Permite guardar los datos al final de la partida, pide como parametro el "puntaje" que corresponde a las fichas
+	 * actuales al momento de terminar la partida.
+	 * @param puntaje Objeto tipo int que corresponde a las fichas disponibles al momento de terminar la partida.
+	 */
 	public void GuardarPuntaje(int puntaje) {
 		try {
 			System.out.println("Ingrese su nombre: ");
@@ -30,6 +38,9 @@ public class GestorDatos {
 		}
 	}
 
+	/**
+	 * Permite ver la tabla de puntajes al leer el archivo generado por la funcion GuardarDatos()
+	 */
 	public void VerPuntajes() {
 		try {
 			var fileName = "src/main/java/puntajes.csv";

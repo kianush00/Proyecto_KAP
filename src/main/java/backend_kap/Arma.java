@@ -1,25 +1,25 @@
 package backend_kap;
 
 public class Arma {
-	protected int puntosDeDaño;
+	protected int puntosDeDano;
 	protected int precio;
 
 	/**
 	 * Constructor de Arma, padre de Arma primaria y secundaria.
-	 * @param puntosDeDaño Puntos de año del arma a asociar.
+	 * @param puntosDeDano Puntos de ano del arma a asociar.
 	 * @param precio Valor en fichas del arma.
 	 */
-	public Arma(int puntosDeDaño, int precio) {
-		this.puntosDeDaño = puntosDeDaño;
+	public Arma(int puntosDeDano, int precio) {
+		this.puntosDeDano = puntosDeDano;
 		this.precio = precio;
 	}
 
 	/**
-	 *Obtiene los puntos de daño del arma asociada.
-	 * @return puntos de daño del arma asociada.
+	 *Obtiene los puntos de dano del arma asociada.
+	 * @return puntos de dano del arma asociada.
 	 */
-	public int getPuntosDeDaño() {
-		return this.puntosDeDaño;
+	public int getpuntosDeDano() {
+		return this.puntosDeDano;
 	}
 
 	/**
