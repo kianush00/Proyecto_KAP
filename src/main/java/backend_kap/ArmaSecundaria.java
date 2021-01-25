@@ -14,10 +14,19 @@ public class ArmaSecundaria extends Arma {
 		this.TIPO = TIPO;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public TipoArmaSecundaria getTIPO() {
 		return this.TIPO;
 	}
 
+	/**
+	 *
+	 * @param enemigo
+	 * @return
+	 */
 	public int atacarEnemigo(Enemigo enemigo) {
 		enemigo.setVidaActual((enemigo.getVidaActual() - this.puntosDeDaño));
 		return enemigo.getVidaActual();
