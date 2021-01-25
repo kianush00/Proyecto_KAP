@@ -1,10 +1,17 @@
 package backend_kap;
 
+/**
+ * La clase ArmaSecundaria hereda de Arma
+ * La clase ArmaSecundaria está asociada a la clase Jugador, pero no conoce a tal clase.
+ * @see Arma
+ * @see TipoArmaSecundaria
+ * @see Enemigo
+ */
 public class ArmaSecundaria extends Arma {
 	private final TipoArmaSecundaria TIPO;
 
 	/**
-	 * Constructor de clase ArmaSecundaria.
+	 * Constructor de clase ArmaSecundaria, inicializa sus atributos con valores pasados por parámetros.
 	 * @param puntosDeDano variable heredada de Arma.
 	 * @param precio variable heredada de Arma.
 	 * @param TIPO variable tipo TipoArmaSecundaria, define por enumeración los tipos de arma.

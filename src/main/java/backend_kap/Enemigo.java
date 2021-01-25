@@ -1,5 +1,11 @@
 package backend_kap;
 
+/**
+ * La clase Enemigo hereda de Personaje
+ * La clase Enemigo está asociada a la clase Juego, pero no conoce a tal clase.
+ * @see Juego
+ * @see Jugador
+ */
 public class Enemigo extends Personaje {
 	private int puntosDeDano;
 

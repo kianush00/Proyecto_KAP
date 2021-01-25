@@ -1,5 +1,12 @@
 package backend_kap;
 
+/**
+ * La clase Jugador hereda de Personaje
+ * @see Personaje
+ * @see ArmaPrimaria
+ * @see ArmaSecundaria
+ * @see Inventario
+ */
 public class Jugador extends Personaje {
 	private Inventario inventario;
 	private ArmaPrimaria armaPrimaria;

@@ -2,6 +2,7 @@ package backend_kap;
 
 /**
  * La clase Tienda es la clase padre de Hospital y Cuartel.
+ * La clase Tienda está asociada a la clase Juego, pero no conoce a tal clase.
  * @see ArmaPrimaria
  * @see TipoArmaPrimaria
  * @see ArmaSecundaria

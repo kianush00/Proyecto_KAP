@@ -1,5 +1,8 @@
 package backend_kap;
 
+/**
+ * La clase Arma es la clase padre de ArmaPrimaria y ArmaSecundaria
+ */
 public class Arma {
 	protected int puntosDeDano;
 	protected int precio;

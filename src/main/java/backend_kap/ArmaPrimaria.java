@@ -1,11 +1,19 @@
 package backend_kap;
 
+/**
+ * La clase ArmaPrimaria hereda de Arma
+ * La clase ArmaPrimaria está asociada a la clase Jugador, pero no conoce a tal clase.
+ * @see Arma
+ * @see TipoArmaPrimaria
+ * @see Enemigo
+ * @see Inventario
+ */
 public class ArmaPrimaria extends Arma {
 	private final TipoArmaPrimaria TIPO;
 	private final int RONDA_MUNICION;
 
 	/**
-	 * Constructor de arma primaria, permite instanciar el arma primaria
+	 * Constructor de arma primaria, inicializa sus atributos con valores pasados por parámetros.
 	 * @param puntosDeDano Variable heredada de Arma, puntos de ataque del arma primaria.
 	 * @param precio Variable heredada de Arma, valor en fichas del arma primaria.
 	 * @param TIPO Tipo de arma, se define por enumeración en TipoDeArmaPrimaria.

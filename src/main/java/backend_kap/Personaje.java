@@ -1,5 +1,8 @@
 package backend_kap;
 
+/**
+ * La clase Personaje es la clase padre de Jugador y Enemigo
+ */
 public class Personaje {
 	protected int vidaActual;
 	protected int VIDA_MAXIMA;
