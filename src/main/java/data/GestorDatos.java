@@ -21,8 +21,8 @@ public class GestorDatos {
 	}
 
 	/**
-	 * Permite guardar los datos al final de la partida, pide como parametro el "puntaje" que corresponde a las fichas
-	 * actuales al momento de terminar la partida.
+	 * Método que permite guardar los datos al final de la partida, pide como parametro el "puntaje" que corresponde a
+	 * las fichas actuales al momento de terminar la partida.
 	 * @param puntaje Objeto tipo int que corresponde a las fichas disponibles al momento de terminar la partida.
 	 * @see FileOutputStream
 	 * @see OutputStreamWriter
@@ -46,7 +46,7 @@ public class GestorDatos {
 	}
 
 	/**
-	 * Permite ver la tabla de puntajes al leer el archivo generado por la funcion GuardarDatos()
+	 * Método que permite ver la tabla de puntajes al leer el archivo generado por la funcion GuardarDatos()
 	 * @see FileReader
 	 * @see StandardCharsets
 	 * @see CSVReader
