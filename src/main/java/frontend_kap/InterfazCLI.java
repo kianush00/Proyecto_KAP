@@ -11,17 +11,45 @@ import backend_kap.Enemigo;
 import data.GestorDatos;
 import java.util.Scanner;
 
+/**
+ * La clase InterfazCLI es la interfaz entre el usuario y el backend del Proyecto KAP
+ */
 public class InterfazCLI {
 
+	/**
+	 * Atributo de tipo static que contiene los datos que se ingresan por consola.
+	 * @see Scanner
+	 */
 	static Scanner input = new Scanner(System.in);
 
+	/**
+	 * Este método es el único método público de la clase, por lo que contiene una generalización de todos
+	 * los métodos del programa. Acá se encuentra el desarrollo del juego en base a las opciones elegidas
+	 * por el usuario y los mensajes que se muestran por pantalla. Se utilizan los recursos del paquete backend_kap.
+	 * Por último se guardan las fichas restantes y el nombre del jugador en caso de que el juego sea completado.
+	 * @see backend_kap.Arma
+	 * @see ArmaPrimaria
+	 * @see backend_kap.ArmaSecundaria
+	 * @see Cuartel
+	 * @see Enemigo
+	 * @see Hospital
+	 * @see Inventario
+	 * @see Juego
+	 * @see Jugador
+	 * @see backend_kap.Personaje
+	 * @see Tienda
+	 * @see backend_kap.TipoArmaPrimaria
+	 * @see backend_kap.TipoArmaSecundaria
+	 * @see GestorDatos
+	 */
 	public void lanzarVentana(){
 		Juego juego = new Juego(29);
 		GestorDatos gestor= new GestorDatos();
+		//Se muestra mensaje de bienvenida
 		darBienvenida();
 		for (juego.getNivelActual(); juego.getNivelActual() <= juego.getNIVELES();
 			 juego.setNivelActual(juego.getNivelActual() + 1)) {
-			//bucle for que recorre todos los niveles del juego. Se intercalan los métodos de pelea y tienda.
+			//Bucle for recorre todos los niveles del juego. Se intercalan los métodos de pelea y tienda.
 			if(juego.getNivelActual() % 3 != 0){
 				desarrollarPelea(juego);
 			}else{
@@ -29,11 +57,11 @@ public class InterfazCLI {
 			}
 
 		}
+		//Se muestra mensaje final
 		anunciarEscapeFinal();
+		//Se guardan los datos del jugador, los cuales son su nombre ingresado y las fichas que restaron.
 		gestor.GuardarPuntaje(juego.getJugador().getInventario().getFichas());
 		gestor.VerPuntajes();
-
-
 	}
 
 	/**
@@ -315,7 +343,7 @@ public class InterfazCLI {
 	/**
 	 * Método que asigna valor a la variable huir en desarrollarPelea(), si el booleano es True, se escapa de la pelea del nivel.
 	 * @param jugador Se pide el objeto jugador para acceder al metodo intentarHuir().
-	 * @return
+	 * @return valor booleano que indica si el jugador logra huir de la batalla.
 	 */
 	private boolean desarrollarHuida(Jugador jugador){
 		if(jugador.intentarHuir()){

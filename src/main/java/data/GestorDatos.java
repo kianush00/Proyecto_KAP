@@ -8,6 +8,10 @@ import java.util.Scanner;
 
 public class GestorDatos {
 
+	/**
+	 * Atributo de tipo static que contiene los datos que se ingresan por consola.
+	 * @see Scanner
+	 */
 	static Scanner input = new Scanner(System.in);
 
 	/**
@@ -20,6 +24,9 @@ public class GestorDatos {
 	 * Permite guardar los datos al final de la partida, pide como parametro el "puntaje" que corresponde a las fichas
 	 * actuales al momento de terminar la partida.
 	 * @param puntaje Objeto tipo int que corresponde a las fichas disponibles al momento de terminar la partida.
+	 * @see FileOutputStream
+	 * @see OutputStreamWriter
+	 * @see CSVWriter
 	 */
 	public void GuardarPuntaje(int puntaje) {
 		try {
@@ -40,6 +47,9 @@ public class GestorDatos {
 
 	/**
 	 * Permite ver la tabla de puntajes al leer el archivo generado por la funcion GuardarDatos()
+	 * @see FileReader
+	 * @see StandardCharsets
+	 * @see CSVReader
 	 */
 	public void VerPuntajes() {
 		try {
