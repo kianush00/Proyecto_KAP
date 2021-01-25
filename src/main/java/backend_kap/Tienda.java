@@ -57,7 +57,7 @@ public class Tienda {
 	 * Primero se restan las fichas al jugador en relación al precio del producto y se le asigna tal producto a su
 	 * inventario asociado.
 	 * @param jugador contiene los atributos y métodos de Jugador que permiten realizar la venta.
-	 *  @throws IllegalArgumentException
+	 *  @throws IllegalArgumentException Si las fichas del jugador resultan ser negativas se lanza una excepcion.
 	 */
 	public void venderArmaPrimaria(Jugador jugador) throws IllegalArgumentException{
 		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.armaPrimariaEnVenta.getPrecio());
@@ -69,7 +69,7 @@ public class Tienda {
 	 * Primero se restan las fichas al jugador en relación al precio del producto y se le asigna tal producto a su
 	 * inventario asociado.
 	 * @param jugador contiene los atributos y métodos de Jugador que permiten realizar la venta.
-	 *  @throws IllegalArgumentException
+	 *  @throws IllegalArgumentException Si las fichas del jugador resultan ser negativas se lanza una excepcion.
 	 */
 	public void venderArmaSecundaria(Jugador jugador) throws IllegalArgumentException{
 		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.armaSecundariaEnVenta.getPrecio());
@@ -81,7 +81,7 @@ public class Tienda {
 	 * Primero se restan las fichas al jugador en relación al precio del producto y se le asigna tal producto a su
 	 * inventario asociado.
 	 * @param jugador contiene los atributos y métodos de Jugador que permiten realizar la venta.
-	 * @throws IllegalArgumentException
+	 * @throws IllegalArgumentException Si las fichas del jugador resultan ser negativas se lanza una excepcion.
 	 */
 	public void venderJeringa(Jugador jugador) throws IllegalArgumentException{
 		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.precioJeringa);
@@ -93,7 +93,7 @@ public class Tienda {
 	 * Primero se restan las fichas al jugador en relación al precio del producto y se le asigna tal producto a su
 	 * inventario asociado.
 	 * @param jugador contiene los atributos y métodos de Jugador que permiten realizar la venta.
-	 * @throws IllegalArgumentException
+	 * @throws IllegalArgumentException Si las fichas del jugador resultan ser negativas se lanza una excepcion.
 	 */
 	public void venderCargador(Jugador jugador) throws IllegalArgumentException{
 		jugador.getInventario().setFichas(jugador.getInventario().getFichas() - this.precioCargador);
