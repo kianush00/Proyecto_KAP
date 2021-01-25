@@ -2,6 +2,11 @@ package backend_kap;
 
 /**
  * La clase Tienda es la clase padre de Hospital y Cuartel.
+ * @see ArmaPrimaria
+ * @see TipoArmaPrimaria
+ * @see ArmaSecundaria
+ * @see TipoArmaSecundaria
+ * @see Jugador
  */
 public class Tienda {
 	protected int precioJeringa;

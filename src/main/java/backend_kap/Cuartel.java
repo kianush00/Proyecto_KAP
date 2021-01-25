@@ -2,6 +2,12 @@ package backend_kap;
 
 /**
  * La clase Cuartel hereda de la clase Tienda.
+ * @see Tienda
+ * @see ArmaPrimaria
+ * @see TipoArmaPrimaria
+ * @see ArmaSecundaria
+ * @see TipoArmaSecundaria
+ * @see Jugador
  */
 public class Cuartel extends Tienda {
 	private final int PRECIO_CARGAR_MUNICION;

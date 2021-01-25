@@ -2,6 +2,10 @@ package backend_kap;
 
 /**
  * La clase Hospital hereda de la clase Tienda.
+ * @see Tienda
+ * @see ArmaPrimaria
+ * @see ArmaSecundaria
+ * @see Jugador
  */
 public class Hospital extends Tienda {
 	private final int PRECIO_CURARSE;
