@@ -1,10 +1,13 @@
 package backend_kap;
 
+/**
+ * La clase Cuartel hereda de la clase Tienda.
+ */
 public class Cuartel extends Tienda {
 	private final int PRECIO_CARGAR_MUNICION;
 
 	/**
-	 * Constructor de Cuartel, genera la instancia de la tienda Tipo Cuartel.
+	 * Constructor de Cuartel, genera la instancia de la tienda tipo Cuartel.
 	 */
 	public Cuartel() {
 		super.precioJeringa = 20;
@@ -19,7 +22,8 @@ public class Cuartel extends Tienda {
 	}
 
 	/**
-	 * Genera una instancia de Arma primaria para ponerla a la venta.
+	 * Genera una instancia de Arma primaria para ponerla a la venta. Contiene más opciones aleatorias que la
+	 * clase Hospital.
 	 * @return Devuelve un objeto ArmaPrimaria.
 	 * @throws IllegalArgumentException En caso que se ingrese un valor no especificado en la entrada de usuario.
 	 */
@@ -39,7 +43,8 @@ public class Cuartel extends Tienda {
 	}
 
 	/**
-	 * Genera una instancia de Arma secundaria para ponerla a la venta.
+	 * Genera una instancia de Arma secundaria para ponerla a la venta. Contiene más opciones aleatorias que la
+	 * clase Hospital.
 	 * @return Devuelve un objeto ArmaSecundaria.
 	 * @throws IllegalArgumentException En caso que se ingrese un valor no especificado en la entrada de usuario.
 	 */
@@ -57,7 +62,7 @@ public class Cuartel extends Tienda {
 	}
 
 	/**
-	 * Devuelve la cantidad de fichas que cuesta una carga de municion.
+	 * Devuelve la cantidad de fichas que cuesta una carga de munición.
 	 * @return Objeto int con el valor de fichas.
 	 */
 	public int getPRECIO_CARGAR_MUNICION() {
